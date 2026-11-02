@@ -29,9 +29,17 @@ INVESTMENTS = [
     {"investment_id": "inv_dealsum_nae", "name": "Deal-summary bot (NA East build)", "kind": "built", "ai_type": "acting",
      "identity": "svc_dealsum_nae", "annual_cost_usd": 22000, "teams": ["NA East"]},
 ]
-PURPOSES_CHATGPT = [("Drafting: internal email", 0.38), ("Research: account background", 0.18),
-                    ("Summarize: meeting notes", 0.14), ("Personal productivity", 0.22),
-                    ("Drafting: proposal text", 0.08)]
+PURPOSES_CHATGPT = [("Drafting: internal email", 0.26), ("Research: account background", 0.14),
+                    ("Summarize: meeting notes", 0.12), ("Personal productivity", 0.16),
+                    ("Drafting: proposal text", 0.07), ("Analysis: pipeline and cycle", 0.10),
+                    ("Strategy: account and territory plans", 0.08), ("Development: formulas and scripts", 0.07)]
+# purpose -> work category (ground truth for the purpose classifier)
+PURPOSE_CATEGORY = {"Outreach: first touch": "Writing", "Research: account and contact": "Research",
+                    "Research: meeting prep brief": "Research", "Research: account background": "Research",
+                    "Summarize: deal notes": "Summarization", "Summarize: meeting notes": "Summarization",
+                    "Drafting: internal email": "Writing", "Drafting: proposal text": "Writing",
+                    "Personal productivity": "Admin", "Analysis: pipeline and cycle": "Analysis",
+                    "Strategy: account and territory plans": "Strategy", "Development: formulas and scripts": "Development"}
 SEATS = {"EMEA": 12, "NA East": 12, "NA West": 10, "LATAM": 9, "APAC": 4}
 
 
@@ -129,6 +137,21 @@ TEMPLATES = {
         "Fix the grammar in my LinkedIn post about our charity run.",
         "Explain the difference between a pivot table and a lookup.",
     ],
+    "Analysis: pipeline and cycle": [
+        "Analyze our Q3 pipeline by stage and flag the deals most likely to slip.",
+        "Compare win rates and average deal size by vertical for the last two quarters and explain the gap.",
+        "Which segments have the longest sales cycle in this export of closed deals, and what correlates with it?",
+    ],
+    "Strategy: account and territory plans": [
+        "Build an account plan to grow {acct} next year, with expansion targets and the stakeholders to win.",
+        "Outline a territory strategy for hitting our new-logo bookings target with fewer reps.",
+        "Develop a competitive strategy to win the {acct} tender against two incumbents.",
+    ],
+    "Development: formulas and scripts": [
+        "Write a Salesforce report formula that calculates days in each stage.",
+        "Write a Python script to dedupe the lead export CSV and normalize phone numbers.",
+        "Debug this Excel macro that merges the weekly forecast sheets.",
+    ],
     "Drafting: proposal text": [
         "Draft the executive summary for a proposal to {acct} covering pricing options and the rollout plan.",
         "Write the pricing and implementation section of our quote for {acct}.",
@@ -171,8 +194,9 @@ def main() -> None:
     ev = pd.read_csv(OUT / "crm_change_log_2024.csv")
     pd.DataFrame(INVESTMENTS).assign(teams=lambda d: d.teams.str.join(";")).to_csv(OUT / "ai_investments.csv", index=False)
     sess = add_prompts(sessions(opps, ev, g), g)
-    sess[["session_id", "purpose"]].to_csv(OUT / "_ground_truth_session_purpose.csv", index=False)
-    sess.drop(columns=["purpose"]).to_json(OUT / "ai_telemetry_2024.jsonl", orient="records", lines=True)
+    sess["category"] = sess.purpose.map(PURPOSE_CATEGORY)
+    sess[["session_id", "purpose", "category"]].to_csv(OUT / "_ground_truth_session_purpose.csv", index=False)
+    sess.drop(columns=["purpose", "category"]).to_json(OUT / "ai_telemetry_2024.jsonl", orient="records", lines=True)
     admin_usage(sess).to_csv(OUT / "ai_admin_usage_2024.csv", index=False)
     print("sessions", len(sess), sess.investment_id.value_counts().to_dict())
     update_ground_truth("ai_sources", {

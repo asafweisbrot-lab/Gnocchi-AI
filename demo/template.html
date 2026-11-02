@@ -1,4 +1,4 @@
-<title>Gnocchi AI Demo</title>
+<title>Gnocchi AI Impact Report</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -86,51 +86,127 @@ footer{padding-block:40px 0;color:var(--muted);font-size:14px;display:grid;gap:1
   .spark{grid-template-columns:minmax(0,1fr)}
 }
 @media (prefers-reduced-motion:no-preference){nav.rail a{transition:background .15s}}
+/* platform shell */
+.appbar{position:sticky;top:0;z-index:8;background:var(--dark);color:var(--dark-ink);margin-inline:calc(-1 * max(16px, env(safe-area-inset-left, 0px)));
+  padding:10px max(16px, env(safe-area-inset-left, 0px));display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.appbar .logo{font-weight:700;font-size:18px;letter-spacing:-.01em;display:flex;align-items:center;gap:8px}
+.appbar .logo i{width:18px;height:18px;border-radius:50% 50% 45% 55%;background:#EE9A69;display:inline-block}
+.appbar .crumb{font-family:var(--mono);font-size:12px;color:#BDB4A8}
+.appbar .sp{flex:1}
+.appbar .st{font-family:var(--mono);font-size:12px;padding:3px 10px;border-radius:999px;border:1px solid #4A443D;color:#D9D1C5}
+.appbar .st.ok{border-color:#6CC08E;color:#6CC08E}
+.shell{display:grid;grid-template-columns:230px minmax(0,1fr);gap:32px;max-width:1320px;margin:0 auto;padding-top:24px}
+aside.side{position:sticky;top:64px;align-self:start;display:grid;gap:2px;max-height:calc(100vh - 80px);overflow:auto}
+aside.side .lab{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:4px 10px 8px}
+aside.side a{display:grid;grid-template-columns:22px minmax(0,1fr);gap:8px;padding:7px 10px;border-radius:8px;text-decoration:none;color:var(--soft);font-size:14px}
+aside.side a b{font-weight:600;color:var(--ink)}
+aside.side a small{display:block;font-family:var(--mono);font-size:11px;color:var(--muted);line-height:1.35}
+aside.side a .n{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-family:var(--mono);font-size:11px;background:var(--chip);color:var(--soft)}
+aside.side a.done .n{background:var(--good);color:var(--surface)}
+aside.side a.on{background:var(--surface);box-shadow:inset 0 0 0 1px var(--line)}
+aside.side a:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+main{min-width:0}
+section.card.step{padding:22px}
+.tbl > table{min-width:680px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:22px;display:grid;gap:16px;scroll-margin-top:72px;margin-bottom:20px}
+.card-head{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 14px;align-items:start}
+.card-head .num{grid-row:span 2;font-family:var(--mono);font-size:13px;color:var(--accent);padding-top:9px}
+.card-head h2{font-size:clamp(20px,2.4vw,26px)}
+.card-head p{grid-column:2;color:var(--soft);max-width:78ch;font-size:15px}
+.io{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-family:var(--mono);font-size:12px;color:var(--muted)}
+.io b{font-weight:500;color:var(--ink);background:var(--chip);padding:2px 8px;border-radius:4px}
+.finding{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;background:var(--bg);border-radius:8px;padding:12px 14px;border-left:3px solid var(--accent)}
+.finding .eyebrow{padding-top:2px}
+.finding p{font-size:15px}
+.card .panel{background:var(--bg)}
+.flow{display:grid;grid-template-columns:repeat(9,minmax(0,1fr));gap:6px}
+.flow a{background:var(--bg);border-radius:8px;padding:10px;display:grid;gap:4px;align-content:start;text-decoration:none;color:inherit}
+.flow a:hover,.flow a:focus-visible{outline:1px solid var(--accent)}
+.flow a span{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.flow a b{font-size:13px;font-weight:600;line-height:1.3}
+.flow a small{font-size:12px;color:var(--muted);line-height:1.3}
+.cl{display:grid;gap:10px}
+.cl div{display:grid;grid-template-columns:22px minmax(0,1fr);gap:10px;font-size:14px}
+.cl i{width:18px;height:18px;border-radius:50%;margin-top:2px;font-style:normal;display:grid;place-items:center;font-size:11px;font-family:var(--mono)}
+.cl i.done{background:var(--good);color:var(--surface)} .cl i.partial{background:var(--warn);color:var(--surface)} .cl i.open{border:1.5px dashed var(--muted)}
+.overview{display:grid;gap:14px;margin-bottom:20px}
+footer{padding-block:8px 0}
+@media (max-width:1000px){
+  .shell{grid-template-columns:minmax(0,1fr);padding-top:0}
+  aside.side{position:sticky;top:44px;z-index:6;background:var(--bg);display:flex;overflow-x:auto;max-height:none;padding-block:8px;border-bottom:1px solid var(--line);margin-bottom:16px}
+  aside.side .lab{display:none} aside.side a{flex:0 0 auto;grid-template-columns:22px auto} aside.side a small{display:none}
+  .flow{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media (max-width:560px){ .flow{grid-template-columns:repeat(2,minmax(0,1fr))} .card{padding:16px} .card-head{grid-template-columns:minmax(0,1fr)} .card-head .num{grid-row:auto;padding:0} .card-head p{grid-column:1} .appbar .crumb,.appbar .st:not(.ok){display:none} section.card.step{padding:16px} }
 </style>
 
-<div class="wrap">
-<header class="hero">
-  <span class="eyebrow">Gnocchi AI · demo</span>
-  <h1>What did each AI investment move?</h1>
-  <p class="lead">One year of real, anonymized closed-won deals, with synthetic CRM history and AI logs added on top, run through Gnocchi step by step: from finding the AI a company runs to a renew, consolidate or replace decision for each investment.</p>
-  <div style="display:flex;flex-wrap:wrap;gap:8px">
-    <span class="pill">Real: 641 + 695 closed-won deals, 2023–2024</span>
-    <span class="pill warn">Synthetic: CRM history, AI logs, planted effects</span>
-    <span class="pill">Team level only</span>
-  </div>
-  <div class="summary" id="summary"></div>
+<header class="appbar">
+  <span class="logo"><i></i>gnocchi</span>
+  <span class="crumb">Reports / AI impact / Sales org · FY2024</span>
+  <span class="sp"></span>
+  <span class="st">Demo tenant</span>
+  <span class="st ok">● Run complete</span>
 </header>
+<div class="shell">
+<aside class="side" id="rail" aria-label="Report steps"></aside>
+<main>
+<section class="overview step" id="overview">
+  <span class="eyebrow">AI impact report · Sales · Jan–Dec 2024</span>
+  <h1>What did each AI investment move?</h1>
+  <p class="lead">Gnocchi read the CRM, the team OKRs and every AI source the sales org runs, then worked step by step from what the AI is used for to what it changed. It ends with a decision per investment and the open-weights potential.</p>
+  <div class="summary" id="summary"></div>
+  <div class="callout"><span class="eyebrow">Bottom line</span><p id="bottom" style="font-size:18px"></p></div>
+</section>
 
-<nav class="rail" id="rail" aria-label="Demo steps"></nav>
+<section class="card step" id="processed">
+  <div class="card-head"><span class="num">00</span><h2>What this run processed</h2><p>Read-only connections. Deals are real and anonymized; history, OKRs and AI logs are synthetic, with known effects planted so the result can be checked (appendix).</p></div>
+  <div class="tbl"><table id="proctbl"></table></div>
+  <div class="flow" id="flow"></div>
+</section>
+<section class="card step" id="discover">
+  <div class="card-head"><span class="num">01</span><h2>Discover: the AI the company runs, direct and indirect</h2><p>Agent identities in the CRM’s change history show <b>direct</b> AI: agents that act and write records themselves. SSO, admin and usage data show <b>indirect</b> AI: tools people use, whose effect runs through what those people do.</p></div>
+  <div class="io">In <b>CRM change log, SSO, admin usage</b> → Out <b>AI inventory</b></div>
 
-<section class="step" id="discover">
-  <div class="step-head"><span class="eyebrow">Step 1 · Discover</span><h2>Find the AI the company already runs</h2>
-  <p>Read-only connections to the CRM, the OKR source and the AI sources. Agent identities in the CRM's change history show acting AI; admin and usage data show the tools people use directly. The result is an inventory of AI investments by team.</p></div>
   <div class="panel tbl"><table id="inventory"></table></div>
   <details><summary>Sample logs: one deal's change history and one session per tool</summary><pre id="logs"></pre></details>
+
+  <div class="finding"><span class="eyebrow">Finding</span><p id="f-discover"></p></div>
   <div class="sources" id="src-discover"></div>
 </section>
+<section class="card step" id="classify">
+  <div class="card-head"><span class="num">02</span><h2>Classify: what each session is for</h2><p>Every session’s text is sorted into a work category: research, writing, analysis, strategy, development, summarization or admin. Each is also tagged direct (an agent acts), indirect and traced (a person’s AI output lands on a record), or indirect and untraced.</p></div>
+  <div class="io">In <b>8,595 sessions</b> → Out <b>category × activity type</b></div>
+  <div class="tbl"><table id="clsinv"></table></div>
+  <div class="panel" style="display:grid;gap:8px"><h3>Direct and indirect activity, by category</h3><p class="muted" style="font-size:14px">Sessions per category. Direct: an agent acts under its own identity. Indirect, traced: a person used AI and the output landed on a record. Indirect, untraced: no record to follow.</p><div class="tbl"><table id="clsmode"></table></div></div>
+  <div class="panel" style="display:grid;gap:8px"><h3>One session per category</h3><div id="clsex" style="display:grid;gap:8px;font-size:14px"></div></div>
+  <div class="finding"><span class="eyebrow">Finding</span><p id="f-classify"></p></div>
+  <div class="sources" id="src-classify"></div>
+</section>
+<section class="card step" id="map">
+  <div class="card-head"><span class="num">03</span><h2>Map: link each key result to the records that hold its progress</h2><p>The semantic layer reads each team OKR and proposes where its progress is recorded, which fields carry it and at what grain. A person confirms. A key result with no record is a blind spot. Shown: EMEA.</p></div>
+  <div class="io">In <b>25 key results, KPI definitions</b> → Out <b>KR → record map</b></div>
 
-<section class="step" id="map">
-  <div class="step-head"><span class="eyebrow">Step 2 · Map</span><h2>Link each key result to the records that hold its progress</h2>
-  <p>The semantic layer reads each team OKR and proposes where its progress is recorded, which fields carry it and at what grain. A person confirms. A key result with no record is flagged as a blind spot. Shown: EMEA's 2024 OKR.</p></div>
   <div class="panel tbl"><table id="mapping"></table></div>
+
+  <div class="finding"><span class="eyebrow">Finding</span><p id="f-map"></p></div>
   <div class="sources" id="src-map"></div>
 </section>
+<section class="card step" id="learn">
+  <div class="card-head"><span class="num">04</span><h2>Learn: what actually moves the target</h2><p>From two years of change history, Gnocchi learns which actions, roles and materials shorten the new-business sales cycle (key result 3), controlling for deal size, team and month. Bars show days added or saved, with 90% ranges.</p></div>
+  <div class="io">In <b>1,336 deals, 12,148 events</b> → Out <b>drivers of KR3</b></div>
 
-<section class="step" id="learn">
-  <div class="step-head"><span class="eyebrow">Step 3 · Learn</span><h2>Find what actually moves the target</h2>
-  <p>From two years of change history, Gnocchi learns which actions, roles and materials shorten the new-business sales cycle (key result 3), controlling for deal size, team and month. Bars show days added or saved, with 90% ranges.</p></div>
   <div class="panel"><svg id="drivers" role="img" aria-label="Drivers of the new-business sales cycle, in days"></svg></div>
+
+  <div class="finding"><span class="eyebrow">Finding</span><p id="f-learn"></p></div>
   <div class="sources" id="src-learn"></div>
 </section>
+<section class="card step" id="trace">
+  <div class="card-head"><span class="num">05</span><h2>Trace: is each tool’s activity aimed at a driver or key result?</h2><p>Three edges: what sessions are aimed at (AI → OKR, by similarity of session text to drivers and key results), which records the tool writes (AI → records), and which records feed which key result (OKR → records, step 3). Together they give an evidence level. Similarity picks what to test; step 7 proves it.</p></div>
+  <div class="io">In <b>sessions, drivers, key results</b> → Out <b>evidence level per tool and team</b></div>
 
-<section class="step" id="trace">
-  <div class="step-head"><span class="eyebrow">Step 4 · Trace</span><h2>Give every AI investment an evidence level</h2>
-  <p>Three edges: what each tool’s sessions are aimed at (AI → OKR, by similarity of session text to drivers and key results), which records it writes (AI → records, by agent identity and linked materials), and which records feed which key result (OKR → records, from step 2). Together they give an evidence level. Similarity picks what to test; step 6 proves the effect.</p></div>
   <div class="panel" style="display:grid;gap:14px">
     <div style="display:grid;gap:6px;max-width:72ch"><h3>Edge 1 · AI → OKR: what each tool’s sessions are aimed at</h3>
-    <p class="muted" style="font-size:14px">Gnocchi reads each session’s text and compares it with the operational drivers learned in step 3 and with the team’s key results. Each cell is the share of a tool’s sessions whose best match is that driver or key result. It shows intent, not effect.</p></div>
+    <p class="muted" style="font-size:14px">Gnocchi reads each session’s text and compares it with the operational drivers learned in step 4 and with the team’s key results. Each cell is the share of a tool’s sessions whose best match is that driver or key result. It shows intent, not effect.</p></div>
     <div class="tbl"><table id="simtbl"></table></div>
     <p class="muted" style="font-size:13px" id="sim-note"></p>
   </div>
@@ -139,7 +215,7 @@ footer{padding-block:40px 0;color:var(--muted);font-size:14px;display:grid;gap:1
     <div id="simex" style="display:grid;gap:14px"></div>
   </div>
   <div class="panel" style="display:grid;gap:10px">
-    <h3>Triangulated: Edge 1 (AI → OKR) + Edge 2 (AI → records, by identity writes) + Edge 3 (OKR → records, from step 2)</h3>
+    <h3>Triangulated: Edge 1 (AI → OKR) + Edge 2 (AI → records, by identity writes) + Edge 3 (OKR → records, from step 3)</h3>
     <div class="tbl"><table id="tracetbl"></table></div>
   </div>
   <div class="panel" style="display:grid;gap:10px">
@@ -148,24 +224,28 @@ footer{padding-block:40px 0;color:var(--muted);font-size:14px;display:grid;gap:1
     <div class="tbl"><table id="teamfit"></table></div>
     <p class="muted" style="font-size:13px" id="teamfit-note"></p>
   </div>
+
+  <div class="finding"><span class="eyebrow">Finding</span><p id="f-trace"></p></div>
   <div class="sources" id="src-trace"></div>
 </section>
+<section class="card step" id="momentum">
+  <div class="card-head"><span class="num">06</span><h2>Momentum: is each tool used, and on what</h2><p>An assignment date shows access, not use. Usage, the records each tool touches and the target’s driver go on one timeline.</p></div>
+  <div class="io">In <b>admin usage, telemetry, change log</b> → Out <b>use and record footprint</b></div>
 
-<section class="step" id="momentum">
-  <div class="step-head"><span class="eyebrow">Step 5 · Momentum</span><h2>See whether each tool is used, and on what</h2>
-  <p>An assignment date shows access, not use. Usage, the records each tool touches and the target's driver go on one timeline. The first deliverable, in weeks.</p></div>
   <div class="panel" id="sparks"></div>
   <div class="panel grid2">
     <div style="display:grid;gap:8px"><h3>First response on new deals, 2024</h3><p class="muted" style="font-size:14px">Median hours per month. EMEA's drop starts when the AI SDR goes live in April and works deals closing from June.</p>
       <div class="legend"><span><i style="background:var(--accent)"></i>EMEA</span><span><i style="background:var(--cmp)"></i>NA West, LATAM, APAC</span></div></div>
     <svg id="resp" role="img" aria-label="Median first response hours per month, EMEA vs teams without the AI SDR"></svg>
   </div>
+
+  <div class="finding"><span class="eyebrow">Finding</span><p id="f-momentum"></p></div>
   <div class="sources" id="src-momentum"></div>
 </section>
+<section class="card step" id="prove">
+  <div class="card-head"><span class="num">07</span><h2>Prove: compare, so the result is impact and not coincidence</h2><p>Gnocchi picks the strongest comparison the data allows: staggered rollouts first, then usage dose and record-level comparisons with controls. Every result comes as a range.</p></div>
+  <div class="io">In <b>rollout dates, deals, controls</b> → Out <b>effect per tool, with range</b></div>
 
-<section class="step" id="prove">
-  <div class="step-head"><span class="eyebrow">Step 6 · Prove</span><h2>Compare, so the result is impact and not coincidence</h2>
-  <p>Gnocchi picks the strongest comparison the data allows: staggered rollouts first, then usage dose and record-level comparisons with controls. Every result comes as a range.</p></div>
   <div class="panel grid2">
     <div class="result"><span class="eyebrow">AI SDR agent · difference-in-differences</span>
       <span class="big" id="sdr-big"></span><p id="sdr-text"></p></div>
@@ -183,12 +263,14 @@ footer{padding-block:40px 0;color:var(--muted);font-size:14px;display:grid;gap:1
     <div class="result" style="border-color:var(--muted)"><span class="eyebrow" style="color:var(--muted)">ChatGPT Enterprise · no record trace</span>
       <span class="big" id="chat-big"></span><p id="chat-text"></p></div>
   </div>
+
+  <div class="finding"><span class="eyebrow">Finding</span><p id="f-prove"></p></div>
   <div class="sources" id="src-prove"></div>
 </section>
+<section class="card step" id="find">
+  <div class="card-head"><span class="num">08</span><h2>Find: the AI the company needs next</h2><p>The driver model run in reverse: a driver with a high weight, a weak baseline and no AI on it is an AI opportunity. Adding a solutions engineer before the proposal saves about <b id="se-w"></b> days, and two teams rarely do it.</p></div>
+  <div class="io">In <b>drivers, team baselines</b> → Out <b>opportunities and blind spots</b></div>
 
-<section class="step" id="find">
-  <div class="step-head"><span class="eyebrow">Step 7 · Find</span><h2>Point to the AI the company needs next</h2>
-  <p>The same model, run in reverse: a driver with a high weight, a weak baseline and no AI on it yet is an AI opportunity. Adding a solutions engineer before the proposal saves about <b id="se-w"></b> days, and two teams rarely do it.</p></div>
   <div class="panel grid2">
     <svg id="sechart" role="img" aria-label="Share of new deals with a solutions engineer before the proposal, by team"></svg>
     <div style="display:grid;gap:12px;align-content:start">
@@ -196,26 +278,32 @@ footer{padding-block:40px 0;color:var(--muted);font-size:14px;display:grid;gap:1
       <div class="result" style="border-color:var(--warn)"><span class="eyebrow" style="color:var(--warn)">Blind spot</span><p>“Raise customer satisfaction with onboarding” maps to no CRM record, so its progress can’t be seen. Suggested fix: one onboarding-score field on the account.</p></div>
     </div>
   </div>
+
+  <div class="finding"><span class="eyebrow">Finding</span><p id="f-find"></p></div>
   <div class="sources" id="src-find"></div>
 </section>
-
-<section class="step" id="report">
-  <div class="step-head"><span class="eyebrow">Step 8 · Report</span><h2>A decision for every AI investment</h2>
-  <p>Per investment: cost, evidence level, impact on the target with its method and confidence, and the recommendation.</p></div>
-  <div class="panel tbl"><table id="reporttbl"></table></div>
+<section class="card step" id="conclude">
+  <div class="card-head"><span class="num">09</span><h2>Conclusions and recommendations</h2><p>Per investment: cost, evidence, impact with its method and confidence, and the decision. Then the workloads the organization could move to open-weights models, and what it needs in place first.</p></div>
+  <div class="tbl"><table id="reporttbl"></table></div>
   <div class="callout"><span class="eyebrow">Result</span><p id="total-text" style="font-size:18px"></p></div>
+  <div style="display:grid;gap:6px;max-width:78ch;padding-top:8px"><span class="eyebrow">Open-weights potential</span><h3 style="font-size:20px">Which workloads could run on an open model, and is the organization ready?</h3>
+  <p class="muted" style="font-size:14px">A workload is ready when it is routine and has a proven outcome, so a swap can be re-tested with the same comparison from step 7. Reasoning-heavy work stays on a frontier model. The readiness shown is the organization’s.</p></div>
+  <div class="grid2">
+    <div class="panel" style="display:grid;gap:10px"><h3>Readiness</h3><div class="cl" id="owready"></div></div>
+    <div class="result"><span class="eyebrow">Run cost in scope</span><span class="big" id="ow-big"></span><p id="ow-text"></p></div>
+  </div>
+  <div class="tbl"><table id="owtbl"></table></div>
+  <div class="finding"><span class="eyebrow">Next</span><p id="f-next"></p></div>
 </section>
-
-<section class="step" id="check">
-  <div class="step-head"><span class="eyebrow">Check</span><h2>Did the analysis find what was planted?</h2>
-  <p>The synthetic data carries known effects. Recovering them shows the method works; it says nothing about whether these tools work in a real company.</p></div>
-  <div class="panel tbl"><table id="checktbl"></table></div>
+<section class="card step" id="check">
+  <div class="card-head"><span class="num">A</span><h2>Appendix: did the analysis find what was planted?</h2><p>The synthetic data carries known effects. Recovering them shows the method works; it says nothing about whether these tools work in a real company.</p></div>
+  <div class="tbl"><table id="checktbl"></table></div>
 </section>
-
 <footer>
   <p><b>About the data.</b> Deals are real and anonymized (owner, account and partner names replaced). CRM history, OKRs, AI logs and usage are synthetic, generated with a fixed seed. Only closed-won deals exist, so win rate isn’t studied. NA West and APAC are small teams, which widens their ranges.</p>
   <p>Everything is reported at team level. No person is a unit of analysis.</p>
 </footer>
+</main>
 </div>
 
 <script>
@@ -237,8 +325,9 @@ const SRC = {
   momentum: [["syn","AI admin usage"],["syn","AI telemetry"],["syn","CRM change log"]],
   prove: [["real","CRM closed-won"],["syn","CRM change log"],["syn","Rollout dates"]],
   find: [["syn","CRM change log"],["syn","OKR map"]],
+  classify: [["syn","AI telemetry (session text)"],["syn","SSO and agent identities"],["syn","CRM change log (linked materials)"]],
 };
-for (const k in SRC) $("src-"+k).innerHTML = SRC[k].map(([c,t]) => `<span class="pill ${c}">${esc(t)}</span>`).join("");
+for (const k in SRC) if ($("src-"+k)) $("src-"+k).innerHTML = SRC[k].map(([c,t]) => `<span class="pill ${c}">${esc(t)}</span>`).join("");
 
 // summary
 const R = D.report, P = D.prove;
@@ -246,17 +335,27 @@ $("summary").innerHTML = [
   [fmt$(D.totals.ai_spend), "AI spend, 5 investments"],
   [`${sgn(P.sdr.cycle)} days`, "AI SDR on the new-deal cycle"],
   [fmt$(D.totals.avoided), "Avoidable spend found"],
-  ["1", "AI opportunity, 1 blind spot"],
+  [fmt$(D.open_weights.in_scope), "Run cost in scope for open weights"],
 ].map(([b,s]) => `<div class="stat"><b>${b}</b><span>${s}</span></div>`).join("");
 
 // rail
-const steps = [["discover","1 Discover"],["map","2 Map"],["learn","3 Learn"],["trace","4 Trace"],["momentum","5 Momentum"],["prove","6 Prove"],["find","7 Find"],["report","8 Report"],["check","Check"]];
-$("rail").innerHTML = steps.map(([id,l]) => `<a href="#${id}" data-id="${id}">${l}</a>`).join("");
-const io = new IntersectionObserver((es) => es.forEach(e => { if (e.isIntersecting) document.querySelectorAll("#rail a").forEach(a => a.classList.toggle("on", a.dataset.id === e.target.id)); }), {rootMargin: "-40% 0px -55% 0px"});
-document.querySelectorAll("section.step").forEach(s => io.observe(s));
+const PL = Object.fromEntries(D.pipeline.map(p => [p[0], p]));
+const steps = [["overview","·","Summary",""],["processed","0","Processed",`${D.processed.length} sources`],
+  ["discover","1","Discover",PL.Discover[2]],["classify","2","Classify",PL.Classify[2]],["map","3","Map",PL.Map[2]],
+  ["learn","4","Learn",PL.Learn[2]],["trace","5","Trace",PL.Trace[2]],["momentum","6","Momentum",PL.Momentum[2]],
+  ["prove","7","Prove",PL.Prove[2]],["find","8","Find",PL.Find[2]],["conclude","9","Conclude",PL.Conclude[2]],["check","A","Appendix","planted vs found"]];
+$("rail").innerHTML = `<span class="lab">Report steps</span>` + steps.map(([id,n,l,o]) => `<a href="#${id}" data-id="${id}" class="${/^\d$/.test(n)?"done":""}"><span class="n">${/^\d$/.test(n)?"✓":n}</span><span><b>${n!=="·"&&n!=="A"?n+" · ":""}${l}</b>${o?`<small>${esc(o)}</small>`:""}</span></a>`).join("");
+const io = new IntersectionObserver((es) => es.forEach(e => { if (e.isIntersecting) document.querySelectorAll("#rail a").forEach(a => a.classList.toggle("on", a.dataset.id === e.target.id)); }), {rootMargin: "-30% 0px -60% 0px"});
+document.querySelectorAll(".step").forEach(s => io.observe(s));
+
+// 0 processed
+$("proctbl").innerHTML = `<tr><th>Source</th><th>Kind</th><th class="num">Read</th></tr>` +
+  D.processed.map(r => `<tr><td><b>${esc(r.source)}</b></td><td><span class="pill ${r.kind}" style="padding:2px 8px">${r.kind==="real"?"Real":"Synthetic"}</span></td><td class="num">${r.rows.toLocaleString()} ${esc(r.unit)}</td></tr>`).join("");
+const flowIds = {Discover:"discover",Classify:"classify",Map:"map",Learn:"learn",Trace:"trace",Momentum:"momentum",Prove:"prove",Find:"find",Conclude:"conclude"};
+$("flow").innerHTML = D.pipeline.map((p,i) => `<a href="#${flowIds[p[0]]}"><span>${i+1} ${esc(p[0])}</span><b>${esc(p[2])}</b><small>from ${esc(p[1])}</small></a>`).join("");
 
 // 1 inventory
-const typeTag = (t) => `<span class="tag ${t==="acting"?"acting":""}">${t}</span>`;
+const typeTag = (t) => `<span class="tag ${t==="acting"?"acting":""}">${t==="acting"?"Direct · acts":"Indirect · assists"}</span>`;
 $("inventory").innerHTML = `<tr><th>AI investment</th><th>Bought or built</th><th>Type</th><th>Seen through</th><th>Teams</th><th class="num">Cost / yr</th></tr>` +
   D.discover.inventory.map(r => `<tr><td><b>${esc(r.name)}</b></td><td>${r.kind}</td><td>${typeTag(r.ai_type)}</td><td class="mono" style="font-size:12px">${r.identity==="sso_user"?"SSO + admin usage":esc(r.identity)}</td><td>${r.teams.join(", ")}</td><td class="num">${fmt$(r.cost)}</td></tr>`).join("");
 const log = D.discover.sample_change_log.map(e => `${e.ts}  ${e.record_id}  ${(e.object+"."+e.field).padEnd(32)} ${String(e.new_value).padEnd(20)} by ${e.changed_by}${e.created_with?" (made with "+e.created_with+")":""}`).join("\n");
@@ -412,6 +511,53 @@ $("reporttbl").innerHTML = `<tr><th>AI investment</th><th class="num">Cost / yr<
   R.map(r => `<tr><td><b>${esc(r.name)}</b></td><td class="num">${fmt$(r.cost)}</td><td>${lvlShort(r.level)}</td><td>${esc(minus(r.impact))}</td><td>${esc(r.method)} · <b>${r.confidence}</b></td><td class="decision">${esc(r.decision)}${r.avoided?`<br><span class="muted" style="font-weight:400">saves ${fmt$(r.avoided)}</span>`:""}</td></tr>`).join("");
 $("total-text").innerHTML = `Of ${fmt$(D.totals.ai_spend)} in AI spend, two investments move the new-business cycle key result and should grow, and ${fmt$(D.totals.avoided)} a year can be saved by consolidating the duplicate bots and right-sizing seats. One driver with no AI on it, in LATAM and APAC, is the next requirement.`;
 
+// 2 classify
+(function(){
+  const C = D.classify, cats = C.categories, modeName = {direct:"Direct · agent acts", indirect_traced:"Indirect · output on a record", indirect_untraced:"Indirect · no record"};
+  const heat = (v, max) => { const a = max ? v/max : 0; return `background:${v>0?`color-mix(in srgb, var(--accent) ${Math.round(Math.min(1,a)*80)}%, transparent)`:"transparent"};color:${a>0.6?"var(--accent-ink)":"inherit"}`; };
+  $("clsinv").innerHTML = `<tr><th>AI investment</th><th>Activity</th>` + cats.map(c=>`<th class="num">${c}</th>`).join("") + `</tr>` +
+    C.by_investment.map(r => `<tr><td><b>${esc(nameOf[r.id])}</b><br><span class="muted" style="font-size:12px">${r.n.toLocaleString()} sessions</span></td><td><span class="tag ${r.mode==="direct"?"acting":""}">${modeName[r.mode]}</span></td>` +
+      cats.map(c => { const v = r.shares[c]; return `<td class="num" style="${heat(v,1)}">${v?Math.round(v*100)+"%":"·"}</td>`; }).join("") + `</tr>`).join("");
+  const max = Math.max(...Object.values(C.by_mode).flatMap(o=>Object.values(o)));
+  $("clsmode").innerHTML = `<tr><th></th>` + cats.map(c=>`<th class="num">${c}</th>`).join("") + `</tr>` +
+    Object.entries(C.by_mode).map(([m,o]) => `<tr><td style="font-size:13px;white-space:nowrap"><b>${modeName[m]}</b></td>` + cats.map(c=>`<td class="num" style="${heat(o[c],max)}">${o[c]?o[c].toLocaleString():"·"}</td>`).join("") + `</tr>`).join("") +
+    `<tr><td style="font-size:13px"><b>Aimed at a driver or KR</b><br><span class="muted">from step 5</span></td>` + cats.map(c=>`<td class="num">${Math.round(C.aimed[c]*100)}%</td>`).join("") + `</tr>`;
+  $("clsex").innerHTML = cats.filter(c=>C.examples[c]).map(c => `<div style="display:grid;grid-template-columns:110px minmax(0,1fr);gap:10px;align-items:start"><span><span class="tag">${c}</span></span><span>“${esc(C.examples[c])}”</span></div>`).join("");
+})();
+
+// findings: each step moves one step closer to the conclusion
+(function(){
+  const inv = D.discover.inventory, C = D.classify, tot = (o) => Object.values(o).reduce((a,b)=>a+b,0);
+  const nDirect = tot(C.by_mode.direct), nTr = tot(C.by_mode.indirect_traced), nUn = tot(C.by_mode.indirect_untraced), N = nDirect+nTr+nUn;
+  const dir = inv.filter(r=>r.ai_type==="acting"), ind = inv.filter(r=>r.ai_type!=="acting");
+  const sum = (a) => a.reduce((x,r)=>x+r.cost,0);
+  const F = {
+    discover: `${inv.length} AI investments, ${fmt$(sum(inv))} a year. ${dir.length} are direct (${fmt$(sum(dir))}): agents with their own CRM identity. ${ind.length} are indirect (${fmt$(sum(ind))}): tools people use. Two deal-summary bots were built separately by two teams.`,
+    classify: `${Math.round(100*nUn/N)}% of sessions are indirect and leave no record; only ${Math.round(100*(nDirect+nTr)/N)}% can be tied to a deal. Writing and admin are the biggest categories. Analysis and strategy sessions exist, but only in ChatGPT. Classification matched the planted purpose for ${Math.round(C.agreement*100)}% of sessions (synthetic templates make this easy; real prompts will score lower).`,
+    map: `Four of EMEA’s five key results map to CRM records. Onboarding satisfaction has no record, so its progress can’t be seen in any team.`,
+    learn: `Three drivers move the new-deal cycle: first response (${sgn(D.drivers[0].days)} days per hour slower), a solutions engineer before Proposal (${sgn(D.drivers[1].days)} days) and a prep brief (${sgn(D.drivers[2].days)} days). Extra meetings don’t.`,
+    trace: `The AI SDR and meeting prep close the triangle: their sessions are aimed at a driver and their output lands on that driver’s records. The deal-summary bots write records no driver depends on. ChatGPT reaches no record and ${100-Math.round(D.trace.find(t=>t.id==="inv_chatgpt_ent").aligned*100)}% of its sessions are aimed at nothing. Teams aiming more of their AI spend at drivers moved KR3 more.`,
+    momentum: `The AI SDR ramps with each rollout and EMEA’s first response drops from April. Meeting prep is live everywhere but used in few deals outside EMEA and NA East. ChatGPT’s active seats fall all year.`,
+    prove: `Two effects survive comparison: the AI SDR (${sgn(P.sdr.cycle)} days, ${sgn(P.sdr.lo)} to ${sgn(P.sdr.hi)}) and meeting prep (${sgn(P.prep.adjusted)} days per brief). The deal-summary bots show none (${sgn(P.dealsum.cycle)}). ChatGPT can’t be tested against records.`,
+    find: `No AI works the solutions-engineer driver. LATAM and APAC rarely add one before the proposal, worth days on every new deal. That is the next AI requirement.`,
+  };
+  for (const k in F) $("f-"+k).innerHTML = F[k];
+  $("bottom").innerHTML = `Of ${fmt$(D.totals.ai_spend)} in AI spend, <b>${fmt$(96000+38000)}</b> is proven to shorten the new-deal cycle and should grow; <b>${fmt$(D.totals.avoided)}</b> a year can be saved by consolidating duplicate bots and right-sizing seats; and <b>${fmt$(D.open_weights.in_scope)}</b> of run cost is in scope for open-weights models once the organization is ready.`;
+})();
+
+// 9 open weights
+(function(){
+  const O = D.open_weights, mk = {done:"✓", partial:"!", open:""};
+  $("owready").innerHTML = O.readiness.map(r => `<div><i class="${r.status}">${mk[r.status]}</i><span><b>${esc(r.item)}</b><br><span class="muted">${esc(r.detail)}</span></span></div>`).join("");
+  $("ow-big").textContent = fmt$(O.in_scope);
+  $("ow-text").innerHTML = `a year of AI run cost in workloads that are ready to pilot or ready after consolidation. At an assumed ${Math.round(O.cut[0]*100)}–${Math.round(O.cut[1]*100)}% lower run cost for a comparable open model the organization hosts, that is <b>${fmt$(O.potential[0])}–${fmt$(O.potential[1])}</b> a year. The assumption is not measured here; the pilot measures it, and step 7’s comparison checks the outcome holds.`;
+  const vt = (v) => `<span class="tag ${v==="Ready to pilot"?"l1":v.startsWith("Consolidate")?"l2":"l3"}">${esc(v)}</span>`;
+  const modeShort = {direct:"Direct", indirect_traced:"Indirect · traced", indirect_untraced:"Indirect · untraced"};
+  $("owtbl").innerHTML = `<tr><th>Workload</th><th>Activity</th><th class="num">Sessions</th><th class="num">Run cost / yr</th><th>Readiness</th><th>Why</th></tr>` +
+    O.workloads.map(w => `<tr><td><b>${esc(nameOf[w.id])}</b><br><span class="muted" style="font-size:12px">${esc(w.category)}</span></td><td style="font-size:13px">${modeShort[w.mode]}</td><td class="num">${w.sessions.toLocaleString()}</td><td class="num">${fmt$(w.spend)}</td><td>${vt(w.verdict)}</td><td style="font-size:13px">${esc(minus(w.why))}</td></tr>`).join("");
+  $("f-next").innerHTML = `1. Renew the AI SDR and roll it to NA West and LATAM in waves, so the next comparison is built in. 2. Lift meeting-prep use in APAC and LATAM. 3. Merge the deal-summary bots and right-size ChatGPT seats (${fmt$(D.totals.avoided)}). 4. Scope an agent for the solutions-engineer driver. 5. Pilot an open model on the AI SDR’s writing and research workloads and re-run the rollout comparison before switching.`;
+})();
+
 // check
 const truth = [
   ["First response time (driver)", "+1.6 days per hour", `${sgn(D.drivers[0].days)} ± ${D.drivers[0].ci}`],
@@ -421,7 +567,8 @@ const truth = [
   ["Deal-summary bots", "no effect, overlap", `${sgn(P.dealsum.cycle)} (${sgn(P.dealsum.lo)} to ${sgn(P.dealsum.hi)})`],
   ["ChatGPT Enterprise", "usage fades ~7% a month", `${Math.round(cm[0].active_share*100)}% → ${Math.round(cm[11].active_share*100)}% active`],
   ["Onboarding-satisfaction key result", "no CRM record", "flagged as blind spot"],
-  ["Session purpose (similarity to drivers and key results)", "9 planted purposes", `${Math.round(D.similarity.overall_agreement*100)}% of sessions matched correctly`],
+  ["Session work category", "7 planted categories", `${Math.round(D.classify.agreement*100)}% of sessions classified correctly`],
+  ["Session purpose (similarity to drivers and key results)", "12 planted purposes", `${Math.round(D.similarity.overall_agreement*100)}% of sessions matched correctly`],
 ];
 $("checktbl").innerHTML = `<tr><th>Planted in the synthetic data</th><th>What was planted</th><th>What Gnocchi found</th></tr>` + truth.map(r=>`<tr><td>${r[0]}</td><td class="mono" style="font-size:13px">${r[1]}</td><td class="mono" style="font-size:13px"><b>${r[2]}</b></td></tr>`).join("");
 </script>

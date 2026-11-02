@@ -1,7 +1,7 @@
 """Run the demo analysis end to end and write demo_data.json for the demo page.
 
-Steps mirror the product: discover -> map -> learn -> trace -> momentum -> prove -> find
--> report. Everything is computed at team level. Impact comes from comparisons
+Steps mirror the product: processed -> discover -> classify -> map -> learn -> trace -> momentum -> prove -> find
+-> conclude (decisions, open-weights readiness). Everything is computed at team level. Impact comes from comparisons
 (staggered rollout, usage dose, record-level with controls), never from text similarity.
 """
 from __future__ import annotations
@@ -11,8 +11,9 @@ import json
 import numpy as np
 import pandas as pd
 
+from gnocchi.analysis.purpose import CATEGORIES, classify
 from gnocchi.analysis.similarity import DRIVERS, kr_targets, match
-from gnocchi.synth.common import OUT, ROOT
+from gnocchi.synth.common import OUT, ROOT, SRC
 
 DEMO = ROOT / "data" / "demo"
 TEAMS = ["EMEA", "NA East", "NA West", "LATAM", "APAC"]
@@ -42,6 +43,10 @@ def load():
     opps["month"] = opps.created_date.dt.to_period("M").astype(str)
     opps["cmonth"] = opps.close_date.dt.to_period("M").astype(str)
     return opps, ev, sess, usage, inv, okrs, gold
+
+
+def fmt_k(v) -> str:
+    return f"${v/1e6:.2f}M" if v >= 1e6 else f"${round(v/1000)}K"
 
 
 def ols(df: pd.DataFrame, y: str, xs: list[str], fe: list[str]):
@@ -149,7 +154,9 @@ def main() -> None:
     EXPECT = {"Outreach: first touch": {"D1", "KR2"}, "Research: account and contact": {"D1", "KR2"},
               "Research: meeting prep brief": {"D2"}, "Research: account background": {"D2", "D1", None},
               "Drafting: proposal text": {"D4"}, "Summarize: deal notes": {None, "D5"},
-              "Drafting: internal email": {None}, "Summarize: meeting notes": {None, "D2", "D5"}, "Personal productivity": {None}}
+              "Drafting: internal email": {None}, "Summarize: meeting notes": {None, "D2", "D5"}, "Personal productivity": {None},
+              "Analysis: pipeline and cycle": {None, "KR3", "KR1", "KR2"}, "Strategy: account and territory plans": {None, "KR1", "KR2", "D4"},
+              "Development: formulas and scripts": {None}}
     s["truth"] = s.session_id.map(gt)
     s["ok"] = [(None if pd.isna(m) else m) in EXPECT[t] for m, t in zip(s.match, s.truth)]
     agree = {p: round(float(g_.ok.mean()), 3) for p, g_ in s.groupby("truth")}
@@ -167,6 +174,28 @@ def main() -> None:
                   "matrix": sim_matrix, "examples": examples, "agreement": agree,
                   "overall_agreement": round(float(s.ok.mean()), 3), "threshold": 0.08}
     chat = s[s.investment_id == "inv_chatgpt_ent"]
+
+    # ---- 2 Classify: what is the AI used for, and is it direct or indirect activity
+    cat, _ = classify(s.prompt.tolist())
+    s["category"] = cat
+    s["mode"] = np.where(s.identity.ne("sso_user"), "direct",
+                         np.where(s.writes_record, "indirect_traced", "indirect_untraced"))
+    cats = [c["id"] for c in CATEGORIES]
+    gtc = pd.read_csv(OUT / "_ground_truth_session_purpose.csv").set_index("session_id").category
+    by_inv = []
+    for i in inv.investment_id:
+        x = s[s.investment_id == i]
+        by_inv.append({"id": i, "n": int(len(x)), "mode": x["mode"].mode().iloc[0],
+                       "shares": {c: round(float((x.category == c).mean()), 3) for c in cats}})
+    classify_out = {
+        "categories": cats, "by_investment": by_inv,
+        "by_mode": {m: {c: int(((s["mode"] == m) & (s.category == c)).sum()) for c in cats}
+                    for m in ("direct", "indirect_traced", "indirect_untraced")},
+        "tokens": {c: int(s[s.category == c].tokens.sum()) for c in cats},
+        "aimed": {c: round(float(s[s.category == c].aligned.mean()), 3) for c in cats},
+        "agreement": round(float((s.category == s.session_id.map(gtc)).mean()), 3),
+        "examples": {c: s[s.category == c].prompt.iloc[0] for c in cats if (s.category == c).any()},
+    }
 
     # ---- 5 Momentum (monthly, 2024)
     s["m"] = pd.to_datetime(s.ts).dt.month
@@ -291,7 +320,74 @@ def main() -> None:
          "method": "Momentum and purpose only; no record trace to compare", "confidence": "Low",
          "decision": "Right-size seats at renewal", "avoided": int(54000 * seat_cut)},
     ]
-    out = {"discover": discover, "map": mapping, "drivers": drivers, "trace": trace, "similarity": similarity, "momentum": mom,
+    # ---- 9 Open-weights readiness (the customer's): which workloads could move to an open model
+    proven = {"inv_ai_sdr": f"{prove['sdr']['cycle']} days (rollout comparison)",
+              "inv_meeting_prep": f"{prove['prep']['adjusted']} days (record level)"}
+    cost = inv.set_index("investment_id").annual_cost_usd
+    REASONING = {"Analysis", "Strategy"}
+    workloads = []
+    for (i, c), x in s.groupby(["investment_id", "category"]):
+        if len(x) < 20:
+            continue
+        n_inv = int((s.investment_id == i).sum())
+        spend = float(cost[i]) * len(x) / n_inv
+        if c in REASONING:
+            verdict, why = "Keep on frontier model", "Open-ended reasoning; low volume"
+        elif i in proven:
+            verdict, why = "Ready to pilot", f"Routine, repeatable; proven effect {proven[i]} to re-test a swap against"
+        elif i.startswith("inv_dealsum"):
+            verdict, why = "Consolidate, then move", "Routine; no effect to lose, one build instead of two"
+        else:
+            verdict, why = "Not ready", "Routine, but no record outcome to check a swap against"
+        workloads.append({"id": i, "category": c, "sessions": int(len(x)), "tokens": int(x.tokens.sum()),
+                          "mode": x["mode"].iloc[0], "spend": round(spend), "verdict": verdict, "why": why})
+    order = {"Ready to pilot": 0, "Consolidate, then move": 1, "Not ready": 2, "Keep on frontier model": 3}
+    workloads.sort(key=lambda w: (order[w["verdict"]], -w["spend"]))
+    # after consolidation only one deal-summary build remains, so the retired one is not in scope
+    in_scope = sum(w["spend"] for w in workloads if w["verdict"] in ("Ready to pilot", "Consolidate, then move")
+                   and w["id"] != "inv_dealsum_emea")
+    CUT = (0.4, 0.7)  # assumption: run-cost cut for a comparable open model hosted by the customer
+    traced = s["mode"].isin(["direct", "indirect_traced"])
+    open_weights = {
+        "workloads": workloads, "in_scope": round(in_scope), "cut": CUT,
+        "potential": [round(in_scope * CUT[0]), round(in_scope * CUT[1])],
+        "readiness": [
+            {"item": "Workloads classified by purpose", "status": "done", "detail": f"{len(s):,} sessions in {len(cats)} categories"},
+            {"item": "Outcome baseline to re-test a swap", "status": "partial",
+             "detail": f"{fmt_k(sum(cost[i] for i in proven))} of {fmt_k(cost.sum())} spend has a proven effect"},
+            {"item": "Record-linked sessions (evaluation set)", "status": "partial",
+             "detail": f"{int(traced.sum()):,} sessions ({round(100*traced.mean())}%) are tied to CRM records"},
+            {"item": "Hosting and data policy for an open model", "status": "open", "detail": "Customer decision; not measured here"},
+        ],
+    }
+
+    # ---- 0 Processed: what this run read
+    def rows_xlsx(f):
+        return int(len(pd.read_excel(SRC / f)))
+    processed = [
+        {"source": "CRM closed-won deals, 2023–2024", "kind": "real", "rows": int(len(opps)), "unit": "deals"},
+        {"source": "Sales targets by owner", "kind": "real", "rows": rows_xlsx("personal_targets.xlsx"), "unit": "rows"},
+        {"source": "KPI definitions and CRM field map", "kind": "real",
+         "rows": len(json.loads((SRC / "kpi_definitions.json").read_text())["targets"]), "unit": "KPIs"},
+        {"source": "Team OKRs 2024", "kind": "syn", "rows": sum(len(o["key_results"]) for o in okrs), "unit": "key results"},
+        {"source": "CRM change history", "kind": "syn", "rows": int(len(ev)), "unit": "events"},
+        {"source": "AI telemetry (session text)", "kind": "syn", "rows": int(len(sess)), "unit": "sessions"},
+        {"source": "AI admin and usage reports", "kind": "syn", "rows": int(len(usage)), "unit": "rows"},
+        {"source": "AI investment register", "kind": "syn", "rows": int(len(inv)), "unit": "investments"},
+    ]
+    pipeline = [
+        ["Discover", f"{len(inv)} AI investments", f"{int((inv.ai_type == 'acting').sum())} direct, {int((inv.ai_type != 'acting').sum())} indirect"],
+        ["Classify", f"{len(s):,} sessions", f"{len(cats)} work categories"],
+        ["Map", f"{sum(len(o['key_results']) for o in okrs)} key results", f"{sum(1 for g_ in gold if g_['record'] is None)} blind spots"],
+        ["Learn", f"{int(len(new)):,} new deals", f"{sum(1 for x in drivers if abs(x['days']) > x['ci'])} drivers that move the cycle"],
+        ["Trace", f"{len(targets)} drivers and KRs", f"{sum(1 for t in trace if t['level'].startswith('1'))} closed triangles"],
+        ["Momentum", "12 months", "1 tool fading"],
+        ["Prove", "3 comparisons", "2 effects, 1 null"],
+        ["Find", "5 teams", "1 AI opportunity"],
+        ["Conclude", f"{fmt_k(inv.annual_cost_usd.sum())} AI spend", f"{len(report)} decisions"],
+    ]
+    out = {"processed": processed, "pipeline": pipeline, "classify": classify_out, "open_weights": open_weights,
+           "discover": discover, "map": mapping, "drivers": drivers, "trace": trace, "similarity": similarity, "momentum": mom,
            "driver_trend": driver_trend, "prove": prove, "find": find, "report": report,
            "totals": {"ai_spend": int(inv.annual_cost_usd.sum()), "avoided": sum(r["avoided"] for r in report)}}
     DEMO.mkdir(parents=True, exist_ok=True)

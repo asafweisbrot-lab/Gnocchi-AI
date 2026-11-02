@@ -1,4 +1,396 @@
 {
+ "processed": [
+  {
+   "source": "CRM closed-won deals, 2023\u20132024",
+   "kind": "real",
+   "rows": 1336,
+   "unit": "deals"
+  },
+  {
+   "source": "Sales targets by owner",
+   "kind": "real",
+   "rows": 139,
+   "unit": "rows"
+  },
+  {
+   "source": "KPI definitions and CRM field map",
+   "kind": "real",
+   "rows": 4,
+   "unit": "KPIs"
+  },
+  {
+   "source": "Team OKRs 2024",
+   "kind": "syn",
+   "rows": 25,
+   "unit": "key results"
+  },
+  {
+   "source": "CRM change history",
+   "kind": "syn",
+   "rows": 12148,
+   "unit": "events"
+  },
+  {
+   "source": "AI telemetry (session text)",
+   "kind": "syn",
+   "rows": 8595,
+   "unit": "sessions"
+  },
+  {
+   "source": "AI admin and usage reports",
+   "kind": "syn",
+   "rows": 168,
+   "unit": "rows"
+  },
+  {
+   "source": "AI investment register",
+   "kind": "syn",
+   "rows": 5,
+   "unit": "investments"
+  }
+ ],
+ "pipeline": [
+  [
+   "Discover",
+   "5 AI investments",
+   "3 direct, 2 indirect"
+  ],
+  [
+   "Classify",
+   "8,595 sessions",
+   "7 work categories"
+  ],
+  [
+   "Map",
+   "25 key results",
+   "5 blind spots"
+  ],
+  [
+   "Learn",
+   "504 new deals",
+   "3 drivers that move the cycle"
+  ],
+  [
+   "Trace",
+   "10 drivers and KRs",
+   "2 closed triangles"
+  ],
+  [
+   "Momentum",
+   "12 months",
+   "1 tool fading"
+  ],
+  [
+   "Prove",
+   "3 comparisons",
+   "2 effects, 1 null"
+  ],
+  [
+   "Find",
+   "5 teams",
+   "1 AI opportunity"
+  ],
+  [
+   "Conclude",
+   "$228K AI spend",
+   "4 decisions"
+  ]
+ ],
+ "classify": {
+  "categories": [
+   "Research",
+   "Writing",
+   "Analysis",
+   "Strategy",
+   "Development",
+   "Summarization",
+   "Admin"
+  ],
+  "by_investment": [
+   {
+    "id": "inv_ai_sdr",
+    "n": 273,
+    "mode": "direct",
+    "shares": {
+     "Research": 0.396,
+     "Writing": 0.604,
+     "Analysis": 0.0,
+     "Strategy": 0.0,
+     "Development": 0.0,
+     "Summarization": 0.0,
+     "Admin": 0.0
+    }
+   },
+   {
+    "id": "inv_meeting_prep",
+    "n": 99,
+    "mode": "indirect_traced",
+    "shares": {
+     "Research": 1.0,
+     "Writing": 0.0,
+     "Analysis": 0.0,
+     "Strategy": 0.0,
+     "Development": 0.0,
+     "Summarization": 0.0,
+     "Admin": 0.0
+    }
+   },
+   {
+    "id": "inv_chatgpt_ent",
+    "n": 7977,
+    "mode": "indirect_untraced",
+    "shares": {
+     "Research": 0.135,
+     "Writing": 0.333,
+     "Analysis": 0.099,
+     "Strategy": 0.082,
+     "Development": 0.071,
+     "Summarization": 0.118,
+     "Admin": 0.161
+    }
+   },
+   {
+    "id": "inv_dealsum_emea",
+    "n": 147,
+    "mode": "direct",
+    "shares": {
+     "Research": 0.0,
+     "Writing": 0.0,
+     "Analysis": 0.0,
+     "Strategy": 0.0,
+     "Development": 0.0,
+     "Summarization": 1.0,
+     "Admin": 0.0
+    }
+   },
+   {
+    "id": "inv_dealsum_nae",
+    "n": 99,
+    "mode": "direct",
+    "shares": {
+     "Research": 0.0,
+     "Writing": 0.0,
+     "Analysis": 0.0,
+     "Strategy": 0.0,
+     "Development": 0.0,
+     "Summarization": 1.0,
+     "Admin": 0.0
+    }
+   }
+  ],
+  "by_mode": {
+   "direct": {
+    "Research": 108,
+    "Writing": 165,
+    "Analysis": 0,
+    "Strategy": 0,
+    "Development": 0,
+    "Summarization": 246,
+    "Admin": 0
+   },
+   "indirect_traced": {
+    "Research": 99,
+    "Writing": 0,
+    "Analysis": 0,
+    "Strategy": 0,
+    "Development": 0,
+    "Summarization": 0,
+    "Admin": 0
+   },
+   "indirect_untraced": {
+    "Research": 1080,
+    "Writing": 2658,
+    "Analysis": 793,
+    "Strategy": 651,
+    "Development": 569,
+    "Summarization": 941,
+    "Admin": 1285
+   }
+  },
+  "tokens": {
+   "Research": 1870947,
+   "Writing": 2689685,
+   "Analysis": 718623,
+   "Strategy": 588461,
+   "Development": 515770,
+   "Summarization": 1380659,
+   "Admin": 1154544
+  },
+  "aimed": {
+   "Research": 0.595,
+   "Writing": 0.242,
+   "Analysis": 0.322,
+   "Strategy": 0.352,
+   "Development": 0.0,
+   "Summarization": 0.0,
+   "Admin": 0.0
+  },
+  "agreement": 1.0,
+  "examples": {
+   "Research": "Give me background on Coastal Ports Authority's industry and recent news before the meeting.",
+   "Writing": "Polish my message to finance about an expense report correction.",
+   "Analysis": "Which segments have the longest sales cycle in this export of closed deals, and what correlates with it?",
+   "Strategy": "Outline a territory strategy for hitting our new-logo bookings target with fewer reps.",
+   "Development": "Write a Python script to dedupe the lead export CSV and normalize phone numbers.",
+   "Summarization": "Turn the notes from our weekly sales sync into a short recap.",
+   "Admin": "Convert this table into bullet points."
+  }
+ },
+ "open_weights": {
+  "workloads": [
+   {
+    "id": "inv_ai_sdr",
+    "category": "Writing",
+    "sessions": 165,
+    "tokens": 300549,
+    "mode": "direct",
+    "spend": 58022,
+    "verdict": "Ready to pilot",
+    "why": "Routine, repeatable; proven effect -9.4 days (rollout comparison) to re-test a swap against"
+   },
+   {
+    "id": "inv_meeting_prep",
+    "category": "Research",
+    "sessions": 99,
+    "tokens": 608005,
+    "mode": "indirect_traced",
+    "spend": 38000,
+    "verdict": "Ready to pilot",
+    "why": "Routine, repeatable; proven effect -3.6 days (record level) to re-test a swap against"
+   },
+   {
+    "id": "inv_ai_sdr",
+    "category": "Research",
+    "sessions": 108,
+    "tokens": 289535,
+    "mode": "direct",
+    "spend": 37978,
+    "verdict": "Ready to pilot",
+    "why": "Routine, repeatable; proven effect -9.4 days (rollout comparison) to re-test a swap against"
+   },
+   {
+    "id": "inv_dealsum_nae",
+    "category": "Summarization",
+    "sessions": 99,
+    "tokens": 216242,
+    "mode": "direct",
+    "spend": 22000,
+    "verdict": "Consolidate, then move",
+    "why": "Routine; no effect to lose, one build instead of two"
+   },
+   {
+    "id": "inv_dealsum_emea",
+    "category": "Summarization",
+    "sessions": 147,
+    "tokens": 324240,
+    "mode": "direct",
+    "spend": 18000,
+    "verdict": "Consolidate, then move",
+    "why": "Routine; no effect to lose, one build instead of two"
+   },
+   {
+    "id": "inv_chatgpt_ent",
+    "category": "Writing",
+    "sessions": 2658,
+    "tokens": 2389136,
+    "mode": "indirect_untraced",
+    "spend": 17993,
+    "verdict": "Not ready",
+    "why": "Routine, but no record outcome to check a swap against"
+   },
+   {
+    "id": "inv_chatgpt_ent",
+    "category": "Admin",
+    "sessions": 1285,
+    "tokens": 1154544,
+    "mode": "indirect_untraced",
+    "spend": 8699,
+    "verdict": "Not ready",
+    "why": "Routine, but no record outcome to check a swap against"
+   },
+   {
+    "id": "inv_chatgpt_ent",
+    "category": "Research",
+    "sessions": 1080,
+    "tokens": 973407,
+    "mode": "indirect_untraced",
+    "spend": 7311,
+    "verdict": "Not ready",
+    "why": "Routine, but no record outcome to check a swap against"
+   },
+   {
+    "id": "inv_chatgpt_ent",
+    "category": "Summarization",
+    "sessions": 941,
+    "tokens": 840177,
+    "mode": "indirect_untraced",
+    "spend": 6370,
+    "verdict": "Not ready",
+    "why": "Routine, but no record outcome to check a swap against"
+   },
+   {
+    "id": "inv_chatgpt_ent",
+    "category": "Development",
+    "sessions": 569,
+    "tokens": 515770,
+    "mode": "indirect_untraced",
+    "spend": 3852,
+    "verdict": "Not ready",
+    "why": "Routine, but no record outcome to check a swap against"
+   },
+   {
+    "id": "inv_chatgpt_ent",
+    "category": "Analysis",
+    "sessions": 793,
+    "tokens": 718623,
+    "mode": "indirect_untraced",
+    "spend": 5368,
+    "verdict": "Keep on frontier model",
+    "why": "Open-ended reasoning; low volume"
+   },
+   {
+    "id": "inv_chatgpt_ent",
+    "category": "Strategy",
+    "sessions": 651,
+    "tokens": 588461,
+    "mode": "indirect_untraced",
+    "spend": 4407,
+    "verdict": "Keep on frontier model",
+    "why": "Open-ended reasoning; low volume"
+   }
+  ],
+  "in_scope": 156000,
+  "cut": [
+   0.4,
+   0.7
+  ],
+  "potential": [
+   62400,
+   109200
+  ],
+  "readiness": [
+   {
+    "item": "Workloads classified by purpose",
+    "status": "done",
+    "detail": "8,595 sessions in 7 categories"
+   },
+   {
+    "item": "Outcome baseline to re-test a swap",
+    "status": "partial",
+    "detail": "$134K of $228K spend has a proven effect"
+   },
+   {
+    "item": "Record-linked sessions (evaluation set)",
+    "status": "partial",
+    "detail": "618 sessions (7%) are tied to CRM records"
+   },
+   {
+    "item": "Hosting and data policy for an open model",
+    "status": "open",
+    "detail": "Customer decision; not measured here"
+   }
+  ]
+ },
  "discover": {
   "deals": {
    "2023": 708,
@@ -228,7 +620,7 @@
     "record_ids": "",
     "writes": "none",
     "tokens": 1303,
-    "prompt": "Summarize these internal team meeting notes into action items."
+    "prompt": "Convert this table into bullet points."
    },
    {
     "session_id": "S-000405",
@@ -332,9 +724,9 @@
   },
   {
    "id": "inv_chatgpt_ent",
-   "level": "Unaligned",
-   "why": "No record trace; only 17% of sessions match a driver or key result",
-   "aligned": 0.173
+   "level": "3 \u00b7 OKR only / unaligned",
+   "why": "No record trace; 20% of sessions match a driver or key result, the rest serve no stated goal",
+   "aligned": 0.203
   },
   {
    "id": "inv_dealsum_emea",
@@ -442,16 +834,16 @@
     "n": 7977,
     "shares": {
      "D1": 0.0,
-     "D2": 0.091,
+     "D2": 0.07,
      "D3": 0.0,
-     "D4": 0.082,
+     "D4": 0.073,
      "D5": 0.0,
      "KR1": 0.0,
-     "KR2": 0.0,
-     "KR3": 0.0,
+     "KR2": 0.029,
+     "KR3": 0.032,
      "KR4": 0.0,
      "KR5": 0.0,
-     "none": 0.827
+     "none": 0.797
     }
    },
    {
@@ -514,7 +906,7 @@
    },
    {
     "id": "inv_meeting_prep",
-    "prompt": "Build a one-page prep brief for my customer meeting with the facilities manager at Summit Retail, including what they care about.",
+    "prompt": "Before the meeting with Metro Water, summarize their account history and the questions to ask.",
     "writes": "Doc linked to opportunity",
     "top": [
      {
@@ -523,20 +915,20 @@
       "score": 0.22
      },
      {
-      "target": "Customer meetings",
+      "target": "First-touch activity (first response)",
       "kind": "driver",
-      "score": 0.1
+      "score": 0.03
      },
      {
-      "target": "Raise customer satisfaction with onboarding",
-      "kind": "key result",
-      "score": 0.06
+      "target": "Customer meetings",
+      "kind": "driver",
+      "score": 0.02
      }
     ]
    },
    {
     "id": "inv_chatgpt_ent",
-    "prompt": "Give me background on Granite Bank's industry and recent news before the meeting.",
+    "prompt": "Give me background on Coastal Ports Authority's industry and recent news before the meeting.",
     "writes": "none",
     "top": [
      {
@@ -564,7 +956,7 @@
      {
       "target": "Book $12.2M in total bookings in 2024",
       "kind": "key result",
-      "score": 0.03
+      "score": 0.02
      },
      {
       "target": "First-touch activity (first response)",
@@ -586,7 +978,7 @@
      {
       "target": "Book $12.2M in total bookings in 2024",
       "kind": "key result",
-      "score": 0.03
+      "score": 0.02
      },
      {
       "target": "First-touch activity (first response)",
@@ -602,6 +994,8 @@
    }
   ],
   "agreement": {
+   "Analysis: pipeline and cycle": 1.0,
+   "Development: formulas and scripts": 1.0,
    "Drafting: internal email": 1.0,
    "Drafting: proposal text": 1.0,
    "Outreach: first touch": 0.636,
@@ -609,6 +1003,7 @@
    "Research: account and contact": 1.0,
    "Research: account background": 1.0,
    "Research: meeting prep brief": 1.0,
+   "Strategy: account and territory plans": 1.0,
    "Summarize: deal notes": 1.0,
    "Summarize: meeting notes": 1.0
   },
@@ -794,63 +1189,63 @@
     "sessions": 1061,
     "active_share": 1.0,
     "records": 0,
-    "aimed": 0.16
+    "aimed": 0.23
    },
    {
     "m": 2,
     "sessions": 991,
     "active_share": 1.0,
     "records": 0,
-    "aimed": 0.18
+    "aimed": 0.21
    },
    {
     "m": 3,
     "sessions": 917,
     "active_share": 1.0,
     "records": 0,
-    "aimed": 0.17
+    "aimed": 0.18
    },
    {
     "m": 4,
     "sessions": 846,
     "active_share": 0.94,
     "records": 0,
-    "aimed": 0.2
+    "aimed": 0.19
    },
    {
     "m": 5,
     "sessions": 775,
     "active_share": 0.87,
     "records": 0,
-    "aimed": 0.15
+    "aimed": 0.21
    },
    {
     "m": 6,
     "sessions": 700,
     "active_share": 0.77,
     "records": 0,
-    "aimed": 0.2
+    "aimed": 0.19
    },
    {
     "m": 7,
     "sessions": 629,
     "active_share": 0.72,
     "records": 0,
-    "aimed": 0.18
+    "aimed": 0.21
    },
    {
     "m": 8,
     "sessions": 555,
     "active_share": 0.66,
     "records": 0,
-    "aimed": 0.17
+    "aimed": 0.2
    },
    {
     "m": 9,
     "sessions": 485,
     "active_share": 0.6,
     "records": 0,
-    "aimed": 0.13
+    "aimed": 0.19
    },
    {
     "m": 10,
@@ -864,14 +1259,14 @@
     "sessions": 340,
     "active_share": 0.43,
     "records": 0,
-    "aimed": 0.19
+    "aimed": 0.21
    },
    {
     "m": 12,
     "sessions": 266,
     "active_share": 0.34,
     "records": 0,
-    "aimed": 0.16
+    "aimed": 0.2
    }
   ],
   "inv_dealsum_emea": [
@@ -1082,10 +1477,10 @@
    {
     "team": "EMEA",
     "sessions": 2457,
-    "aimed": 0.243,
-    "on_driver": 0.169,
+    "aimed": 0.259,
+    "on_driver": 0.146,
     "spend": 129312,
-    "aimed_spend": 84892,
+    "aimed_spend": 85150,
     "tools": [
      {
       "id": "inv_ai_sdr",
@@ -1104,8 +1499,8 @@
      {
       "id": "inv_chatgpt_ent",
       "n": 2038,
-      "aimed": 0.181,
-      "top": "D2",
+      "aimed": 0.2,
+      "top": "D4",
       "spend": 13796
      },
      {
@@ -1134,10 +1529,10 @@
    {
     "team": "NA East",
     "sessions": 2232,
-    "aimed": 0.186,
-    "on_driver": 0.114,
+    "aimed": 0.225,
+    "on_driver": 0.106,
     "spend": 70362,
-    "aimed_spend": 30869,
+    "aimed_spend": 31464,
     "tools": [
      {
       "id": "inv_ai_sdr",
@@ -1156,8 +1551,8 @@
      {
       "id": "inv_chatgpt_ent",
       "n": 2038,
-      "aimed": 0.165,
-      "top": "D2",
+      "aimed": 0.209,
+      "top": "D4",
       "spend": 13796
      },
      {
@@ -1186,10 +1581,10 @@
    {
     "team": "NA West",
     "sessions": 1700,
-    "aimed": 0.174,
-    "on_driver": 0.092,
+    "aimed": 0.206,
+    "on_driver": 0.074,
     "spend": 12262,
-    "aimed_spend": 2758,
+    "aimed_spend": 3130,
     "tools": [
      {
       "id": "inv_meeting_prep",
@@ -1201,8 +1596,8 @@
      {
       "id": "inv_chatgpt_ent",
       "n": 1698,
-      "aimed": 0.173,
-      "top": "D2",
+      "aimed": 0.206,
+      "top": "D4",
       "spend": 11495
      }
     ],
@@ -1224,10 +1619,10 @@
    {
     "team": "LATAM",
     "sessions": 1529,
-    "aimed": 0.181,
-    "on_driver": 0.097,
+    "aimed": 0.193,
+    "on_driver": 0.063,
     "spend": 11105,
-    "aimed_spend": 2623,
+    "aimed_spend": 2751,
     "tools": [
      {
       "id": "inv_meeting_prep",
@@ -1239,7 +1634,7 @@
      {
       "id": "inv_chatgpt_ent",
       "n": 1527,
-      "aimed": 0.179,
+      "aimed": 0.192,
       "top": "D2",
       "spend": 10337
      }
@@ -1262,10 +1657,10 @@
    {
     "team": "APAC",
     "sessions": 677,
-    "aimed": 0.164,
-    "on_driver": 0.092,
+    "aimed": 0.22,
+    "on_driver": 0.081,
     "spend": 4960,
-    "aimed_spend": 1128,
+    "aimed_spend": 1386,
     "tools": [
      {
       "id": "inv_meeting_prep",
@@ -1277,7 +1672,7 @@
      {
       "id": "inv_chatgpt_ent",
       "n": 676,
-      "aimed": 0.163,
+      "aimed": 0.219,
       "top": "D2",
       "spend": 4576
      }
@@ -1467,8 +1862,8 @@
    "id": "inv_chatgpt_ent",
    "name": "ChatGPT Enterprise (sales seats)",
    "cost": 54000,
-   "level": "Unaligned",
-   "impact": "Active seats fell from 100% to 34%; 83% of sessions serve no stated goal",
+   "level": "OKR only / unaligned",
+   "impact": "Active seats fell from 100% to 34%; 80% of sessions serve no stated goal",
    "method": "Momentum and purpose only; no record trace to compare",
    "confidence": "Low",
    "decision": "Right-size seats at renewal",
