@@ -1,0 +1,6 @@
+investment_id,name,kind,ai_type,identity,annual_cost_usd,teams
+inv_ai_sdr,AI SDR agent,bought,acting,svc_ai_sdr,96000,EMEA;NA East
+inv_meeting_prep,Meeting-prep assistant,bought,assisting,sso_user,38000,EMEA;NA East;NA West;LATAM;APAC
+inv_chatgpt_ent,ChatGPT Enterprise (sales seats),bought,standalone,sso_user,54000,EMEA;NA East;NA West;LATAM;APAC
+inv_dealsum_emea,Deal-summary bot (EMEA build),built,acting,svc_dealsum_emea,18000,EMEA
+inv_dealsum_nae,Deal-summary bot (NA East build),built,acting,svc_dealsum_nae,22000,NA East

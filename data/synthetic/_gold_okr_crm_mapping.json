@@ -1,0 +1,157 @@
+[
+  {
+    "kr_id": "APAC-KR1",
+    "record": "Opportunity",
+    "fields": "sum(amount (converted)) where sales stage = Closed Won",
+    "time_slice": "year"
+  },
+  {
+    "kr_id": "APAC-KR2",
+    "record": "Opportunity",
+    "fields": "sum(amount (converted)) where type = New and Closed Won",
+    "time_slice": "quarter"
+  },
+  {
+    "kr_id": "APAC-KR3",
+    "record": "Opportunity + stage history",
+    "fields": "median(close date - created date) where type = New",
+    "time_slice": "month"
+  },
+  {
+    "kr_id": "APAC-KR4",
+    "record": "Opportunity",
+    "fields": "count where type = Renewal and Closed Won",
+    "time_slice": "quarter"
+  },
+  {
+    "kr_id": "APAC-KR5",
+    "record": null,
+    "fields": null,
+    "time_slice": null,
+    "note": "blind spot: no CRM record holds onboarding satisfaction"
+  },
+  {
+    "kr_id": "EMEA-KR1",
+    "record": "Opportunity",
+    "fields": "sum(amount (converted)) where sales stage = Closed Won",
+    "time_slice": "year"
+  },
+  {
+    "kr_id": "EMEA-KR2",
+    "record": "Opportunity",
+    "fields": "sum(amount (converted)) where type = New and Closed Won",
+    "time_slice": "quarter"
+  },
+  {
+    "kr_id": "EMEA-KR3",
+    "record": "Opportunity + stage history",
+    "fields": "median(close date - created date) where type = New",
+    "time_slice": "month"
+  },
+  {
+    "kr_id": "EMEA-KR4",
+    "record": "Opportunity",
+    "fields": "count where type = Renewal and Closed Won",
+    "time_slice": "quarter"
+  },
+  {
+    "kr_id": "EMEA-KR5",
+    "record": null,
+    "fields": null,
+    "time_slice": null,
+    "note": "blind spot: no CRM record holds onboarding satisfaction"
+  },
+  {
+    "kr_id": "LATAM-KR1",
+    "record": "Opportunity",
+    "fields": "sum(amount (converted)) where sales stage = Closed Won",
+    "time_slice": "year"
+  },
+  {
+    "kr_id": "LATAM-KR2",
+    "record": "Opportunity",
+    "fields": "sum(amount (converted)) where type = New and Closed Won",
+    "time_slice": "quarter"
+  },
+  {
+    "kr_id": "LATAM-KR3",
+    "record": "Opportunity + stage history",
+    "fields": "median(close date - created date) where type = New",
+    "time_slice": "month"
+  },
+  {
+    "kr_id": "LATAM-KR4",
+    "record": "Opportunity",
+    "fields": "count where type = Renewal and Closed Won",
+    "time_slice": "quarter"
+  },
+  {
+    "kr_id": "LATAM-KR5",
+    "record": null,
+    "fields": null,
+    "time_slice": null,
+    "note": "blind spot: no CRM record holds onboarding satisfaction"
+  },
+  {
+    "kr_id": "NA East-KR1",
+    "record": "Opportunity",
+    "fields": "sum(amount (converted)) where sales stage = Closed Won",
+    "time_slice": "year"
+  },
+  {
+    "kr_id": "NA East-KR2",
+    "record": "Opportunity",
+    "fields": "sum(amount (converted)) where type = New and Closed Won",
+    "time_slice": "quarter"
+  },
+  {
+    "kr_id": "NA East-KR3",
+    "record": "Opportunity + stage history",
+    "fields": "median(close date - created date) where type = New",
+    "time_slice": "month"
+  },
+  {
+    "kr_id": "NA East-KR4",
+    "record": "Opportunity",
+    "fields": "count where type = Renewal and Closed Won",
+    "time_slice": "quarter"
+  },
+  {
+    "kr_id": "NA East-KR5",
+    "record": null,
+    "fields": null,
+    "time_slice": null,
+    "note": "blind spot: no CRM record holds onboarding satisfaction"
+  },
+  {
+    "kr_id": "NA West-KR1",
+    "record": "Opportunity",
+    "fields": "sum(amount (converted)) where sales stage = Closed Won",
+    "time_slice": "year"
+  },
+  {
+    "kr_id": "NA West-KR2",
+    "record": "Opportunity",
+    "fields": "sum(amount (converted)) where type = New and Closed Won",
+    "time_slice": "quarter"
+  },
+  {
+    "kr_id": "NA West-KR3",
+    "record": "Opportunity + stage history",
+    "fields": "median(close date - created date) where type = New",
+    "time_slice": "month"
+  },
+  {
+    "kr_id": "NA West-KR4",
+    "record": "Opportunity",
+    "fields": "count where type = Renewal and Closed Won",
+    "time_slice": "quarter"
+  },
+  {
+    "kr_id": "NA West-KR5",
+    "record": null,
+    "fields": null,
+    "time_slice": null,
+    "note": "blind spot: no CRM record holds onboarding satisfaction"
+  }
+]

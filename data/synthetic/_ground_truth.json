@@ -1,0 +1,48 @@
+{
+  "crm_history": {
+    "sdr_start": {
+      "EMEA": "2024-04-01",
+      "NA East": "2024-07-01"
+    },
+    "prep_start": "2024-07-01",
+    "prep_rate": {
+      "EMEA": 0.7,
+      "NA East": 0.55,
+      "NA West": 0.3,
+      "LATAM": 0.2,
+      "APAC": 0.1
+    },
+    "se_rate": {
+      "EMEA": 0.55,
+      "NA East": 0.5,
+      "NA West": 0.45,
+      "LATAM": 0.2,
+      "APAC": 0.15
+    },
+    "effects": {
+      "sdr_cycle_days": -8.0,
+      "prep_cycle_days": -3.0,
+      "se_cycle_days": -10.0,
+      "resp_hours_before": 6.0,
+      "resp_hours_with_sdr": 1.0
+    }
+  },
+  "ai_sources": {
+    "overlap": [
+      "inv_dealsum_emea",
+      "inv_dealsum_nae"
+    ],
+    "fading": "inv_chatgpt_ent (usage declines ~7% a month; mostly unaligned purposes)",
+    "acting": [
+      "inv_ai_sdr",
+      "inv_dealsum_emea",
+      "inv_dealsum_nae"
+    ],
+    "assisting": [
+      "inv_meeting_prep"
+    ],
+    "standalone": [
+      "inv_chatgpt_ent"
+    ]
+  }
+}

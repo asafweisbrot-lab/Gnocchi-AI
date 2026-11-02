@@ -1,0 +1,187 @@
+[
+  {
+    "team": "APAC",
+    "year": 2024,
+    "objective": "Grow the business with faster new-logo wins and strong renewals",
+    "key_results": [
+      {
+        "kr_id": "APAC-KR1",
+        "text": "Book $2.3M in total bookings in 2024",
+        "target": 2340000.0,
+        "unit": "USD"
+      },
+      {
+        "kr_id": "APAC-KR2",
+        "text": "Grow new-logo bookings 25% to $1.42M",
+        "target": 1420000.0,
+        "unit": "USD"
+      },
+      {
+        "kr_id": "APAC-KR3",
+        "text": "Cut the new-business sales cycle to under 60 days, median",
+        "target": 60,
+        "unit": "days"
+      },
+      {
+        "kr_id": "APAC-KR4",
+        "text": "Renew at least 24 contracts",
+        "target": 24,
+        "unit": "deals"
+      },
+      {
+        "kr_id": "APAC-KR5",
+        "text": "Raise customer satisfaction with onboarding",
+        "target": null,
+        "unit": "score"
+      }
+    ]
+  },
+  {
+    "team": "EMEA",
+    "year": 2024,
+    "objective": "Grow the business with faster new-logo wins and strong renewals",
+    "key_results": [
+      {
+        "kr_id": "EMEA-KR1",
+        "text": "Book $12.2M in total bookings in 2024",
+        "target": 12180000.0,
+        "unit": "USD"
+      },
+      {
+        "kr_id": "EMEA-KR2",
+        "text": "Grow new-logo bookings 25% to $10.31M",
+        "target": 10310000.0,
+        "unit": "USD"
+      },
+      {
+        "kr_id": "EMEA-KR3",
+        "text": "Cut the new-business sales cycle to under 60 days, median",
+        "target": 60,
+        "unit": "days"
+      },
+      {
+        "kr_id": "EMEA-KR4",
+        "text": "Renew at least 117 contracts",
+        "target": 117,
+        "unit": "deals"
+      },
+      {
+        "kr_id": "EMEA-KR5",
+        "text": "Raise customer satisfaction with onboarding",
+        "target": null,
+        "unit": "score"
+      }
+    ]
+  },
+  {
+    "team": "LATAM",
+    "year": 2024,
+    "objective": "Grow the business with faster new-logo wins and strong renewals",
+    "key_results": [
+      {
+        "kr_id": "LATAM-KR1",
+        "text": "Book $4.2M in total bookings in 2024",
+        "target": 4200000.0,
+        "unit": "USD"
+      },
+      {
+        "kr_id": "LATAM-KR2",
+        "text": "Grow new-logo bookings 25% to $0.85M",
+        "target": 850000.0,
+        "unit": "USD"
+      },
+      {
+        "kr_id": "LATAM-KR3",
+        "text": "Cut the new-business sales cycle to under 60 days, median",
+        "target": 60,
+        "unit": "days"
+      },
+      {
+        "kr_id": "LATAM-KR4",
+        "text": "Renew at least 0 contracts",
+        "target": 0,
+        "unit": "deals"
+      },
+      {
+        "kr_id": "LATAM-KR5",
+        "text": "Raise customer satisfaction with onboarding",
+        "target": null,
+        "unit": "score"
+      }
+    ]
+  },
+  {
+    "team": "NA East",
+    "year": 2024,
+    "objective": "Grow the business with faster new-logo wins and strong renewals",
+    "key_results": [
+      {
+        "kr_id": "NA East-KR1",
+        "text": "Book $15.0M in total bookings in 2024",
+        "target": 15020000.0,
+        "unit": "USD"
+      },
+      {
+        "kr_id": "NA East-KR2",
+        "text": "Grow new-logo bookings 25% to $7.91M",
+        "target": 7910000.0,
+        "unit": "USD"
+      },
+      {
+        "kr_id": "NA East-KR3",
+        "text": "Cut the new-business sales cycle to under 60 days, median",
+        "target": 60,
+        "unit": "days"
+      },
+      {
+        "kr_id": "NA East-KR4",
+        "text": "Renew at least 84 contracts",
+        "target": 84,
+        "unit": "deals"
+      },
+      {
+        "kr_id": "NA East-KR5",
+        "text": "Raise customer satisfaction with onboarding",
+        "target": null,
+        "unit": "score"
+      }
+    ]
+  },
+  {
+    "team": "NA West",
+    "year": 2024,
+    "objective": "Grow the business with faster new-logo wins and strong renewals",
+    "key_results": [
+      {
+        "kr_id": "NA West-KR1",
+        "text": "Book $4.4M in total bookings in 2024",
+        "target": 4390000.0,
+        "unit": "USD"
+      },
+      {
+        "kr_id": "NA West-KR2",
+        "text": "Grow new-logo bookings 25% to $2.33M",
+        "target": 2330000.0,
+        "unit": "USD"
+      },
+      {
+        "kr_id": "NA West-KR3",
+        "text": "Cut the new-business sales cycle to under 60 days, median",
+        "target": 60,
+        "unit": "days"
+      },
+      {
+        "kr_id": "NA West-KR4",
+        "text": "Renew at least 57 contracts",
+        "target": 57,
+        "unit": "deals"
+      },
+      {
+        "kr_id": "NA West-KR5",
+        "text": "Raise customer satisfaction with onboarding",
+        "target": null,
+        "unit": "score"
+      }
+    ]
+  }
+]

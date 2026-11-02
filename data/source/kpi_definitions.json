@@ -1,0 +1,33 @@
+{
+  "_note": "KPI/feature targets for routing AI-agent sessions. Derived from the Enterprise Feature Discovery Catalog (new-business / expansion / renewal / deal-size). 'channel' crosswalks each KPI to the signature channel it is scored against. 'match_target' is the catalogue-style yes/no judge question. 'keywords' back the lightweight lexical stand-in encoder (swappable for BGE).",
+  "targets": [
+    {
+      "kpi_id": "new_business",
+      "label": "New-business acquisition",
+      "channel": "mix_new",
+      "match_target": "Does this AI interaction advance net-new logo acquisition and top-of-funnel pipeline creation?",
+      "keywords": "outbound prospecting cold outreach net new logo icp ideal customer profile lead generation pipeline discovery prospect account sequence email cadence sdr top of funnel cold call new business hunting sourcing"
+    },
+    {
+      "kpi_id": "expansion",
+      "label": "Expansion / upsell",
+      "channel": "mix_expansion",
+      "match_target": "Does this AI interaction advance expansion or upsell within existing accounts?",
+      "keywords": "upsell cross sell expansion existing account grow upgrade add on seats installed base land and expand account growth cross-sell"
+    },
+    {
+      "kpi_id": "renewal",
+      "label": "Renewal / retention",
+      "channel": "mix_renewal",
+      "match_target": "Does this AI interaction advance renewal or retention of existing customers?",
+      "keywords": "renewal retention renew contract churn save existing customer at risk retain re-sign"
+    },
+    {
+      "kpi_id": "deal_size",
+      "label": "Deal size / negotiation",
+      "channel": "avg_deal",
+      "match_target": "Does this AI interaction help increase deal size or win larger deals?",
+      "keywords": "pricing negotiation discount enterprise larger deal value proposition executive buyer procurement contract value"
+    }
+  ]
+}

@@ -1,0 +1,231 @@
+{
+  "schema_version": "2.0",
+  "generated_by": "strategy_parser.py (static — no LLM)",
+  "source_files": {
+    "strategy_plan": "strategy_plan.xlsx",
+    "sf_schema": "sf_schema.xlsx"
+  },
+  "aggregation_context": {
+    "subject": "Opportunity Owner",
+    "index_field": "opportunity owner",
+    "logic": "All metrics summed and evaluated per unique owner per period.",
+    "period": "month"
+  },
+  "sf_field_map": {
+    "owner": "opportunity owner",
+    "product_type": "type",
+    "amount": "amount (converted)",
+    "sales_stage": "sales stage",
+    "close_date": "close date",
+    "quarter": "quarter",
+    "month": "month",
+    "year": "year",
+    "region": "region",
+    "region_2": "region (2)",
+    "market": "market",
+    "verticals": "verticals",
+    "account": "Account Name"
+  },
+  "commission_rules": [
+    {
+      "rule": "Commission % - SW, Services & Named Renewals",
+      "product_types": [
+        "Software",
+        "Services",
+        "Named Renewal"
+      ],
+      "sf_fields": [
+        "type",
+        "amount (converted)"
+      ],
+      "commission_base_rate": 0.09,
+      "quota_relief": true,
+      "acceleration_tiers": [
+        {
+          "from_pct_annual_target": 0.85,
+          "to_pct_annual_target": 1.05,
+          "rate": 0.108
+        },
+        {
+          "from_pct_annual_target": 1.05,
+          "to_pct_annual_target": 1.3,
+          "rate": 0.1215
+        },
+        {
+          "from_pct_annual_target": 1.3,
+          "to_pct_annual_target": null,
+          "rate": 0.135
+        }
+      ],
+      "acceleration_basis": "amount (converted)",
+      "notes": "Acceleration paid over Annual Target only. Applies to all SW/Services/Named Renewal revenue once threshold is crossed."
+    },
+    {
+      "rule": "Commission % - HW (Quota Relief)",
+      "product_types": [
+        "Hardware"
+      ],
+      "sf_fields": [
+        "type",
+        "amount (converted)"
+      ],
+      "commission_base_rate": 0.03,
+      "quota_relief": true,
+      "acceleration_tiers": [],
+      "notes": "Flat rate regardless of attainment. Counts toward quota."
+    },
+    {
+      "rule": "Commission % - Renewals under CS (No Quota Relief)",
+      "product_types": [
+        "Renewal"
+      ],
+      "sf_fields": [
+        "type",
+        "amount (converted)",
+        "region"
+      ],
+      "region_filter": "CS",
+      "commission_base_rate": 0.03,
+      "quota_relief": false,
+      "acceleration_tiers": [],
+      "notes": "CS-managed renewals. 3% flat, does NOT count toward quota attainment."
+    }
+  ],
+  "accelerators": [
+    {
+      "rule": "New Business Accelerator",
+      "product_types": [
+        "New"
+      ],
+      "sf_fields": [
+        "type",
+        "amount (converted)"
+      ],
+      "condition": "ytd_attainment >= 0.85",
+      "multiplier": 1.5,
+      "notes": "Multiplier of 1.5x applied to New business amounts when owner exceeds 85% of Annual Target. Source plan text says >80% but tier table starts at 85% — using 85% as the binding threshold."
+    },
+    {
+      "rule": "Expansion Upsell Bonus",
+      "product_types": [
+        "Expansion"
+      ],
+      "sf_fields": [
+        "type",
+        "amount (converted)"
+      ],
+      "condition": null,
+      "bonus_rate": 0.05,
+      "notes": "Flat 5% bonus on all Expansion product type amounts. No attainment condition."
+    }
+  ],
+  "quarterly_trigger": {
+    "rule": "Quarterly Commission Trigger",
+    "sf_fields": [
+      "amount (converted)",
+      "quarter"
+    ],
+    "threshold_pct_of_quarterly_target": 0.3,
+    "threshold_pct_of_accumulated_target": 0.3,
+    "trigger_logic": "ANY",
+    "consequence_if_missed": "deferred",
+    "deferred_carryover": true,
+    "deferred_expiry": "year_end",
+    "notes": "Deferred commission carries forward quarter to quarter. To unlock deferred commission in a subsequent quarter, the accumulated target threshold (30%) must be met. All deferred commission is forfeited at year-end if the threshold is never reached."
+  },
+  "feature_engineering": {
+    "temporal_granularity": "month",
+    "compute_per_owner_per_cutoff_month": [
+      {
+        "feature": "cumulative_attainment_pct",
+        "formula": "sum(amount, month<=cutoff) / annual_target",
+        "sf_fields": [
+          "amount (converted)",
+          "month"
+        ],
+        "range": "[0, ∞)",
+        "notes": "Core incentive state signal. Drives tier assignment."
+      },
+      {
+        "feature": "current_acceleration_tier",
+        "formula": "encode_tier(cumulative_attainment_pct)",
+        "encoding": {
+          "0": "below_trigger (<30%)",
+          "1": "base (30%–85%)",
+          "2": "tier_1 (85%–105%, rate=10.8%)",
+          "3": "tier_2 (105%–130%, rate=12.15%)",
+          "4": "top_tier (>130%, rate=13.5%)"
+        },
+        "notes": "Ordinal encoding. Do NOT one-hot — ordinality matters."
+      },
+      {
+        "feature": "distance_to_next_tier",
+        "formula": "next_tier_threshold - cumulative_attainment_pct",
+        "notes": "Positive = gap to next tier. Zero if already at top tier. Key Q4 behavioral driver."
+      },
+      {
+        "feature": "sw_services_acceleration_ratio",
+        "formula": "sum(amount, type in [SW/Services/Named Renewal], month<=cutoff) / sum(amount, month<=cutoff)",
+        "sf_fields": [
+          "amount (converted)",
+          "type",
+          "month"
+        ],
+        "notes": "What fraction of revenue is acceleration-eligible. High ratio = stronger Q4 incentive to push."
+      },
+      {
+        "feature": "hw_ratio",
+        "formula": "sum(amount, type=Hardware, month<=cutoff) / sum(amount, month<=cutoff)",
+        "sf_fields": [
+          "amount (converted)",
+          "type",
+          "month"
+        ],
+        "notes": "Hardware is flat-rate — owners heavy in HW have weaker acceleration incentive."
+      },
+      {
+        "feature": "cs_renewal_ratio",
+        "formula": "sum(amount, type=Renewal, region=CS, month<=cutoff) / sum(amount, month<=cutoff)",
+        "sf_fields": [
+          "amount (converted)",
+          "type",
+          "region",
+          "month"
+        ],
+        "notes": "CS renewals don't count toward quota — dilutes effective attainment."
+      },
+      {
+        "feature": "quarterly_trigger_hit_count",
+        "formula": "count(quarters where trigger condition met, up to cutoff quarter)",
+        "range": "[0, 3] for Q1-Q3 window",
+        "notes": "Proxy for commission payment regularity. Owner with 0/3 has deferred income urgency."
+      },
+      {
+        "feature": "deferred_commission_quarters",
+        "formula": "count(quarters where trigger was NOT met, up to cutoff quarter)",
+        "range": "[0, 3]",
+        "notes": "Accumulated missed triggers. High value = strong urgency to recover in Q4."
+      }
+    ],
+    "per_deal_features": [
+      {
+        "feature": "commission_rate",
+        "formula": "lookup rate from COMMISSION_RULES by product_type + region",
+        "sf_fields": [
+          "type",
+          "region"
+        ],
+        "notes": "Assign each deal its applicable commission rate as an edge feature."
+      },
+      {
+        "feature": "is_acceleration_eligible",
+        "formula": "1 if type in [Software, Services, Named Renewal] else 0",
+        "sf_fields": [
+          "type"
+        ],
+        "notes": "Binary edge flag. Separates deals that contribute to acceleration from those that don't."
+      }
+    ],
+    "phase_1_note": "Curriculum Phase 1 (Q1 M1+M2 → M3): cumulative_attainment_pct and tier are near-zero for all owners. These features add no discriminating signal at Phase 1. Use them from Phase 2 onwards where owner divergence begins."
+  }
+}
