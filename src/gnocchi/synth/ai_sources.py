@@ -6,8 +6,9 @@ AI investments in 2024 (one per tool, team-level):
   * inv_chatgpt_ent   bought, standalone via SSO              all teams all year, fading use
   * inv_dealsum_emea  built,  acting   identity svc_dealsum_emea  EMEA from Mar  (overlap)
   * inv_dealsum_nae   built,  acting   identity svc_dealsum_nae   NA East from May (overlap)
-Telemetry sessions reference the real opportunity ids they touched, so they join to the
-synthetic CRM history by key, never by text similarity.
+Telemetry sessions carry the prompt text and the real opportunity ids they touched. The
+purpose is not in the telemetry: Gnocchi infers it from the text (similarity to operational
+drivers and key results). That inference is a hypothesis; joins to records are by key.
 """
 from __future__ import annotations
 
@@ -85,6 +86,70 @@ def sessions(opps: pd.DataFrame, ev: pd.DataFrame, g: np.random.Generator) -> pd
     return pd.DataFrame(rows).sort_values("ts")
 
 
+ACCOUNTS = ["Northgate Transit", "Harbor County", "Ridgeview Health", "Coastal Ports Authority", "Summit Retail",
+            "Lakeside University", "Metro Water", "Pinecrest Logistics", "Granite Bank", "Bayline Energy"]
+ROLES = ["head of security operations", "IT director", "CIO", "facilities manager", "procurement lead"]
+PAINS = ["slow incident response", "too many disconnected cameras", "audit findings on access logs",
+         "rising guard costs", "a coming tender"]
+TEMPLATES = {
+    "Outreach: first touch": [
+        "Write a first-touch email to the {role} at {acct} about {pain}. Keep it under 120 words with one clear ask.",
+        "Draft a short intro message for a new inbound lead from {acct} who requested a demo yesterday.",
+        "Create a 3-step outreach sequence for net-new prospects like {acct}, opening on {pain}.",
+    ],
+    "Research: account and contact": [
+        "Find the decision makers at {acct} and their likely priorities before I reach out.",
+        "Who is the {role} at {acct} and what initiatives have they announced this year?",
+    ],
+    "Research: meeting prep brief": [
+        "Prepare a briefing for tomorrow's call with {acct}: attendees, open issues, likely objections and an agenda.",
+        "Build a one-page prep brief for my customer meeting with the {role} at {acct}, including what they care about.",
+        "Before the meeting with {acct}, summarize their account history and the questions to ask.",
+    ],
+    "Summarize: deal notes": [
+        "Summarize the latest notes on the {acct} opportunity into a status line.",
+        "Condense the activity notes for the {acct} deal into three bullets.",
+    ],
+    "Drafting: internal email": [
+        "Rewrite this email to my manager about the holiday coverage schedule so it sounds friendlier.",
+        "Draft a short note to the team about the quarterly offsite logistics.",
+        "Polish my message to finance about an expense report correction.",
+    ],
+    "Research: account background": [
+        "What does {acct} do, how big are they, and who are their main competitors?",
+        "Give me background on {acct}'s industry and recent news before the meeting.",
+    ],
+    "Summarize: meeting notes": [
+        "Summarize these internal team meeting notes into action items.",
+        "Turn the notes from our weekly sales sync into a short recap.",
+    ],
+    "Personal productivity": [
+        "Help me plan my week around three priorities.",
+        "Convert this table into bullet points.",
+        "Fix the grammar in my LinkedIn post about our charity run.",
+        "Explain the difference between a pivot table and a lookup.",
+    ],
+    "Drafting: proposal text": [
+        "Draft the executive summary for a proposal to {acct} covering pricing options and the rollout plan.",
+        "Write the pricing and implementation section of our quote for {acct}.",
+    ],
+}
+
+
+def add_prompts(sess: pd.DataFrame, g: np.random.Generator) -> pd.DataFrame:
+    """Give every session the text a tool's telemetry would hold. The purpose label is
+    removed from the telemetry and kept only in the ground truth: Gnocchi must infer it."""
+    prompts = []
+    for p in sess.purpose:
+        t = TEMPLATES[p][int(g.integers(len(TEMPLATES[p])))]
+        prompts.append(t.format(acct=ACCOUNTS[int(g.integers(len(ACCOUNTS)))],
+                                role=ROLES[int(g.integers(len(ROLES)))],
+                                pain=PAINS[int(g.integers(len(PAINS)))]))
+    sess = sess.copy()
+    sess["prompt"] = prompts
+    return sess
+
+
 def admin_usage(sess: pd.DataFrame) -> pd.DataFrame:
     sess = sess.copy()
     sess["month"] = pd.to_datetime(sess.ts).dt.month
@@ -105,8 +170,9 @@ def main() -> None:
     opps = pd.read_csv(OUT / "crm_opportunity_history_2024.csv").set_index("opportunity_id")
     ev = pd.read_csv(OUT / "crm_change_log_2024.csv")
     pd.DataFrame(INVESTMENTS).assign(teams=lambda d: d.teams.str.join(";")).to_csv(OUT / "ai_investments.csv", index=False)
-    sess = sessions(opps, ev, g)
-    sess.to_json(OUT / "ai_telemetry_2024.jsonl", orient="records", lines=True)
+    sess = add_prompts(sessions(opps, ev, g), g)
+    sess[["session_id", "purpose"]].to_csv(OUT / "_ground_truth_session_purpose.csv", index=False)
+    sess.drop(columns=["purpose"]).to_json(OUT / "ai_telemetry_2024.jsonl", orient="records", lines=True)
     admin_usage(sess).to_csv(OUT / "ai_admin_usage_2024.csv", index=False)
     print("sessions", len(sess), sess.investment_id.value_counts().to_dict())
     update_ground_truth("ai_sources", {

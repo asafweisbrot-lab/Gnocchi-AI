@@ -11,11 +11,11 @@ import json
 import numpy as np
 import pandas as pd
 
+from gnocchi.analysis.similarity import DRIVERS, kr_targets, match
 from gnocchi.synth.common import OUT, ROOT
 
 DEMO = ROOT / "data" / "demo"
 TEAMS = ["EMEA", "NA East", "NA West", "LATAM", "APAC"]
-ALIGNED_PURPOSES = {"Research: account background", "Drafting: proposal text"}
 
 
 def load():
@@ -101,18 +101,72 @@ def main() -> None:
     ]
     drivers = [{**x, "days": round(x["days"][0], 1), "ci": round(1.645 * x["days"][1], 1)} for x in drivers]
 
-    # ---- 4 Trace: evidence level per investment
+    # ---- 4 Trace: session purpose -> similarity to drivers and key results, then triangulate
     s = sess.copy()
-    s["aligned"] = s.purpose.isin(ALIGNED_PURPOSES)
+    targets = DRIVERS + kr_targets(okrs)
+    ids, score, sim = match(s.prompt.tolist(), targets)
+    nd = len(DRIVERS)
+    s["match"] = ids
+    s["score"] = score
+    s["best_driver"] = [DRIVERS[i]["id"] if sim[k, i] >= 0.08 else None for k, i in enumerate(sim[:, :nd].argmax(1))]
+    s["best_kr"] = [targets[nd + i]["id"] if sim[k, nd + i] >= 0.08 else None for k, i in enumerate(sim[:, nd:].argmax(1))]
+    s["aligned"] = s.match.notna()
+    s["writes_record"] = s.record_ids.notna() & s.writes.ne("none")
+    # which operational element each tool's writes land on
+    WRITE_ELEMENT = {"Activity (Task)": "D1", "Doc linked to opportunity": "D2"}
+    sig = {"D1": abs(drivers[0]["days"]) > drivers[0]["ci"], "D2": abs(drivers[2]["days"]) > drivers[2]["ci"],
+           "D3": abs(drivers[1]["days"]) > drivers[1]["ci"], "D5": abs(drivers[3]["days"]) > drivers[3]["ci"], "D4": False}
+    tnames = {t["id"]: t["name"] for t in targets}
+    sim_matrix, trace = [], []
+    for i in inv.investment_id:
+        x = s[s.investment_id == i]
+        shares = {t["id"]: round(float((x.match == t["id"]).mean()), 3) for t in targets}
+        shares["none"] = round(float(x.match.isna().mean()), 3)
+        sim_matrix.append({"id": i, "n": int(len(x)), "shares": shares})
+        written = [WRITE_ELEMENT.get(w) for w in x[x.writes_record].writes.unique()]
+        written_drivers = [w for w in written if w]
+        top = x.best_driver.value_counts(normalize=True)
+        top_d = top.index[0] if len(top) else None
+        agrees = bool(written_drivers) and top_d in written_drivers
+        al = float(x.aligned.mean())
+        if written_drivers and any(sig.get(w) for w in written_drivers) and agrees:
+            level = "1 · Closed triangle"
+            why = (f"Writes {tnames[written_drivers[0]].lower()} records; {round(100*top.get(top_d,0))}% of its sessions are aimed "
+                   f"at that driver, which moves the cycle key result")
+        elif x.writes_record.any():
+            level = "2 · Records only"
+            why = (f"Writes notes on opportunities, an element no driver depends on; "
+                   f"{round(100*float(x.match.isna().mean()))}% of its sessions match no driver or key result")
+        elif al >= 0.2:
+            level = "3 · OKR only / unaligned"
+            why = f"No record trace; {round(100*al)}% of sessions match a driver or key result, the rest serve no stated goal"
+        else:
+            level = "Unaligned"
+            why = f"No record trace; only {round(100*al)}% of sessions match a driver or key result"
+        trace.append({"id": i, "level": level, "why": why, "aligned": round(al, 3)})
+    # agreement with the planted purposes (synthetic ground truth only)
+    gt = pd.read_csv(OUT / "_ground_truth_session_purpose.csv").set_index("session_id").purpose
+    EXPECT = {"Outreach: first touch": {"D1", "KR2"}, "Research: account and contact": {"D1", "KR2"},
+              "Research: meeting prep brief": {"D2"}, "Research: account background": {"D2", "D1", None},
+              "Drafting: proposal text": {"D4"}, "Summarize: deal notes": {None, "D5"},
+              "Drafting: internal email": {None}, "Summarize: meeting notes": {None, "D2", "D5"}, "Personal productivity": {None}}
+    s["truth"] = s.session_id.map(gt)
+    s["ok"] = [(None if pd.isna(m) else m) in EXPECT[t] for m, t in zip(s.match, s.truth)]
+    agree = {p: round(float(g_.ok.mean()), 3) for p, g_ in s.groupby("truth")}
+    examples = []
+    for i in inv.investment_id:
+        xi = s[s.investment_id == i]
+        m_ = xi[xi.aligned]
+        r = m_.sort_values("score").iloc[len(m_) // 2] if len(m_) else xi.iloc[0]
+        k = s.index.get_loc(r.name)
+        order = np.argsort(-sim[k])[:3]
+        examples.append({"id": i, "prompt": r.prompt, "writes": r.writes,
+                         "top": [{"target": targets[j]["name"], "kind": "driver" if j < nd else "key result",
+                                  "score": round(float(sim[k, j]), 2)} for j in order]})
+    similarity = {"targets": [{"id": t["id"], "name": t["name"], "kind": "driver" if t["id"].startswith("D") else "key result"} for t in targets],
+                  "matrix": sim_matrix, "examples": examples, "agreement": agree,
+                  "overall_agreement": round(float(s.ok.mean()), 3), "threshold": 0.08}
     chat = s[s.investment_id == "inv_chatgpt_ent"]
-    trace = [
-        {"id": "inv_ai_sdr", "level": "1 · Closed triangle", "why": "Writes first-touch activities on New deals; first response drives the cycle key result"},
-        {"id": "inv_meeting_prep", "level": "1 · Closed triangle", "why": "Prep briefs linked to opportunities; the brief is a driver of the cycle key result"},
-        {"id": "inv_dealsum_emea", "level": "2 · Records only", "why": "Writes notes on opportunities, but notes don't move any driver"},
-        {"id": "inv_dealsum_nae", "level": "2 · Records only", "why": "Same job as the EMEA build, in NA East: overlap"},
-        {"id": "inv_chatgpt_ent", "level": "3 · OKR only / unaligned",
-         "why": f"No record trace; {round(100*chat.aligned.mean())}% of sessions match an OKR purpose, the rest serve no stated goal"},
-    ]
 
     # ---- 5 Momentum (monthly, 2024)
     s["m"] = pd.to_datetime(s.ts).dt.month
@@ -122,9 +176,10 @@ def main() -> None:
         u["m"] = u.month.str[-2:].astype(int)
         uu = u.groupby("m").agg(assigned=("licences_assigned", "sum"), active=("active_users", "sum"), sessions=("sessions", "sum"))
         recs = s[(s.investment_id == i) & s.record_ids.notna()].groupby("m").record_ids.nunique()
+        aimed = s[s.investment_id == i].groupby("m").aligned.mean()
         mom[i] = [{"m": int(m), "sessions": int(uu.loc[m, "sessions"]) if m in uu.index else 0,
                    "active_share": round(float(uu.loc[m, "active"] / uu.loc[m, "assigned"]), 2) if m in uu.index and uu.loc[m, "assigned"] else 0,
-                   "records": int(recs.get(m, 0))} for m in range(1, 13)]
+                   "records": int(recs.get(m, 0)), "aimed": round(float(aimed.get(m, 0)), 2)} for m in range(1, 13)]
     n24 = new[new.close_date.dt.year == 2024].copy()
     n24["m"] = n24.close_date.dt.month
     driver_trend = {
@@ -169,7 +224,36 @@ def main() -> None:
         x = new[new.team.isin(teams) & (new.close_date.dt.year == 2024)]
         q = x.close_date.dt.quarter
         m_series.append({"group": grp, "values": [round(float(x[q == k].cycle_days.median()), 1) for k in range(1, 5)]})
+    # Team fit: which share of each team's AI sessions (and spend) is aimed at a driver or KR,
+    # set against the team's KPIs. A pattern to explain, not proof: the comparisons above prove.
+    cost = inv.set_index("investment_id").annual_cost_usd
+    resp_y = new.assign(y=new.close_date.dt.year).groupby(["team", "y"]).first_response_hours.median().unstack()
+    nb = new.assign(y=new.close_date.dt.year).groupby(["team", "y"]).amount.sum().unstack()
+    team_fit = []
+    for t in TEAMS:
+        xt = s[s.team == t]
+        spend = aimed_spend = 0.0
+        tools = []
+        for i in inv.investment_id:
+            xi, xall = xt[xt.investment_id == i], s[s.investment_id == i]
+            if not len(xi):
+                continue
+            c = float(cost[i]) * len(xi) / len(xall)
+            spend += c
+            aimed_spend += c * float(xi.aligned.mean())
+            top = xi.match.value_counts(normalize=True)
+            tools.append({"id": i, "n": int(len(xi)), "aimed": round(float(xi.aligned.mean()), 3),
+                          "top": top.index[0] if len(top) else None, "spend": round(c)})
+        sig_ids = [k for k, v in sig.items() if v]
+        team_fit.append({
+            "team": t, "sessions": int(len(xt)), "aimed": round(float(xt.aligned.mean()), 3),
+            "on_driver": round(float(xt.match.isin(sig_ids).mean()), 3),
+            "spend": round(spend), "aimed_spend": round(aimed_spend), "tools": tools,
+            "kpi": {"cycle": [int(kr3.loc[t, 2023]), int(kr3.loc[t, 2024])],
+                    "resp": [round(float(resp_y.loc[t, 2023]), 1), round(float(resp_y.loc[t, 2024]), 1)],
+                    "new_biz": [round(float(nb.loc[t, 2023])), round(float(nb.loc[t, 2024]))]}})
     prove = {
+        "team_fit": team_fit,
         "sdr": {"cycle": round(sdr_est, 1), "lo": round(sdr_lo, 1), "hi": round(sdr_hi, 1),
                 "resp": round(resp_est, 1), "deals": int(new.sdr.sum()), "series": m_series},
         "prep": {"raw": round(raw_prep, 1), "adjusted": round(prep_est, 1), "lo": round(prep_lo, 1), "hi": round(prep_hi, 1),
@@ -202,12 +286,12 @@ def main() -> None:
          "impact": f"{prove['dealsum']['cycle']} days (90% range {prove['dealsum']['lo']} to {prove['dealsum']['hi']}): no measurable effect",
          "method": "Record-level with controls", "confidence": "Medium",
          "decision": "Consolidate into one build", "avoided": 18000},
-        {"id": "inv_chatgpt_ent", "name": "ChatGPT Enterprise (sales seats)", "cost": 54000, "level": "OKR only / unaligned",
+        {"id": "inv_chatgpt_ent", "name": "ChatGPT Enterprise (sales seats)", "cost": 54000, "level": next(t["level"] for t in trace if t["id"] == "inv_chatgpt_ent").split("· ")[-1],
          "impact": f"Active seats fell from {round(100*act_first)}% to {round(100*act_last)}%; {100-round(100*chat.aligned.mean())}% of sessions serve no stated goal",
          "method": "Momentum and purpose only; no record trace to compare", "confidence": "Low",
          "decision": "Right-size seats at renewal", "avoided": int(54000 * seat_cut)},
     ]
-    out = {"discover": discover, "map": mapping, "drivers": drivers, "trace": trace, "momentum": mom,
+    out = {"discover": discover, "map": mapping, "drivers": drivers, "trace": trace, "similarity": similarity, "momentum": mom,
            "driver_trend": driver_trend, "prove": prove, "find": find, "report": report,
            "totals": {"ai_spend": int(inv.annual_cost_usd.sum()), "avoided": sum(r["avoided"] for r in report)}}
     DEMO.mkdir(parents=True, exist_ok=True)

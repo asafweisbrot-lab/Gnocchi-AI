@@ -29,5 +29,5 @@ python demo/build_page.py                         # -> demo/gnocchi_demo.html
 ## Principles
 
 - Team level only. No person is a unit of analysis.
-- Impact is proven by comparison (baselines, rollout waves, usage dose), never by text similarity.
+- Session text is matched to drivers and key results to decide what to test; impact is proven by comparison (baselines, rollout waves, usage dose), never by similarity alone.
 - New code, written for Gnocchi. Nothing here is copied from Incentra.

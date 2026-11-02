@@ -203,10 +203,10 @@
     "investment_id": "inv_ai_sdr",
     "identity": "svc_ai_sdr",
     "team": "EMEA",
-    "purpose": "Outreach: first touch",
     "record_ids": "deal_001545",
     "writes": "Activity (Task)",
-    "tokens": 2052
+    "tokens": 2052,
+    "prompt": "Draft a short intro message for a new inbound lead from Coastal Ports Authority who requested a demo yesterday."
    },
    {
     "session_id": "S-000274",
@@ -214,10 +214,10 @@
     "investment_id": "inv_meeting_prep",
     "identity": "sso_user",
     "team": "EMEA",
-    "purpose": "Research: meeting prep brief",
     "record_ids": "deal_001931",
     "writes": "Doc linked to opportunity",
-    "tokens": 5831
+    "tokens": 5831,
+    "prompt": "Build a one-page prep brief for my customer meeting with the CIO at Lakeside University, including what they care about."
    },
    {
     "session_id": "S-001604",
@@ -225,10 +225,10 @@
     "investment_id": "inv_chatgpt_ent",
     "identity": "sso_user",
     "team": "APAC",
-    "purpose": "Summarize: meeting notes",
     "record_ids": "",
     "writes": "none",
-    "tokens": 1303
+    "tokens": 1303,
+    "prompt": "Summarize these internal team meeting notes into action items."
    },
    {
     "session_id": "S-000405",
@@ -236,10 +236,10 @@
     "investment_id": "inv_dealsum_emea",
     "identity": "svc_dealsum_emea",
     "team": "EMEA",
-    "purpose": "Summarize: deal notes",
     "record_ids": "deal_001743",
     "writes": "Note on opportunity",
-    "tokens": 2727
+    "tokens": 2727,
+    "prompt": "Condense the activity notes for the Bayline Energy deal into three bullets."
    },
    {
     "session_id": "S-000581",
@@ -247,10 +247,10 @@
     "investment_id": "inv_dealsum_nae",
     "identity": "svc_dealsum_nae",
     "team": "NA East",
-    "purpose": "Summarize: deal notes",
     "record_ids": "deal_001081",
     "writes": "Note on opportunity",
-    "tokens": 2289
+    "tokens": 2289,
+    "prompt": "Condense the activity notes for the Summit Retail deal into three bullets."
    }
   ]
  },
@@ -321,102 +321,385 @@
   {
    "id": "inv_ai_sdr",
    "level": "1 \u00b7 Closed triangle",
-   "why": "Writes first-touch activities on New deals; first response drives the cycle key result"
+   "why": "Writes first-touch activity (first response) records; 100% of its sessions are aimed at that driver, which moves the cycle key result",
+   "aligned": 0.78
   },
   {
    "id": "inv_meeting_prep",
    "level": "1 \u00b7 Closed triangle",
-   "why": "Prep briefs linked to opportunities; the brief is a driver of the cycle key result"
+   "why": "Writes meeting-prep brief attached records; 100% of its sessions are aimed at that driver, which moves the cycle key result",
+   "aligned": 1.0
+  },
+  {
+   "id": "inv_chatgpt_ent",
+   "level": "Unaligned",
+   "why": "No record trace; only 17% of sessions match a driver or key result",
+   "aligned": 0.173
   },
   {
    "id": "inv_dealsum_emea",
    "level": "2 \u00b7 Records only",
-   "why": "Writes notes on opportunities, but notes don't move any driver"
+   "why": "Writes notes on opportunities, an element no driver depends on; 100% of its sessions match no driver or key result",
+   "aligned": 0.0
   },
   {
    "id": "inv_dealsum_nae",
    "level": "2 \u00b7 Records only",
-   "why": "Same job as the EMEA build, in NA East: overlap"
-  },
-  {
-   "id": "inv_chatgpt_ent",
-   "level": "3 \u00b7 OKR only / unaligned",
-   "why": "No record trace; 26% of sessions match an OKR purpose, the rest serve no stated goal"
+   "why": "Writes notes on opportunities, an element no driver depends on; 100% of its sessions match no driver or key result",
+   "aligned": 0.0
   }
  ],
+ "similarity": {
+  "targets": [
+   {
+    "id": "D1",
+    "name": "First-touch activity (first response)",
+    "kind": "driver"
+   },
+   {
+    "id": "D2",
+    "name": "Meeting-prep brief attached",
+    "kind": "driver"
+   },
+   {
+    "id": "D3",
+    "name": "Solutions engineer before Proposal",
+    "kind": "driver"
+   },
+   {
+    "id": "D4",
+    "name": "Proposal attached",
+    "kind": "driver"
+   },
+   {
+    "id": "D5",
+    "name": "Customer meetings",
+    "kind": "driver"
+   },
+   {
+    "id": "KR1",
+    "name": "Book $12.2M in total bookings in 2024",
+    "kind": "key result"
+   },
+   {
+    "id": "KR2",
+    "name": "Grow new-logo bookings 25% to $10.31M",
+    "kind": "key result"
+   },
+   {
+    "id": "KR3",
+    "name": "Cut the new-business sales cycle to under 60 days, median",
+    "kind": "key result"
+   },
+   {
+    "id": "KR4",
+    "name": "Renew at least 117 contracts",
+    "kind": "key result"
+   },
+   {
+    "id": "KR5",
+    "name": "Raise customer satisfaction with onboarding",
+    "kind": "key result"
+   }
+  ],
+  "matrix": [
+   {
+    "id": "inv_ai_sdr",
+    "n": 273,
+    "shares": {
+     "D1": 0.78,
+     "D2": 0.0,
+     "D3": 0.0,
+     "D4": 0.0,
+     "D5": 0.0,
+     "KR1": 0.0,
+     "KR2": 0.0,
+     "KR3": 0.0,
+     "KR4": 0.0,
+     "KR5": 0.0,
+     "none": 0.22
+    }
+   },
+   {
+    "id": "inv_meeting_prep",
+    "n": 99,
+    "shares": {
+     "D1": 0.0,
+     "D2": 1.0,
+     "D3": 0.0,
+     "D4": 0.0,
+     "D5": 0.0,
+     "KR1": 0.0,
+     "KR2": 0.0,
+     "KR3": 0.0,
+     "KR4": 0.0,
+     "KR5": 0.0,
+     "none": 0.0
+    }
+   },
+   {
+    "id": "inv_chatgpt_ent",
+    "n": 7977,
+    "shares": {
+     "D1": 0.0,
+     "D2": 0.091,
+     "D3": 0.0,
+     "D4": 0.082,
+     "D5": 0.0,
+     "KR1": 0.0,
+     "KR2": 0.0,
+     "KR3": 0.0,
+     "KR4": 0.0,
+     "KR5": 0.0,
+     "none": 0.827
+    }
+   },
+   {
+    "id": "inv_dealsum_emea",
+    "n": 147,
+    "shares": {
+     "D1": 0.0,
+     "D2": 0.0,
+     "D3": 0.0,
+     "D4": 0.0,
+     "D5": 0.0,
+     "KR1": 0.0,
+     "KR2": 0.0,
+     "KR3": 0.0,
+     "KR4": 0.0,
+     "KR5": 0.0,
+     "none": 1.0
+    }
+   },
+   {
+    "id": "inv_dealsum_nae",
+    "n": 99,
+    "shares": {
+     "D1": 0.0,
+     "D2": 0.0,
+     "D3": 0.0,
+     "D4": 0.0,
+     "D5": 0.0,
+     "KR1": 0.0,
+     "KR2": 0.0,
+     "KR3": 0.0,
+     "KR4": 0.0,
+     "KR5": 0.0,
+     "none": 1.0
+    }
+   }
+  ],
+  "examples": [
+   {
+    "id": "inv_ai_sdr",
+    "prompt": "Find the decision makers at Bayline Energy and their likely priorities before I reach out.",
+    "writes": "none",
+    "top": [
+     {
+      "target": "First-touch activity (first response)",
+      "kind": "driver",
+      "score": 0.15
+     },
+     {
+      "target": "Meeting-prep brief attached",
+      "kind": "driver",
+      "score": 0.0
+     },
+     {
+      "target": "Solutions engineer before Proposal",
+      "kind": "driver",
+      "score": 0.0
+     }
+    ]
+   },
+   {
+    "id": "inv_meeting_prep",
+    "prompt": "Build a one-page prep brief for my customer meeting with the facilities manager at Summit Retail, including what they care about.",
+    "writes": "Doc linked to opportunity",
+    "top": [
+     {
+      "target": "Meeting-prep brief attached",
+      "kind": "driver",
+      "score": 0.22
+     },
+     {
+      "target": "Customer meetings",
+      "kind": "driver",
+      "score": 0.1
+     },
+     {
+      "target": "Raise customer satisfaction with onboarding",
+      "kind": "key result",
+      "score": 0.06
+     }
+    ]
+   },
+   {
+    "id": "inv_chatgpt_ent",
+    "prompt": "Give me background on Granite Bank's industry and recent news before the meeting.",
+    "writes": "none",
+    "top": [
+     {
+      "target": "Meeting-prep brief attached",
+      "kind": "driver",
+      "score": 0.13
+     },
+     {
+      "target": "Customer meetings",
+      "kind": "driver",
+      "score": 0.03
+     },
+     {
+      "target": "Solutions engineer before Proposal",
+      "kind": "driver",
+      "score": 0.0
+     }
+    ]
+   },
+   {
+    "id": "inv_dealsum_emea",
+    "prompt": "Condense the activity notes for the Bayline Energy deal into three bullets.",
+    "writes": "Note on opportunity",
+    "top": [
+     {
+      "target": "Book $12.2M in total bookings in 2024",
+      "kind": "key result",
+      "score": 0.03
+     },
+     {
+      "target": "First-touch activity (first response)",
+      "kind": "driver",
+      "score": 0.0
+     },
+     {
+      "target": "Solutions engineer before Proposal",
+      "kind": "driver",
+      "score": 0.0
+     }
+    ]
+   },
+   {
+    "id": "inv_dealsum_nae",
+    "prompt": "Condense the activity notes for the Summit Retail deal into three bullets.",
+    "writes": "Note on opportunity",
+    "top": [
+     {
+      "target": "Book $12.2M in total bookings in 2024",
+      "kind": "key result",
+      "score": 0.03
+     },
+     {
+      "target": "First-touch activity (first response)",
+      "kind": "driver",
+      "score": 0.0
+     },
+     {
+      "target": "Solutions engineer before Proposal",
+      "kind": "driver",
+      "score": 0.0
+     }
+    ]
+   }
+  ],
+  "agreement": {
+   "Drafting: internal email": 1.0,
+   "Drafting: proposal text": 1.0,
+   "Outreach: first touch": 0.636,
+   "Personal productivity": 1.0,
+   "Research: account and contact": 1.0,
+   "Research: account background": 1.0,
+   "Research: meeting prep brief": 1.0,
+   "Summarize: deal notes": 1.0,
+   "Summarize: meeting notes": 1.0
+  },
+  "overall_agreement": 0.993,
+  "threshold": 0.08
+ },
  "momentum": {
   "inv_ai_sdr": [
    {
     "m": 1,
     "sessions": 0,
     "active_share": 0.0,
-    "records": 0
+    "records": 0,
+    "aimed": 0.0
    },
    {
     "m": 2,
     "sessions": 0,
     "active_share": 0.0,
-    "records": 0
+    "records": 0,
+    "aimed": 0.0
    },
    {
     "m": 3,
     "sessions": 6,
     "active_share": 0.5,
-    "records": 3
+    "records": 3,
+    "aimed": 1.0
    },
    {
     "m": 4,
     "sessions": 28,
     "active_share": 0.5,
-    "records": 14
+    "records": 14,
+    "aimed": 0.71
    },
    {
     "m": 5,
     "sessions": 8,
     "active_share": 0.5,
-    "records": 4
+    "records": 4,
+    "aimed": 1.0
    },
    {
     "m": 6,
     "sessions": 22,
     "active_share": 1.0,
-    "records": 11
+    "records": 11,
+    "aimed": 0.91
    },
    {
     "m": 7,
     "sessions": 46,
     "active_share": 1.0,
-    "records": 23
+    "records": 23,
+    "aimed": 0.76
    },
    {
     "m": 8,
     "sessions": 46,
     "active_share": 1.0,
-    "records": 23
+    "records": 23,
+    "aimed": 0.78
    },
    {
     "m": 9,
     "sessions": 50,
     "active_share": 1.0,
-    "records": 25
+    "records": 25,
+    "aimed": 0.88
    },
    {
     "m": 10,
     "sessions": 27,
     "active_share": 1.0,
-    "records": 22
+    "records": 22,
+    "aimed": 0.74
    },
    {
     "m": 11,
     "sessions": 20,
     "active_share": 1.0,
-    "records": 20
+    "records": 20,
+    "aimed": 0.65
    },
    {
     "m": 12,
     "sessions": 20,
     "active_share": 1.0,
-    "records": 20
+    "records": 20,
+    "aimed": 0.55
    }
   ],
   "inv_meeting_prep": [
@@ -424,73 +707,85 @@
     "m": 1,
     "sessions": 0,
     "active_share": 0.0,
-    "records": 0
+    "records": 0,
+    "aimed": 0.0
    },
    {
     "m": 2,
     "sessions": 0,
     "active_share": 0.0,
-    "records": 0
+    "records": 0,
+    "aimed": 0.0
    },
    {
     "m": 3,
     "sessions": 0,
     "active_share": 0.0,
-    "records": 0
+    "records": 0,
+    "aimed": 0.0
    },
    {
     "m": 4,
     "sessions": 1,
     "active_share": 0.02,
-    "records": 1
+    "records": 1,
+    "aimed": 1.0
    },
    {
     "m": 5,
     "sessions": 6,
     "active_share": 0.06,
-    "records": 6
+    "records": 6,
+    "aimed": 1.0
    },
    {
     "m": 6,
     "sessions": 9,
     "active_share": 0.09,
-    "records": 9
+    "records": 9,
+    "aimed": 1.0
    },
    {
     "m": 7,
     "sessions": 14,
     "active_share": 0.06,
-    "records": 14
+    "records": 14,
+    "aimed": 1.0
    },
    {
     "m": 8,
     "sessions": 21,
     "active_share": 0.04,
-    "records": 21
+    "records": 21,
+    "aimed": 1.0
    },
    {
     "m": 9,
     "sessions": 21,
     "active_share": 0.06,
-    "records": 21
+    "records": 21,
+    "aimed": 1.0
    },
    {
     "m": 10,
     "sessions": 18,
     "active_share": 0.04,
-    "records": 18
+    "records": 18,
+    "aimed": 1.0
    },
    {
     "m": 11,
     "sessions": 8,
     "active_share": 0.04,
-    "records": 8
+    "records": 8,
+    "aimed": 1.0
    },
    {
     "m": 12,
     "sessions": 1,
     "active_share": 0.02,
-    "records": 1
+    "records": 1,
+    "aimed": 1.0
    }
   ],
   "inv_chatgpt_ent": [
@@ -498,73 +793,85 @@
     "m": 1,
     "sessions": 1061,
     "active_share": 1.0,
-    "records": 0
+    "records": 0,
+    "aimed": 0.16
    },
    {
     "m": 2,
     "sessions": 991,
     "active_share": 1.0,
-    "records": 0
+    "records": 0,
+    "aimed": 0.18
    },
    {
     "m": 3,
     "sessions": 917,
     "active_share": 1.0,
-    "records": 0
+    "records": 0,
+    "aimed": 0.17
    },
    {
     "m": 4,
     "sessions": 846,
     "active_share": 0.94,
-    "records": 0
+    "records": 0,
+    "aimed": 0.2
    },
    {
     "m": 5,
     "sessions": 775,
     "active_share": 0.87,
-    "records": 0
+    "records": 0,
+    "aimed": 0.15
    },
    {
     "m": 6,
     "sessions": 700,
     "active_share": 0.77,
-    "records": 0
+    "records": 0,
+    "aimed": 0.2
    },
    {
     "m": 7,
     "sessions": 629,
     "active_share": 0.72,
-    "records": 0
+    "records": 0,
+    "aimed": 0.18
    },
    {
     "m": 8,
     "sessions": 555,
     "active_share": 0.66,
-    "records": 0
+    "records": 0,
+    "aimed": 0.17
    },
    {
     "m": 9,
     "sessions": 485,
     "active_share": 0.6,
-    "records": 0
+    "records": 0,
+    "aimed": 0.13
    },
    {
     "m": 10,
     "sessions": 412,
     "active_share": 0.49,
-    "records": 0
+    "records": 0,
+    "aimed": 0.18
    },
    {
     "m": 11,
     "sessions": 340,
     "active_share": 0.43,
-    "records": 0
+    "records": 0,
+    "aimed": 0.19
    },
    {
     "m": 12,
     "sessions": 266,
     "active_share": 0.34,
-    "records": 0
+    "records": 0,
+    "aimed": 0.16
    }
   ],
   "inv_dealsum_emea": [
@@ -572,73 +879,85 @@
     "m": 1,
     "sessions": 0,
     "active_share": 0.0,
-    "records": 0
+    "records": 0,
+    "aimed": 0.0
    },
    {
     "m": 2,
     "sessions": 6,
     "active_share": 1.0,
-    "records": 6
+    "records": 6,
+    "aimed": 0.0
    },
    {
     "m": 3,
     "sessions": 17,
     "active_share": 1.0,
-    "records": 17
+    "records": 17,
+    "aimed": 0.0
    },
    {
     "m": 4,
     "sessions": 7,
     "active_share": 1.0,
-    "records": 7
+    "records": 7,
+    "aimed": 0.0
    },
    {
     "m": 5,
     "sessions": 15,
     "active_share": 1.0,
-    "records": 15
+    "records": 15,
+    "aimed": 0.0
    },
    {
     "m": 6,
     "sessions": 21,
     "active_share": 1.0,
-    "records": 21
+    "records": 21,
+    "aimed": 0.0
    },
    {
     "m": 7,
     "sessions": 11,
     "active_share": 1.0,
-    "records": 11
+    "records": 11,
+    "aimed": 0.0
    },
    {
     "m": 8,
     "sessions": 10,
     "active_share": 1.0,
-    "records": 10
+    "records": 10,
+    "aimed": 0.0
    },
    {
     "m": 9,
     "sessions": 16,
     "active_share": 1.0,
-    "records": 16
+    "records": 16,
+    "aimed": 0.0
    },
    {
     "m": 10,
     "sessions": 20,
     "active_share": 1.0,
-    "records": 20
+    "records": 20,
+    "aimed": 0.0
    },
    {
     "m": 11,
     "sessions": 14,
     "active_share": 1.0,
-    "records": 14
+    "records": 14,
+    "aimed": 0.0
    },
    {
     "m": 12,
     "sessions": 10,
     "active_share": 1.0,
-    "records": 10
+    "records": 10,
+    "aimed": 0.0
    }
   ],
   "inv_dealsum_nae": [
@@ -646,73 +965,85 @@
     "m": 1,
     "sessions": 0,
     "active_share": 0.0,
-    "records": 0
+    "records": 0,
+    "aimed": 0.0
    },
    {
     "m": 2,
     "sessions": 0,
     "active_share": 0.0,
-    "records": 0
+    "records": 0,
+    "aimed": 0.0
    },
    {
     "m": 3,
     "sessions": 0,
     "active_share": 0.0,
-    "records": 0
+    "records": 0,
+    "aimed": 0.0
    },
    {
     "m": 4,
     "sessions": 4,
     "active_share": 1.0,
-    "records": 4
+    "records": 4,
+    "aimed": 0.0
    },
    {
     "m": 5,
     "sessions": 13,
     "active_share": 1.0,
-    "records": 13
+    "records": 13,
+    "aimed": 0.0
    },
    {
     "m": 6,
     "sessions": 13,
     "active_share": 1.0,
-    "records": 13
+    "records": 13,
+    "aimed": 0.0
    },
    {
     "m": 7,
     "sessions": 15,
     "active_share": 1.0,
-    "records": 15
+    "records": 15,
+    "aimed": 0.0
    },
    {
     "m": 8,
     "sessions": 9,
     "active_share": 1.0,
-    "records": 9
+    "records": 9,
+    "aimed": 0.0
    },
    {
     "m": 9,
     "sessions": 12,
     "active_share": 1.0,
-    "records": 12
+    "records": 12,
+    "aimed": 0.0
    },
    {
     "m": 10,
     "sessions": 11,
     "active_share": 1.0,
-    "records": 11
+    "records": 11,
+    "aimed": 0.0
    },
    {
     "m": 11,
     "sessions": 14,
     "active_share": 1.0,
-    "records": 14
+    "records": 14,
+    "aimed": 0.0
    },
    {
     "m": 12,
     "sessions": 8,
     "active_share": 1.0,
-    "records": 8
+    "records": 8,
+    "aimed": 0.0
    }
   ]
  },
@@ -747,6 +1078,226 @@
   ]
  },
  "prove": {
+  "team_fit": [
+   {
+    "team": "EMEA",
+    "sessions": 2457,
+    "aimed": 0.243,
+    "on_driver": 0.169,
+    "spend": 129312,
+    "aimed_spend": 84892,
+    "tools": [
+     {
+      "id": "inv_ai_sdr",
+      "n": 214,
+      "aimed": 0.799,
+      "top": "D1",
+      "spend": 75253
+     },
+     {
+      "id": "inv_meeting_prep",
+      "n": 58,
+      "aimed": 1.0,
+      "top": "D2",
+      "spend": 22263
+     },
+     {
+      "id": "inv_chatgpt_ent",
+      "n": 2038,
+      "aimed": 0.181,
+      "top": "D2",
+      "spend": 13796
+     },
+     {
+      "id": "inv_dealsum_emea",
+      "n": 147,
+      "aimed": 0.0,
+      "top": null,
+      "spend": 18000
+     }
+    ],
+    "kpi": {
+     "cycle": [
+      77,
+      69
+     ],
+     "resp": [
+      5.8,
+      1.1
+     ],
+     "new_biz": [
+      8244898,
+      5505899
+     ]
+    }
+   },
+   {
+    "team": "NA East",
+    "sessions": 2232,
+    "aimed": 0.186,
+    "on_driver": 0.114,
+    "spend": 70362,
+    "aimed_spend": 30869,
+    "tools": [
+     {
+      "id": "inv_ai_sdr",
+      "n": 59,
+      "aimed": 0.712,
+      "top": "D1",
+      "spend": 20747
+     },
+     {
+      "id": "inv_meeting_prep",
+      "n": 36,
+      "aimed": 1.0,
+      "top": "D2",
+      "spend": 13818
+     },
+     {
+      "id": "inv_chatgpt_ent",
+      "n": 2038,
+      "aimed": 0.165,
+      "top": "D2",
+      "spend": 13796
+     },
+     {
+      "id": "inv_dealsum_nae",
+      "n": 99,
+      "aimed": 0.0,
+      "top": null,
+      "spend": 22000
+     }
+    ],
+    "kpi": {
+     "cycle": [
+      81,
+      76
+     ],
+     "resp": [
+      6.2,
+      4.9
+     ],
+     "new_biz": [
+      6324196,
+      5461844
+     ]
+    }
+   },
+   {
+    "team": "NA West",
+    "sessions": 1700,
+    "aimed": 0.174,
+    "on_driver": 0.092,
+    "spend": 12262,
+    "aimed_spend": 2758,
+    "tools": [
+     {
+      "id": "inv_meeting_prep",
+      "n": 2,
+      "aimed": 1.0,
+      "top": "D2",
+      "spend": 768
+     },
+     {
+      "id": "inv_chatgpt_ent",
+      "n": 1698,
+      "aimed": 0.173,
+      "top": "D2",
+      "spend": 11495
+     }
+    ],
+    "kpi": {
+     "cycle": [
+      77,
+      75
+     ],
+     "resp": [
+      6.1,
+      5.8
+     ],
+     "new_biz": [
+      1867106,
+      597359
+     ]
+    }
+   },
+   {
+    "team": "LATAM",
+    "sessions": 1529,
+    "aimed": 0.181,
+    "on_driver": 0.097,
+    "spend": 11105,
+    "aimed_spend": 2623,
+    "tools": [
+     {
+      "id": "inv_meeting_prep",
+      "n": 2,
+      "aimed": 1.0,
+      "top": "D2",
+      "spend": 768
+     },
+     {
+      "id": "inv_chatgpt_ent",
+      "n": 1527,
+      "aimed": 0.179,
+      "top": "D2",
+      "spend": 10337
+     }
+    ],
+    "kpi": {
+     "cycle": [
+      79,
+      82
+     ],
+     "resp": [
+      6.5,
+      6.5
+     ],
+     "new_biz": [
+      681957,
+      1497252
+     ]
+    }
+   },
+   {
+    "team": "APAC",
+    "sessions": 677,
+    "aimed": 0.164,
+    "on_driver": 0.092,
+    "spend": 4960,
+    "aimed_spend": 1128,
+    "tools": [
+     {
+      "id": "inv_meeting_prep",
+      "n": 1,
+      "aimed": 1.0,
+      "top": "D2",
+      "spend": 384
+     },
+     {
+      "id": "inv_chatgpt_ent",
+      "n": 676,
+      "aimed": 0.163,
+      "top": "D2",
+      "spend": 4576
+     }
+    ],
+    "kpi": {
+     "cycle": [
+      78,
+      82
+     ],
+     "resp": [
+      5.2,
+      6.1
+     ],
+     "new_biz": [
+      1137403,
+      800597
+     ]
+    }
+   }
+  ],
   "sdr": {
    "cycle": -9.4,
    "lo": -12.3,
@@ -916,8 +1467,8 @@
    "id": "inv_chatgpt_ent",
    "name": "ChatGPT Enterprise (sales seats)",
    "cost": 54000,
-   "level": "OKR only / unaligned",
-   "impact": "Active seats fell from 100% to 34%; 74% of sessions serve no stated goal",
+   "level": "Unaligned",
+   "impact": "Active seats fell from 100% to 34%; 83% of sessions serve no stated goal",
    "method": "Momentum and purpose only; no record trace to compare",
    "confidence": "Low",
    "decision": "Right-size seats at renewal",

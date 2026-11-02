@@ -43,3 +43,6 @@ The reverse keys never left Asaf's machine.
 - Closed-won only: win rate can't be studied; drivers are of cycle time and bookings.
 - Small teams: NA West (3–4 owners) and APAC (2–4) are thin; results there get wide ranges.
 - Everything synthetic is planted, so the demo shows the method works, not that these tools work.
+
+## Session text and purpose
+- `ai_telemetry_2024.jsonl` carries a synthetic `prompt` per session; the planted purpose is held out in `_ground_truth_session_purpose.csv` and used only to check the similarity match.

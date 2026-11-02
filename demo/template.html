@@ -127,8 +127,27 @@ footer{padding-block:40px 0;color:var(--muted);font-size:14px;display:grid;gap:1
 
 <section class="step" id="trace">
   <div class="step-head"><span class="eyebrow">Step 4 · Trace</span><h2>Give every AI investment an evidence level</h2>
-  <p>Each investment is linked to records (an agent identity's writes, or AI-prepared materials attached to a deal) and to OKRs (session purpose), then triangulated with the OKR map. The level says how strong the link is; impact comes in step 6.</p></div>
-  <div class="panel tbl"><table id="tracetbl"></table></div>
+  <p>Three edges: what each tool’s sessions are aimed at (AI → OKR, by similarity of session text to drivers and key results), which records it writes (AI → records, by agent identity and linked materials), and which records feed which key result (OKR → records, from step 2). Together they give an evidence level. Similarity picks what to test; step 6 proves the effect.</p></div>
+  <div class="panel" style="display:grid;gap:14px">
+    <div style="display:grid;gap:6px;max-width:72ch"><h3>Edge 1 · AI → OKR: what each tool’s sessions are aimed at</h3>
+    <p class="muted" style="font-size:14px">Gnocchi reads each session’s text and compares it with the operational drivers learned in step 3 and with the team’s key results. Each cell is the share of a tool’s sessions whose best match is that driver or key result. It shows intent, not effect.</p></div>
+    <div class="tbl"><table id="simtbl"></table></div>
+    <p class="muted" style="font-size:13px" id="sim-note"></p>
+  </div>
+  <div class="panel" style="display:grid;gap:12px">
+    <h3>Example sessions and their closest matches</h3>
+    <div id="simex" style="display:grid;gap:14px"></div>
+  </div>
+  <div class="panel" style="display:grid;gap:10px">
+    <h3>Triangulated: Edge 1 (AI → OKR) + Edge 2 (AI → records, by identity writes) + Edge 3 (OKR → records, from step 2)</h3>
+    <div class="tbl"><table id="tracetbl"></table></div>
+  </div>
+  <div class="panel" style="display:grid;gap:10px">
+    <div style="display:grid;gap:6px;max-width:72ch"><h3>By team: which sessions are aimed, and what the team’s key results did</h3>
+    <p class="muted" style="font-size:14px">Inside every team some sessions land on a driver or key result and others do not. Weighted by what each tool costs, the share of AI spend that is aimed differs by team, and so does movement on the cycle key result and its first-response driver.</p></div>
+    <div class="tbl"><table id="teamfit"></table></div>
+    <p class="muted" style="font-size:13px" id="teamfit-note"></p>
+  </div>
   <div class="sources" id="src-trace"></div>
 </section>
 
@@ -214,7 +233,7 @@ const SRC = {
   discover: [["real","CRM closed-won 2023–24"],["syn","CRM change log"],["syn","AI telemetry"],["syn","AI admin usage"],["syn","AI investment register"]],
   map: [["syn","Team OKRs 2024"],["real","Targets (summed to team)"],["real","CRM field map"],["real","KPI definitions"]],
   learn: [["real","CRM closed-won"],["syn","CRM change log"]],
-  trace: [["syn","CRM change log (identities, materials)"],["syn","AI telemetry (purpose)"],["syn","OKR map"]],
+  trace: [["syn","AI telemetry (session text)"],["syn","CRM change log (identities, materials)"],["syn","Team OKRs"],["real","KPI definitions (keywords)"],["syn","Driver model (step 3)"]],
   momentum: [["syn","AI admin usage"],["syn","AI telemetry"],["syn","CRM change log"]],
   prove: [["real","CRM closed-won"],["syn","CRM change log"],["syn","Rollout dates"]],
   find: [["syn","CRM change log"],["syn","OKR map"]],
@@ -270,8 +289,43 @@ $("mapping").innerHTML = `<tr><th>Key result</th><th>Record</th><th>Fields that 
 // 4 trace
 const lvlTag = (l) => `<span class="tag ${l.startsWith("1")?"l1":l.startsWith("2")?"l2":"l3"}">${esc(l)}</span>`;
 const nameOf = Object.fromEntries(D.discover.inventory.map(r => [r.id, r.name]));
-$("tracetbl").innerHTML = `<tr><th>AI investment</th><th>Evidence level</th><th>Why</th></tr>` +
-  D.trace.map(t => `<tr><td><b>${esc(nameOf[t.id])}</b></td><td>${lvlTag(t.level)}</td><td>${esc(t.why)}</td></tr>`).join("");
+$("tracetbl").innerHTML = `<tr><th>AI investment</th><th>Evidence level</th><th class="num">Sessions aimed at a driver or KR</th><th>Why</th></tr>` +
+  D.trace.map(t => `<tr><td><b>${esc(nameOf[t.id])}</b></td><td>${lvlTag(t.level)}</td><td class="num">${Math.round(t.aligned*100)}%</td><td>${esc(t.why)}</td></tr>`).join("");
+
+// 4 similarity matrix
+(function(){
+  const S = D.similarity, cols = S.targets.concat([{id:"none",name:"No match",kind:"none"}]);
+  const head = `<tr><th>AI investment</th>` + cols.map(c=>`<th class="num" title="${esc(c.name)}">${c.id==="none"?"None":c.id}</th>`).join("") + `</tr>`;
+  const rows = S.matrix.map(m => `<tr><td><b>${esc(nameOf[m.id])}</b><br><span class="muted" style="font-size:12px">${m.n.toLocaleString()} sessions</span></td>` +
+    cols.map(c => { const v = m.shares[c.id]||0, a = c.id==="none"?0:Math.min(1, v*1.1);
+      return `<td class="num" style="background:${v>0&&c.id!=="none"?`color-mix(in srgb, var(--accent) ${Math.round(a*85)}%, transparent)`:"transparent"};color:${a>0.55?"var(--accent-ink)":"inherit"}">${v?Math.round(v*100)+"%":"·"}</td>`; }).join("") + `</tr>`).join("");
+  const key = `<tr><td colspan="${cols.length+1}" class="muted" style="font-size:12px;border-bottom:none">` + S.targets.map(t=>`<b>${t.id}</b> ${esc(t.name)}`).join(" · ") + `</td></tr>`;
+  $("simtbl").innerHTML = head + rows + key;
+  const ag = S.agreement;
+  $("sim-note").innerHTML = `Encoder: word and word-pair matching (TF-IDF), threshold ${S.threshold}. Checked against the purposes planted in the synthetic logs, ${Math.round(S.overall_agreement*100)}% of sessions land on the right driver, key result or “no match”. Weakest: first-touch outreach at ${Math.round(ag["Outreach: first touch"]*100)}%, because word matching misses paraphrases; a sentence-embedding model closes that gap. Templates and descriptors are both synthetic, so real prompts will score lower.`;
+  $("simex").innerHTML = S.examples.map(e => `<div style="display:grid;gap:6px;border-top:1px solid var(--line);padding-top:10px">
+    <div><span class="tag">${esc(nameOf[e.id])}</span> <span class="muted mono" style="font-size:12px">writes: ${esc(e.writes)}</span></div>
+    <p style="font-size:15px">“${esc(e.prompt)}”</p>
+    <div style="display:grid;gap:4px">${e.top.map(t=>`<div style="display:grid;grid-template-columns:minmax(0,260px) minmax(0,1fr) 48px;gap:10px;align-items:center;font-size:13px">
+      <span>${esc(t.target)} <span class="muted">(${t.kind})</span></span>
+      <span style="height:8px;border-radius:4px;background:var(--chip);position:relative;overflow:hidden"><span style="position:absolute;inset:0 auto 0 0;width:${Math.min(100,t.score/0.4*100)}%;background:${t.score>=S.threshold?"var(--accent)":"var(--muted)"}"></span></span>
+      <span class="mono num" style="text-align:right">${t.score.toFixed(2)}</span></div>`).join("")}</div></div>`).join("");
+})();
+
+// 4b team fit
+(function(){
+  const F = D.prove.team_fit, short = {inv_ai_sdr:"AI SDR",inv_meeting_prep:"Meeting prep",inv_chatgpt_ent:"ChatGPT",inv_dealsum_emea:"Deal summary",inv_dealsum_nae:"Deal summary"};
+  const delta = (a,b,u,good) => { const d=b-a, col = d===0?"var(--muted)":((d<0)===good?"var(--accent)":"var(--muted)"); return `${a}${u} → <b>${b}${u}</b> <span style="color:${col}">(${d>0?"+":d<0?"−":"±"}${Math.abs(Math.round(d*10)/10)})</span>`; };
+  $("teamfit").innerHTML = `<tr><th>Team</th><th>Share of each tool’s sessions aimed at a driver or KR</th><th>AI spend aimed</th><th class="num">First response, h (driver)</th><th class="num">Median New-deal cycle, days (KR3)</th></tr>` +
+    F.map(r => { const pct = r.spend ? r.aimed_spend/r.spend : 0;
+      return `<tr><td><b>${esc(r.team)}</b><br><span class="muted" style="font-size:12px">${r.sessions.toLocaleString()} sessions</span></td>
+      <td>${r.tools.map(t=>`<span class="tag ${t.aimed>=0.6?"l1":t.aimed>=0.2?"l2":"l3"}" title="${t.n} sessions">${short[t.id]} ${Math.round(t.aimed*100)}%</span>`).join(" ")}</td>
+      <td style="min-width:150px"><div style="display:flex;gap:8px;align-items:center"><span style="flex:1;height:8px;border-radius:4px;background:var(--chip);position:relative;overflow:hidden"><span style="position:absolute;inset:0 auto 0 0;width:${Math.round(pct*100)}%;background:var(--accent)"></span></span><span class="mono num">${Math.round(pct*100)}%</span></div><span class="muted" style="font-size:12px">${fmt$(r.aimed_spend)} of ${fmt$(r.spend)}</span></td>
+      <td class="num">${delta(r.kpi.resp[0], r.kpi.resp[1], "", true)}</td>
+      <td class="num">${delta(r.kpi.cycle[0], r.kpi.cycle[1], "", true)}</td></tr>`; }).join("");
+  const top = F.slice().sort((a,b)=>b.aimed_spend/b.spend - a.aimed_spend/a.spend);
+  $("teamfit-note").innerHTML = `Years are 2023 → 2024. ${esc(top[0].team)} aims ${Math.round(top[0].aimed_spend/top[0].spend*100)}% of its AI spend at drivers and key results and its cycle fell ${top[0].kpi.cycle[0]-top[0].kpi.cycle[1]} days; teams aiming about a fifth saw little or none. Meeting prep is aimed everywhere but used in few deals outside EMEA and NA East (step 6); ChatGPT is mostly aimed at nothing. This is a pattern to explain, not proof: step 6 isolates each tool’s effect.`;
+})();
 
 // 5 sparks
 function spark(values, color, max, label){
@@ -335,7 +389,7 @@ $("ds-big").textContent = `${sgn(P.dealsum.cycle)} days`;
 $("ds-text").innerHTML = `on the cycle, 90% range ${sgn(P.dealsum.lo)} to ${sgn(P.dealsum.hi)}, across ${P.dealsum.deals} deals summarized. Two teams built the same bot separately; neither moves a driver.`;
 const cm = D.momentum.inv_chatgpt_ent;
 $("chat-big").textContent = `${Math.round(cm[0].active_share*100)}% → ${Math.round(cm[11].active_share*100)}%`;
-$("chat-text").innerHTML = `active seats, January to December. It writes nothing to the CRM, so there’s no record to compare; only ${D.trace[4].why.match(/(\d+)%/)[1]}% of sessions match an OKR purpose. Evidence is usage and purpose only.`;
+$("chat-text").innerHTML = `active seats, January to December. It writes nothing to the CRM, so there’s no record to compare; only ${Math.round(D.trace.find(t=>t.id==="inv_chatgpt_ent").aligned*100)}% of its sessions match a driver or key result. Evidence is usage and purpose only.`;
 
 // 7 find
 $("se-w").textContent = Math.abs(D.drivers[1].days).toFixed(0);
@@ -367,6 +421,7 @@ const truth = [
   ["Deal-summary bots", "no effect, overlap", `${sgn(P.dealsum.cycle)} (${sgn(P.dealsum.lo)} to ${sgn(P.dealsum.hi)})`],
   ["ChatGPT Enterprise", "usage fades ~7% a month", `${Math.round(cm[0].active_share*100)}% → ${Math.round(cm[11].active_share*100)}% active`],
   ["Onboarding-satisfaction key result", "no CRM record", "flagged as blind spot"],
+  ["Session purpose (similarity to drivers and key results)", "9 planted purposes", `${Math.round(D.similarity.overall_agreement*100)}% of sessions matched correctly`],
 ];
 $("checktbl").innerHTML = `<tr><th>Planted in the synthetic data</th><th>What was planted</th><th>What Gnocchi found</th></tr>` + truth.map(r=>`<tr><td>${r[0]}</td><td class="mono" style="font-size:13px">${r[1]}</td><td class="mono" style="font-size:13px"><b>${r[2]}</b></td></tr>`).join("");
 </script>
