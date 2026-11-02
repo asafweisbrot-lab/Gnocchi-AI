@@ -19,6 +19,13 @@ pip install -r requirements.txt
 PYTHONPATH=src python -m gnocchi.synth.run_all
 ```
 
+## Run the demo analysis and page
+
+```bash
+PYTHONPATH=src python -m gnocchi.analysis.demo   # -> data/demo/demo_data.json
+python demo/build_page.py                         # -> demo/gnocchi_demo.html
+```
+
 ## Principles
 
 - Team level only. No person is a unit of analysis.

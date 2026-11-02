@@ -1,39 +1,39 @@
 investment_id,team,month,licences_assigned,active_users,sessions
 inv_ai_sdr,EMEA,2024-01,1,0,0
 inv_ai_sdr,EMEA,2024-02,1,0,0
-inv_ai_sdr,EMEA,2024-03,1,0,0
-inv_ai_sdr,EMEA,2024-04,1,1,12
-inv_ai_sdr,EMEA,2024-05,1,1,20
+inv_ai_sdr,EMEA,2024-03,1,1,6
+inv_ai_sdr,EMEA,2024-04,1,1,28
+inv_ai_sdr,EMEA,2024-05,1,1,8
 inv_ai_sdr,EMEA,2024-06,1,1,18
-inv_ai_sdr,EMEA,2024-07,1,1,28
+inv_ai_sdr,EMEA,2024-07,1,1,40
 inv_ai_sdr,EMEA,2024-08,1,1,38
-inv_ai_sdr,EMEA,2024-09,1,1,44
-inv_ai_sdr,EMEA,2024-10,1,1,16
-inv_ai_sdr,EMEA,2024-11,1,0,0
-inv_ai_sdr,EMEA,2024-12,1,0,0
+inv_ai_sdr,EMEA,2024-09,1,1,40
+inv_ai_sdr,EMEA,2024-10,1,1,15
+inv_ai_sdr,EMEA,2024-11,1,1,10
+inv_ai_sdr,EMEA,2024-12,1,1,11
 inv_ai_sdr,NA East,2024-01,1,0,0
 inv_ai_sdr,NA East,2024-02,1,0,0
 inv_ai_sdr,NA East,2024-03,1,0,0
 inv_ai_sdr,NA East,2024-04,1,0,0
 inv_ai_sdr,NA East,2024-05,1,0,0
-inv_ai_sdr,NA East,2024-06,1,0,0
-inv_ai_sdr,NA East,2024-07,1,1,2
-inv_ai_sdr,NA East,2024-08,1,1,10
+inv_ai_sdr,NA East,2024-06,1,1,4
+inv_ai_sdr,NA East,2024-07,1,1,6
+inv_ai_sdr,NA East,2024-08,1,1,8
 inv_ai_sdr,NA East,2024-09,1,1,10
-inv_ai_sdr,NA East,2024-10,1,1,6
-inv_ai_sdr,NA East,2024-11,1,0,0
-inv_ai_sdr,NA East,2024-12,1,0,0
+inv_ai_sdr,NA East,2024-10,1,1,12
+inv_ai_sdr,NA East,2024-11,1,1,10
+inv_ai_sdr,NA East,2024-12,1,1,9
 inv_meeting_prep,EMEA,2024-01,12,0,0
 inv_meeting_prep,EMEA,2024-02,12,0,0
 inv_meeting_prep,EMEA,2024-03,12,0,0
 inv_meeting_prep,EMEA,2024-04,12,1,1
-inv_meeting_prep,EMEA,2024-05,12,1,2
-inv_meeting_prep,EMEA,2024-06,12,1,3
-inv_meeting_prep,EMEA,2024-07,12,1,6
-inv_meeting_prep,EMEA,2024-08,12,1,18
-inv_meeting_prep,EMEA,2024-09,12,1,12
-inv_meeting_prep,EMEA,2024-10,12,1,13
-inv_meeting_prep,EMEA,2024-11,12,1,3
+inv_meeting_prep,EMEA,2024-05,12,1,3
+inv_meeting_prep,EMEA,2024-06,12,1,2
+inv_meeting_prep,EMEA,2024-07,12,1,9
+inv_meeting_prep,EMEA,2024-08,12,1,16
+inv_meeting_prep,EMEA,2024-09,12,1,14
+inv_meeting_prep,EMEA,2024-10,12,1,12
+inv_meeting_prep,EMEA,2024-11,12,1,1
 inv_meeting_prep,EMEA,2024-12,12,0,0
 inv_meeting_prep,NA East,2024-01,12,0,0
 inv_meeting_prep,NA East,2024-02,12,0,0
@@ -42,9 +42,9 @@ inv_meeting_prep,NA East,2024-04,12,0,0
 inv_meeting_prep,NA East,2024-05,12,1,2
 inv_meeting_prep,NA East,2024-06,12,1,5
 inv_meeting_prep,NA East,2024-07,12,1,4
-inv_meeting_prep,NA East,2024-08,12,1,4
+inv_meeting_prep,NA East,2024-08,12,1,5
 inv_meeting_prep,NA East,2024-09,12,1,6
-inv_meeting_prep,NA East,2024-10,12,1,7
+inv_meeting_prep,NA East,2024-10,12,1,6
 inv_meeting_prep,NA East,2024-11,12,1,7
 inv_meeting_prep,NA East,2024-12,12,1,1
 inv_meeting_prep,NA West,2024-01,10,0,0
@@ -145,25 +145,25 @@ inv_chatgpt_ent,APAC,2024-11,4,2,29
 inv_chatgpt_ent,APAC,2024-12,4,2,22
 inv_dealsum_emea,EMEA,2024-01,1,0,0
 inv_dealsum_emea,EMEA,2024-02,1,1,6
-inv_dealsum_emea,EMEA,2024-03,1,1,15
-inv_dealsum_emea,EMEA,2024-04,1,1,11
+inv_dealsum_emea,EMEA,2024-03,1,1,17
+inv_dealsum_emea,EMEA,2024-04,1,1,7
 inv_dealsum_emea,EMEA,2024-05,1,1,15
-inv_dealsum_emea,EMEA,2024-06,1,1,15
-inv_dealsum_emea,EMEA,2024-07,1,1,10
-inv_dealsum_emea,EMEA,2024-08,1,1,9
-inv_dealsum_emea,EMEA,2024-09,1,1,19
-inv_dealsum_emea,EMEA,2024-10,1,1,23
-inv_dealsum_emea,EMEA,2024-11,1,1,16
-inv_dealsum_emea,EMEA,2024-12,1,1,8
+inv_dealsum_emea,EMEA,2024-06,1,1,21
+inv_dealsum_emea,EMEA,2024-07,1,1,11
+inv_dealsum_emea,EMEA,2024-08,1,1,10
+inv_dealsum_emea,EMEA,2024-09,1,1,16
+inv_dealsum_emea,EMEA,2024-10,1,1,20
+inv_dealsum_emea,EMEA,2024-11,1,1,14
+inv_dealsum_emea,EMEA,2024-12,1,1,10
 inv_dealsum_nae,NA East,2024-01,1,0,0
 inv_dealsum_nae,NA East,2024-02,1,0,0
 inv_dealsum_nae,NA East,2024-03,1,0,0
 inv_dealsum_nae,NA East,2024-04,1,1,4
-inv_dealsum_nae,NA East,2024-05,1,1,14
-inv_dealsum_nae,NA East,2024-06,1,1,11
-inv_dealsum_nae,NA East,2024-07,1,1,10
-inv_dealsum_nae,NA East,2024-08,1,1,10
+inv_dealsum_nae,NA East,2024-05,1,1,13
+inv_dealsum_nae,NA East,2024-06,1,1,13
+inv_dealsum_nae,NA East,2024-07,1,1,15
+inv_dealsum_nae,NA East,2024-08,1,1,9
 inv_dealsum_nae,NA East,2024-09,1,1,12
-inv_dealsum_nae,NA East,2024-10,1,1,15
-inv_dealsum_nae,NA East,2024-11,1,1,11
-inv_dealsum_nae,NA East,2024-12,1,1,12
+inv_dealsum_nae,NA East,2024-10,1,1,11
+inv_dealsum_nae,NA East,2024-11,1,1,14
+inv_dealsum_nae,NA East,2024-12,1,1,8

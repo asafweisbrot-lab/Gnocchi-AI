@@ -1,0 +1,372 @@
+<title>Gnocchi AI Demo</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column, a sticky step rail, each step = what Gnocchi does + one exhibit + its sources */
+:root{
+  --bg:#F4F0EA; --surface:#FBF8F3; --ink:#1F1C19; --soft:#3A3530; --muted:#6E675E; --line:#D8D0C4;
+  --accent:#AD4216; --accent-ink:#FBF8F3; --cmp:#2F6F8F; --good:#2E7D4F; --warn:#9A6A00;
+  --chip:#ECE6DD; --dark:#1F1C19; --dark-ink:#F4F0EA;
+  --display:'Hanken Grotesk', Arial, sans-serif; --mono:'IBM Plex Mono', 'Courier New', monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#181614; --surface:#221F1C; --ink:#F1ECE4; --soft:#D6CFC4; --muted:#A9A196; --line:#3A3530;
+  --accent:#EE9A69; --accent-ink:#1F1C19; --cmp:#7FB6D0; --good:#6CC08E; --warn:#E0B44C;
+  --chip:#2C2824; --dark:#0F0E0D; --dark-ink:#F4F0EA; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#181614; --surface:#221F1C; --ink:#F1ECE4; --soft:#D6CFC4; --muted:#A9A196; --line:#3A3530;
+  --accent:#EE9A69; --accent-ink:#1F1C19; --cmp:#7FB6D0; --good:#6CC08E; --warn:#E0B44C;
+  --chip:#2C2824; --dark:#0F0E0D; --dark-ink:#F4F0EA; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--display);font-size:16px;line-height:1.5;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));padding-block:0 64px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top, 0px);z-index:10;background:var(--bg)}
+.wrap{max-width:1080px;margin:0 auto}
+h1,h2,h3{text-wrap:balance;margin:0}
+h1{font-size:clamp(32px,5vw,52px);font-weight:700;letter-spacing:-.02em;line-height:1.05}
+h2{font-size:clamp(24px,3vw,32px);font-weight:700;letter-spacing:-.01em}
+h3{font-size:18px;font-weight:600}
+p{margin:0}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.muted{color:var(--muted)}
+.mono{font-family:var(--mono)}
+header.hero{padding-block:48px 28px;display:grid;gap:16px}
+.lead{font-size:19px;color:var(--soft);max-width:68ch}
+.pill{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:12px;padding:4px 10px;border-radius:999px;background:var(--chip);color:var(--soft)}
+.pill.warn{color:var(--warn)}
+.summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:8px}
+.stat{border-top:2px solid var(--ink);padding-top:10px;display:grid;gap:2px}
+.stat b{font-size:30px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.stat span{font-size:13px;color:var(--muted)}
+nav.rail{position:sticky;top:env(safe-area-inset-top, 0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);
+  display:flex;gap:4px;overflow-x:auto;padding-block:10px;scrollbar-width:thin}
+nav.rail a{flex:0 0 auto;font-family:var(--mono);font-size:12px;color:var(--soft);text-decoration:none;padding:6px 10px;border-radius:6px;white-space:nowrap}
+nav.rail a:hover,nav.rail a:focus-visible{background:var(--chip);outline:none}
+nav.rail a.on{background:var(--ink);color:var(--bg)}
+section.step{padding-block:44px 8px;display:grid;gap:18px;scroll-margin-top:64px}
+.step-head{display:grid;gap:8px;max-width:72ch}
+.step-head p{color:var(--soft)}
+.sources{display:flex;flex-wrap:wrap;gap:6px}
+.sources .pill::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--muted)}
+.sources .pill.real::before{background:var(--good)}
+.sources .pill.syn::before{background:var(--warn)}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;min-width:0}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px;font-variant-numeric:tabular-nums}
+th{text-align:left;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500;padding:8px 10px;border-bottom:1px solid var(--ink)}
+td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+td.num,th.num{text-align:right}
+.tag{display:inline-block;font-family:var(--mono);font-size:11px;padding:2px 8px;border-radius:4px;background:var(--chip);color:var(--soft);white-space:nowrap}
+.tag.acting{background:var(--ink);color:var(--bg)}
+.tag.l1{background:var(--accent);color:var(--accent-ink)}
+.tag.l2{background:var(--chip);color:var(--ink);border:1px solid var(--line)}
+.tag.l3{background:transparent;color:var(--muted);border:1px dashed var(--muted)}
+.tag.blind{background:transparent;color:var(--warn);border:1px solid var(--warn)}
+.big{font-size:44px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1}
+.result{display:grid;gap:6px;border-left:4px solid var(--accent);padding-left:16px}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--soft)}
+.legend i{display:inline-block;width:14px;height:3px;vertical-align:middle;margin-right:6px;border-radius:2px}
+svg text{fill:var(--muted);font-family:var(--mono);font-size:11px}
+svg .lbl{fill:var(--soft);font-family:var(--display);font-size:13px}
+details{border-top:1px solid var(--line);padding-top:10px}
+summary{cursor:pointer;font-family:var(--mono);font-size:12px;color:var(--soft)}
+summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+pre{font-family:var(--mono);font-size:12px;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:12px;overflow-x:auto;white-space:pre;margin:10px 0 0}
+.decision{font-weight:600}
+.callout{background:var(--dark);color:var(--dark-ink);border-radius:10px;padding:18px 20px;display:grid;gap:6px}
+.callout .eyebrow{color:#EE9A69}
+.spark{display:grid;grid-template-columns:200px minmax(0,1fr) minmax(0,1fr);gap:12px;align-items:center;padding-block:10px;border-bottom:1px solid var(--line)}
+.spark:last-child{border-bottom:none}
+footer{padding-block:40px 0;color:var(--muted);font-size:14px;display:grid;gap:10px;max-width:72ch}
+@media (max-width:760px){
+  .summary{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .grid2{grid-template-columns:minmax(0,1fr)}
+  .spark{grid-template-columns:minmax(0,1fr)}
+}
+@media (prefers-reduced-motion:no-preference){nav.rail a{transition:background .15s}}
+</style>
+
+<div class="wrap">
+<header class="hero">
+  <span class="eyebrow">Gnocchi AI · demo</span>
+  <h1>What did each AI investment move?</h1>
+  <p class="lead">One year of real, anonymized closed-won deals, with synthetic CRM history and AI logs added on top, run through Gnocchi step by step: from finding the AI a company runs to a renew, consolidate or replace decision for each investment.</p>
+  <div style="display:flex;flex-wrap:wrap;gap:8px">
+    <span class="pill">Real: 641 + 695 closed-won deals, 2023–2024</span>
+    <span class="pill warn">Synthetic: CRM history, AI logs, planted effects</span>
+    <span class="pill">Team level only</span>
+  </div>
+  <div class="summary" id="summary"></div>
+</header>
+
+<nav class="rail" id="rail" aria-label="Demo steps"></nav>
+
+<section class="step" id="discover">
+  <div class="step-head"><span class="eyebrow">Step 1 · Discover</span><h2>Find the AI the company already runs</h2>
+  <p>Read-only connections to the CRM, the OKR source and the AI sources. Agent identities in the CRM's change history show acting AI; admin and usage data show the tools people use directly. The result is an inventory of AI investments by team.</p></div>
+  <div class="panel tbl"><table id="inventory"></table></div>
+  <details><summary>Sample logs: one deal's change history and one session per tool</summary><pre id="logs"></pre></details>
+  <div class="sources" id="src-discover"></div>
+</section>
+
+<section class="step" id="map">
+  <div class="step-head"><span class="eyebrow">Step 2 · Map</span><h2>Link each key result to the records that hold its progress</h2>
+  <p>The semantic layer reads each team OKR and proposes where its progress is recorded, which fields carry it and at what grain. A person confirms. A key result with no record is flagged as a blind spot. Shown: EMEA's 2024 OKR.</p></div>
+  <div class="panel tbl"><table id="mapping"></table></div>
+  <div class="sources" id="src-map"></div>
+</section>
+
+<section class="step" id="learn">
+  <div class="step-head"><span class="eyebrow">Step 3 · Learn</span><h2>Find what actually moves the target</h2>
+  <p>From two years of change history, Gnocchi learns which actions, roles and materials shorten the new-business sales cycle (key result 3), controlling for deal size, team and month. Bars show days added or saved, with 90% ranges.</p></div>
+  <div class="panel"><svg id="drivers" role="img" aria-label="Drivers of the new-business sales cycle, in days"></svg></div>
+  <div class="sources" id="src-learn"></div>
+</section>
+
+<section class="step" id="trace">
+  <div class="step-head"><span class="eyebrow">Step 4 · Trace</span><h2>Give every AI investment an evidence level</h2>
+  <p>Each investment is linked to records (an agent identity's writes, or AI-prepared materials attached to a deal) and to OKRs (session purpose), then triangulated with the OKR map. The level says how strong the link is; impact comes in step 6.</p></div>
+  <div class="panel tbl"><table id="tracetbl"></table></div>
+  <div class="sources" id="src-trace"></div>
+</section>
+
+<section class="step" id="momentum">
+  <div class="step-head"><span class="eyebrow">Step 5 · Momentum</span><h2>See whether each tool is used, and on what</h2>
+  <p>An assignment date shows access, not use. Usage, the records each tool touches and the target's driver go on one timeline. The first deliverable, in weeks.</p></div>
+  <div class="panel" id="sparks"></div>
+  <div class="panel grid2">
+    <div style="display:grid;gap:8px"><h3>First response on new deals, 2024</h3><p class="muted" style="font-size:14px">Median hours per month. EMEA's drop starts when the AI SDR goes live in April and works deals closing from June.</p>
+      <div class="legend"><span><i style="background:var(--accent)"></i>EMEA</span><span><i style="background:var(--cmp)"></i>NA West, LATAM, APAC</span></div></div>
+    <svg id="resp" role="img" aria-label="Median first response hours per month, EMEA vs teams without the AI SDR"></svg>
+  </div>
+  <div class="sources" id="src-momentum"></div>
+</section>
+
+<section class="step" id="prove">
+  <div class="step-head"><span class="eyebrow">Step 6 · Prove</span><h2>Compare, so the result is impact and not coincidence</h2>
+  <p>Gnocchi picks the strongest comparison the data allows: staggered rollouts first, then usage dose and record-level comparisons with controls. Every result comes as a range.</p></div>
+  <div class="panel grid2">
+    <div class="result"><span class="eyebrow">AI SDR agent · difference-in-differences</span>
+      <span class="big" id="sdr-big"></span><p id="sdr-text"></p></div>
+    <div style="display:grid;gap:8px"><h3>Median new-deal cycle by quarter, 2024</h3>
+      <div class="legend" id="sdr-legend"></div><svg id="sdrchart" role="img" aria-label="Median new-deal cycle by quarter for EMEA, NA East and teams without the AI SDR"></svg></div>
+  </div>
+  <div class="panel grid2">
+    <div class="result"><span class="eyebrow">Meeting-prep assistant · record level, with controls</span>
+      <span class="big" id="prep-big"></span><p id="prep-text"></p></div>
+    <div style="display:grid;gap:8px"><h3>Share of H2 new and expansion deals with a prep brief</h3><svg id="dose" role="img" aria-label="Share of deals with a meeting-prep brief, by team"></svg></div>
+  </div>
+  <div class="panel grid2">
+    <div class="result"><span class="eyebrow">Deal-summary bots · record level, with controls</span>
+      <span class="big" id="ds-big"></span><p id="ds-text"></p></div>
+    <div class="result" style="border-color:var(--muted)"><span class="eyebrow" style="color:var(--muted)">ChatGPT Enterprise · no record trace</span>
+      <span class="big" id="chat-big"></span><p id="chat-text"></p></div>
+  </div>
+  <div class="sources" id="src-prove"></div>
+</section>
+
+<section class="step" id="find">
+  <div class="step-head"><span class="eyebrow">Step 7 · Find</span><h2>Point to the AI the company needs next</h2>
+  <p>The same model, run in reverse: a driver with a high weight, a weak baseline and no AI on it yet is an AI opportunity. Adding a solutions engineer before the proposal saves about <b id="se-w"></b> days, and two teams rarely do it.</p></div>
+  <div class="panel grid2">
+    <svg id="sechart" role="img" aria-label="Share of new deals with a solutions engineer before the proposal, by team"></svg>
+    <div style="display:grid;gap:12px;align-content:start">
+      <div class="result"><span class="eyebrow">AI opportunity</span><p id="opp-text"></p></div>
+      <div class="result" style="border-color:var(--warn)"><span class="eyebrow" style="color:var(--warn)">Blind spot</span><p>“Raise customer satisfaction with onboarding” maps to no CRM record, so its progress can’t be seen. Suggested fix: one onboarding-score field on the account.</p></div>
+    </div>
+  </div>
+  <div class="sources" id="src-find"></div>
+</section>
+
+<section class="step" id="report">
+  <div class="step-head"><span class="eyebrow">Step 8 · Report</span><h2>A decision for every AI investment</h2>
+  <p>Per investment: cost, evidence level, impact on the target with its method and confidence, and the recommendation.</p></div>
+  <div class="panel tbl"><table id="reporttbl"></table></div>
+  <div class="callout"><span class="eyebrow">Result</span><p id="total-text" style="font-size:18px"></p></div>
+</section>
+
+<section class="step" id="check">
+  <div class="step-head"><span class="eyebrow">Check</span><h2>Did the analysis find what was planted?</h2>
+  <p>The synthetic data carries known effects. Recovering them shows the method works; it says nothing about whether these tools work in a real company.</p></div>
+  <div class="panel tbl"><table id="checktbl"></table></div>
+</section>
+
+<footer>
+  <p><b>About the data.</b> Deals are real and anonymized (owner, account and partner names replaced). CRM history, OKRs, AI logs and usage are synthetic, generated with a fixed seed. Only closed-won deals exist, so win rate isn’t studied. NA West and APAC are small teams, which widens their ranges.</p>
+  <p>Everything is reported at team level. No person is a unit of analysis.</p>
+</footer>
+</div>
+
+<script>
+const D = __DATA__;
+const $ = (id) => document.getElementById(id);
+const fmt$ = (v) => v >= 1e6 ? `$${(v/1e6).toFixed(2)}M` : `$${Math.round(v/1000)}K`;
+const sgn = (v) => (v > 0 ? "+" : v < 0 ? "−" : "") + Math.abs(v).toFixed(1);
+const esc = (s) => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const NS = "http://www.w3.org/2000/svg";
+function el(tag, attrs, parent){ const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; }
+function txt(parent, x, y, s, attrs={}){ const t = el("text", {x, y, ...attrs}, parent); t.textContent = s; return t; }
+const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+
+const SRC = {
+  discover: [["real","CRM closed-won 2023–24"],["syn","CRM change log"],["syn","AI telemetry"],["syn","AI admin usage"],["syn","AI investment register"]],
+  map: [["syn","Team OKRs 2024"],["real","Targets (summed to team)"],["real","CRM field map"],["real","KPI definitions"]],
+  learn: [["real","CRM closed-won"],["syn","CRM change log"]],
+  trace: [["syn","CRM change log (identities, materials)"],["syn","AI telemetry (purpose)"],["syn","OKR map"]],
+  momentum: [["syn","AI admin usage"],["syn","AI telemetry"],["syn","CRM change log"]],
+  prove: [["real","CRM closed-won"],["syn","CRM change log"],["syn","Rollout dates"]],
+  find: [["syn","CRM change log"],["syn","OKR map"]],
+};
+for (const k in SRC) $("src-"+k).innerHTML = SRC[k].map(([c,t]) => `<span class="pill ${c}">${esc(t)}</span>`).join("");
+
+// summary
+const R = D.report, P = D.prove;
+$("summary").innerHTML = [
+  [fmt$(D.totals.ai_spend), "AI spend, 5 investments"],
+  [`${sgn(P.sdr.cycle)} days`, "AI SDR on the new-deal cycle"],
+  [fmt$(D.totals.avoided), "Avoidable spend found"],
+  ["1", "AI opportunity, 1 blind spot"],
+].map(([b,s]) => `<div class="stat"><b>${b}</b><span>${s}</span></div>`).join("");
+
+// rail
+const steps = [["discover","1 Discover"],["map","2 Map"],["learn","3 Learn"],["trace","4 Trace"],["momentum","5 Momentum"],["prove","6 Prove"],["find","7 Find"],["report","8 Report"],["check","Check"]];
+$("rail").innerHTML = steps.map(([id,l]) => `<a href="#${id}" data-id="${id}">${l}</a>`).join("");
+const io = new IntersectionObserver((es) => es.forEach(e => { if (e.isIntersecting) document.querySelectorAll("#rail a").forEach(a => a.classList.toggle("on", a.dataset.id === e.target.id)); }), {rootMargin: "-40% 0px -55% 0px"});
+document.querySelectorAll("section.step").forEach(s => io.observe(s));
+
+// 1 inventory
+const typeTag = (t) => `<span class="tag ${t==="acting"?"acting":""}">${t}</span>`;
+$("inventory").innerHTML = `<tr><th>AI investment</th><th>Bought or built</th><th>Type</th><th>Seen through</th><th>Teams</th><th class="num">Cost / yr</th></tr>` +
+  D.discover.inventory.map(r => `<tr><td><b>${esc(r.name)}</b></td><td>${r.kind}</td><td>${typeTag(r.ai_type)}</td><td class="mono" style="font-size:12px">${r.identity==="sso_user"?"SSO + admin usage":esc(r.identity)}</td><td>${r.teams.join(", ")}</td><td class="num">${fmt$(r.cost)}</td></tr>`).join("");
+const log = D.discover.sample_change_log.map(e => `${e.ts}  ${e.record_id}  ${(e.object+"."+e.field).padEnd(32)} ${String(e.new_value).padEnd(20)} by ${e.changed_by}${e.created_with?" (made with "+e.created_with+")":""}`).join("\n");
+const ses = D.discover.sample_sessions.map(s => JSON.stringify({ts:s.ts, investment:s.investment_id, identity:s.identity, team:s.team, purpose:s.purpose, records:s.record_ids||null, writes:s.writes, tokens:s.tokens})).join("\n");
+$("logs").textContent = "# CRM change history (synthetic) for one real deal\n" + log + "\n\n# AI telemetry (synthetic), one session per tool\n" + ses;
+
+// 2 mapping
+$("mapping").innerHTML = `<tr><th>Key result</th><th>Record</th><th>Fields that carry progress</th><th>Grain</th></tr>` +
+  D.map.map(m => `<tr><td><b>${esc(m.kr)}</b></td><td>${m.blind_spot?'<span class="tag blind">Blind spot</span>':esc(m.record)}</td><td class="mono" style="font-size:12px">${esc(m.fields||"No record holds this")}</td><td>${esc(m.grain||"·")}</td></tr>`).join("");
+
+// 3 drivers chart
+(function(){
+  const svg = $("drivers"), W = 900, rowH = 46, top = 28, H = top + D.drivers.length*rowH + 30;
+  svg.setAttribute("viewBox", `0 0 ${W} ${H}`); svg.style.width = "100%";
+  const x0 = 380, x1 = W - 30, lo = -14, hi = 4, sx = v => x0 + (v - lo)/(hi - lo)*(x1 - x0);
+  for (let v = lo; v <= hi; v += 2){ el("line",{x1:sx(v),x2:sx(v),y1:top-8,y2:H-24,stroke:css("--line"),"stroke-width":v===0?1.5:1},svg); txt(svg, sx(v), H-8, (v>0?"+":"")+v, {"text-anchor":"middle"}); }
+  txt(svg, x1, top-14, "days on the cycle (negative = faster)", {"text-anchor":"end"});
+  D.drivers.forEach((d,i) => {
+    const y = top + i*rowH + rowH/2;
+    txt(svg, 0, y-2, d.driver, {class:"lbl"}); txt(svg, 0, y+14, d.per);
+    const a = sx(Math.min(0,d.days)), b = sx(Math.max(0,d.days));
+    el("rect",{x:a,y:y-9,width:Math.max(2,b-a),height:18,rx:3,fill:d.days<0?css("--accent"):css("--muted")},svg);
+    el("line",{x1:sx(d.days-d.ci),x2:sx(d.days+d.ci),y1:y,y2:y,stroke:css("--ink"),"stroke-width":1.5},svg);
+    [d.days-d.ci,d.days+d.ci].forEach(v => el("line",{x1:sx(v),x2:sx(v),y1:y-5,y2:y+5,stroke:css("--ink"),"stroke-width":1.5},svg));
+    const lx = d.days<0 ? Math.min(a, sx(d.days-d.ci)) - 8 : Math.max(b, sx(d.days+d.ci)) + 8;
+    txt(svg, lx, y+4, `${sgn(d.days)} d`, {"text-anchor":d.days<0?"end":"start",class:"lbl"});
+  });
+})();
+
+// 4 trace
+const lvlTag = (l) => `<span class="tag ${l.startsWith("1")?"l1":l.startsWith("2")?"l2":"l3"}">${esc(l)}</span>`;
+const nameOf = Object.fromEntries(D.discover.inventory.map(r => [r.id, r.name]));
+$("tracetbl").innerHTML = `<tr><th>AI investment</th><th>Evidence level</th><th>Why</th></tr>` +
+  D.trace.map(t => `<tr><td><b>${esc(nameOf[t.id])}</b></td><td>${lvlTag(t.level)}</td><td>${esc(t.why)}</td></tr>`).join("");
+
+// 5 sparks
+function spark(values, color, max, label){
+  const W = 300, H = 56, svg = document.createElementNS(NS,"svg"); svg.setAttribute("viewBox",`0 0 ${W} ${H}`); svg.style.width="100%"; svg.setAttribute("role","img"); svg.setAttribute("aria-label", label);
+  const m = max || Math.max(1, ...values), sx = i => 6 + i*(W-12)/11, sy = v => H-14 - (v/m)*(H-24);
+  el("line",{x1:6,x2:W-6,y1:H-14,y2:H-14,stroke:css("--line")},svg);
+  const pts = values.map((v,i) => `${sx(i)},${sy(v)}`).join(" ");
+  el("polygon",{points:`${sx(0)},${H-14} ${pts} ${sx(11)},${H-14}`,fill:color,opacity:.14},svg);
+  el("polyline",{points:pts,fill:"none",stroke:color,"stroke-width":2},svg);
+  el("circle",{cx:sx(11),cy:sy(values[11]),r:3,fill:color},svg);
+  txt(svg, 6, H-2, "Jan"); txt(svg, W-6, H-2, "Dec", {"text-anchor":"end"});
+  return svg;
+}
+const flags = {inv_ai_sdr:"Ramping with rollouts", inv_meeting_prep:"Low use: few seats active", inv_chatgpt_ent:"Fading", inv_dealsum_emea:"Steady, overlaps NA East build", inv_dealsum_nae:"Steady, overlaps EMEA build"};
+const sp = $("sparks");
+sp.insertAdjacentHTML("beforeend", `<div class="spark" style="padding-top:0"><span class="eyebrow" style="color:var(--muted)">Investment</span><span class="eyebrow" style="color:var(--muted)">Active seats or agent on</span><span class="eyebrow" style="color:var(--muted)">Records touched per month</span></div>`);
+for (const id in D.momentum){
+  const m = D.momentum[id], row = document.createElement("div"); row.className = "spark";
+  row.innerHTML = `<div><b>${esc(nameOf[id])}</b><br><span class="muted" style="font-size:13px">${flags[id]}</span></div>`;
+  const a = document.createElement("div"), b = document.createElement("div");
+  a.appendChild(spark(m.map(x=>x.active_share), css("--cmp"), 1, `${nameOf[id]} active share per month`));
+  b.appendChild(spark(m.map(x=>x.records), css("--accent"), null, `${nameOf[id]} records touched per month`));
+  if (id === "inv_chatgpt_ent") b.innerHTML = `<p class="muted" style="font-size:13px">Touches no records</p>`;
+  row.append(a,b); sp.appendChild(row);
+}
+function lines(svgId, series, opts){
+  const svg = $(svgId), W = 520, H = 240, L = 40, Rm = 12, T = 12, B = 28;
+  svg.setAttribute("viewBox",`0 0 ${W} ${H}`); svg.style.width="100%";
+  const n = series[0].values.length, all = series.flatMap(s=>s.values).filter(v=>v!=null);
+  const lo = opts.lo ?? Math.floor(Math.min(...all)/10)*10, hi = opts.hi ?? Math.ceil(Math.max(...all)/10)*10;
+  const sx = i => L + i*(W-L-Rm)/(n-1), sy = v => T + (hi - v)/(hi - lo)*(H-T-B);
+  for (let v = lo; v <= hi; v += opts.step){ el("line",{x1:L,x2:W-Rm,y1:sy(v),y2:sy(v),stroke:css("--line")},svg); txt(svg, L-6, sy(v)+4, v, {"text-anchor":"end"}); }
+  opts.xlabels.forEach((l,i) => { if (l) txt(svg, sx(i), H-8, l, {"text-anchor":"middle"}); });
+  if (opts.target != null){ el("line",{x1:L,x2:W-Rm,y1:sy(opts.target),y2:sy(opts.target),stroke:css("--good"),"stroke-dasharray":"4 4"},svg); txt(svg, W-Rm, sy(opts.target)-6, opts.targetLabel, {"text-anchor":"end"}); }
+  series.forEach(s => {
+    const pts = s.values.map((v,i)=> v==null?null:`${sx(i)},${sy(v)}`).filter(Boolean).join(" ");
+    el("polyline",{points:pts,fill:"none",stroke:s.color,"stroke-width":2.5},svg);
+    s.values.forEach((v,i)=>{ if(v!=null) el("circle",{cx:sx(i),cy:sy(v),r:3.5,fill:s.color},svg); });
+  });
+}
+lines("resp", [{values:D.driver_trend.resp_emea,color:css("--accent")},{values:D.driver_trend.resp_others,color:css("--cmp")}],
+  {lo:0, hi:10, step:2, xlabels:["Jan","","","Apr","","","Jul","","","Oct","","Dec"]});
+
+// 6 prove
+$("sdr-big").textContent = `${sgn(P.sdr.cycle)} days`;
+$("sdr-text").innerHTML = `on the new-deal cycle, 90% range ${sgn(P.sdr.lo)} to ${sgn(P.sdr.hi)} days, across ${P.sdr.deals} deals the agent worked. First response fell ${Math.abs(P.sdr.resp).toFixed(1)} hours. EMEA’s median cycle moved from ${P.kr3[0].y2023} to ${P.kr3[0].y2024} days against a 60-day key result. Method: EMEA from April and NA East from July, against teams without the agent, with team and close-month fixed effects.`;
+const sc = [css("--accent"), css("--ink"), css("--cmp")];
+$("sdr-legend").innerHTML = P.sdr.series.map((s,i)=>`<span><i style="background:${sc[i]}"></i>${esc(s.group)}</span>`).join("");
+lines("sdrchart", P.sdr.series.map((s,i)=>({values:s.values,color:sc[i]})), {lo:50, hi:90, step:10, xlabels:["Q1","Q2","Q3","Q4"], target:60, targetLabel:"key result: 60 days"});
+$("prep-big").textContent = `${sgn(P.prep.adjusted)} days`;
+$("prep-text").innerHTML = `per deal with a prep brief, 90% range ${sgn(P.prep.lo)} to ${sgn(P.prep.hi)}, across ${P.prep.briefs} briefs. The raw gap, ${sgn(P.prep.raw)} days, overstates it: the teams that use the assistant most also have the AI SDR and add solutions engineers more often. Controls take those out.`;
+(function(){
+  const svg = $("dose"), W = 520, H = 200, L = 80, T = 8, rh = 34; svg.setAttribute("viewBox",`0 0 ${W} ${H}`); svg.style.width="100%";
+  const sx = v => L + v/100*(W-L-50);
+  P.prep.dose.forEach((d,i)=>{ const y = T + i*rh; txt(svg, 0, y+18, d.team, {class:"lbl"});
+    el("rect",{x:L,y:y+6,width:W-L-50,height:16,rx:3,fill:css("--chip")},svg);
+    el("rect",{x:L,y:y+6,width:Math.max(2,sx(d.prep_share)-L),height:16,rx:3,fill:css("--cmp")},svg);
+    txt(svg, sx(d.prep_share)+6, y+19, `${d.prep_share}%`, {class:"lbl"}); });
+})();
+$("ds-big").textContent = `${sgn(P.dealsum.cycle)} days`;
+$("ds-text").innerHTML = `on the cycle, 90% range ${sgn(P.dealsum.lo)} to ${sgn(P.dealsum.hi)}, across ${P.dealsum.deals} deals summarized. Two teams built the same bot separately; neither moves a driver.`;
+const cm = D.momentum.inv_chatgpt_ent;
+$("chat-big").textContent = `${Math.round(cm[0].active_share*100)}% → ${Math.round(cm[11].active_share*100)}%`;
+$("chat-text").innerHTML = `active seats, January to December. It writes nothing to the CRM, so there’s no record to compare; only ${D.trace[4].why.match(/(\d+)%/)[1]}% of sessions match an OKR purpose. Evidence is usage and purpose only.`;
+
+// 7 find
+$("se-w").textContent = Math.abs(D.drivers[1].days).toFixed(0);
+(function(){
+  const svg = $("sechart"), W = 520, H = 230, L = 80, T = 10, rh = 40; svg.setAttribute("viewBox",`0 0 ${W} ${H}`); svg.style.width="100%";
+  const sx = v => L + v/100*(W-L-60), best = Math.max(...D.find.map(f=>f.se_share));
+  D.find.forEach((f,i)=>{ const y = T + i*rh; txt(svg, 0, y+20, f.team, {class:"lbl"});
+    el("rect",{x:L,y:y+8,width:Math.max(2,sx(f.se_share)-L),height:18,rx:3,fill:f.gap_pp>30?css("--accent"):css("--muted")},svg);
+    txt(svg, sx(f.se_share)+6, y+21, `${f.se_share}%`, {class:"lbl"}); });
+  el("line",{x1:sx(best),x2:sx(best),y1:T,y2:T+5*rh,stroke:css("--good"),"stroke-dasharray":"4 4"},svg);
+  txt(svg, sx(best), H-6, "best team", {"text-anchor":"middle"});
+})();
+const weak = D.find.filter(f=>f.gap_pp>30);
+$("opp-text").innerHTML = weak.map(f=>`<b>${f.team}</b>: ${f.se_share}% of new deals, ${f.gap_pp} points behind the best team, about ${f.days_at_stake} days of average cycle at stake.`).join("<br>") + `<br>No AI touches this driver today. Requirement: an agent that flags deals needing a solutions engineer before the proposal. Next: qualify, forecast, then build or buy and pilot.`;
+
+// 8 report
+const minus = (t) => String(t).replace(/(^|[\s(])-(\d)/g, "$1−$2");
+const lvlShort = (l) => `<span class="tag ${l.startsWith("Closed")?"l1":l.startsWith("Records")?"l2":"l3"}">${esc(l)}</span>`;
+$("reporttbl").innerHTML = `<tr><th>AI investment</th><th class="num">Cost / yr</th><th>Evidence</th><th>Impact on the target</th><th>Method · confidence</th><th>Decision</th></tr>` +
+  R.map(r => `<tr><td><b>${esc(r.name)}</b></td><td class="num">${fmt$(r.cost)}</td><td>${lvlShort(r.level)}</td><td>${esc(minus(r.impact))}</td><td>${esc(r.method)} · <b>${r.confidence}</b></td><td class="decision">${esc(r.decision)}${r.avoided?`<br><span class="muted" style="font-weight:400">saves ${fmt$(r.avoided)}</span>`:""}</td></tr>`).join("");
+$("total-text").innerHTML = `Of ${fmt$(D.totals.ai_spend)} in AI spend, two investments move the new-business cycle key result and should grow, and ${fmt$(D.totals.avoided)} a year can be saved by consolidating the duplicate bots and right-sizing seats. One driver with no AI on it, in LATAM and APAC, is the next requirement.`;
+
+// check
+const truth = [
+  ["First response time (driver)", "+1.6 days per hour", `${sgn(D.drivers[0].days)} ± ${D.drivers[0].ci}`],
+  ["Solutions engineer before Proposal (driver)", "−10 days", `${sgn(D.drivers[1].days)} ± ${D.drivers[1].ci}`],
+  ["AI SDR on the new-deal cycle (via first response)", "≈ −8 days", `${sgn(P.sdr.cycle)} (${sgn(P.sdr.lo)} to ${sgn(P.sdr.hi)})`],
+  ["Meeting-prep brief", "−3 days", `${sgn(P.prep.adjusted)} (${sgn(P.prep.lo)} to ${sgn(P.prep.hi)})`],
+  ["Deal-summary bots", "no effect, overlap", `${sgn(P.dealsum.cycle)} (${sgn(P.dealsum.lo)} to ${sgn(P.dealsum.hi)})`],
+  ["ChatGPT Enterprise", "usage fades ~7% a month", `${Math.round(cm[0].active_share*100)}% → ${Math.round(cm[11].active_share*100)}% active`],
+  ["Onboarding-satisfaction key result", "no CRM record", "flagged as blind spot"],
+];
+$("checktbl").innerHTML = `<tr><th>Planted in the synthetic data</th><th>What was planted</th><th>What Gnocchi found</th></tr>` + truth.map(r=>`<tr><td>${r[0]}</td><td class="mono" style="font-size:13px">${r[1]}</td><td class="mono" style="font-size:13px"><b>${r[2]}</b></td></tr>`).join("");
+</script>

@@ -7,8 +7,9 @@ identity) wrote each change. This generator adds that history to every real deal
 
 Planted effects (also written to _ground_truth.json):
   * AI SDR agent (acting AI, identity svc_ai_sdr) writes the first-touch activity on New
-    deals: EMEA from 2024-04, NA East from 2024-07 (staggered rollout; other teams never).
-    First response drops from ~6 h to ~1 h; New-deal cycle shortens by ~8 days.
+    deals closing 2+ months after rollout: EMEA from 2024-04, NA East from 2024-07 (staggered rollout; other teams never).
+    First response drops from ~6 h to ~1 h; each hour of response adds ~1.6 days, so the
+    New-deal cycle shortens by ~8 days through that driver.
   * Meeting-prep assistant (assisting AI): from 2024-07 a prep brief is attached to the
     opportunity at a team-specific rate (dose); each attached brief shortens the cycle ~3 days.
   * Solutions engineer added before Proposal (a human action, no AI): ~10 days shorter
@@ -27,7 +28,7 @@ PREP_START = pd.Timestamp("2024-07-01")
 PREP_RATE = {"EMEA": 0.70, "NA East": 0.55, "NA West": 0.30, "LATAM": 0.20, "APAC": 0.10}
 SE_RATE = {"EMEA": 0.55, "NA East": 0.50, "NA West": 0.45, "LATAM": 0.20, "APAC": 0.15}
 BASE_CYCLE = {"New": 78, "Expansion": 48, "Upsell": 40, "Renewal": 30, "Partner Showroom": 30}
-EFFECT = {"sdr_cycle_days": -8.0, "prep_cycle_days": -3.0, "se_cycle_days": -10.0,
+EFFECT = {"days_per_response_hour": 1.6, "sdr_cycle_days_via_response": -8.0, "prep_cycle_days": -3.0, "se_cycle_days": -10.0,
           "resp_hours_before": 6.0, "resp_hours_with_sdr": 1.0}
 STAGES = ["Discovery", "Demo", "Proposal", "Negotiation", "Closed Won"]
 STAGE_SHARE = [0.0, 0.25, 0.55, 0.8, 1.0]
@@ -49,17 +50,21 @@ def enrich(year: int, teams: pd.DataFrame, g: np.random.Generator) -> tuple[pd.D
             cycle += EFFECT["se_cycle_days"]
         # created date first estimate, then decide AI exposure at creation time
         created = close - pd.Timedelta(days=max(10, int(round(cycle))))
-        sdr = is_new and team in SDR_START and created >= SDR_START[team]
+        # exposure is set by team and close period (deals closing 2+ months after the
+        # team's rollout were worked with the agent), so it never depends on cycle noise
+        sdr = is_new and team in SDR_START and close >= SDR_START[team] + pd.Timedelta(days=60)
         prep = (typ in ("New", "Expansion") and close >= PREP_START
                 and bool(g.random() < PREP_RATE.get(team, 0.2)))
-        if sdr:
-            cycle += EFFECT["sdr_cycle_days"]
         if prep:
             cycle += EFFECT["prep_cycle_days"]
         cycle = max(10, int(round(cycle)))
         created = close - pd.Timedelta(days=cycle)
         resp_h = (max(0.2, g.normal(EFFECT["resp_hours_with_sdr"], 0.4)) if sdr
                   else max(0.5, g.normal(EFFECT["resp_hours_before"], 2.0))) if is_new else None
+        if is_new:
+            # first response is the driver: each hour slower adds ~1.6 days, so the AI SDR's
+            # 6 h -> 1 h moves the cycle by about -8 days through the driver
+            cycle += EFFECT["days_per_response_hour"] * (resp_h - EFFECT["resp_hours_before"])
         meetings = int(max(1, round(g.normal(4 if is_new else 2, 1.2))))
         oid = d["opportunity id"]
         opps.append({"opportunity_id": oid, "year": year, "team": team, "type": typ,

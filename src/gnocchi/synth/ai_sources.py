@@ -50,6 +50,15 @@ def sessions(opps: pd.DataFrame, ev: pd.DataFrame, g: np.random.Generator) -> pd
             "Activity (Task)", g.normal(1800, 300))
         add(e.ts, "inv_ai_sdr", "svc_ai_sdr", team, "Research: account and contact", e.record_id,
             "none", g.normal(2600, 500))
+    # AI SDR also works deals still open at year end (they close in 2025, outside this extract)
+    starts = {"EMEA": 4, "NA East": 7}
+    for team, start in starts.items():
+        for month in range(max(start, 10), 13):
+            for k in range(int(g.integers(8, 14))):
+                ts = pd.Timestamp(2024, month, int(g.integers(1, 28)), int(g.integers(8, 18)))
+                oid = f"open_{team.replace(' ', '').lower()}_{month:02d}_{k:02d}"
+                add(ts.strftime("%Y-%m-%dT%H:%M"), "inv_ai_sdr", "svc_ai_sdr", team, "Outreach: first touch",
+                    oid, "Activity (Task)", g.normal(1800, 300))
     # Meeting-prep: one session per brief attached
     for _, e in ev[ev.get("created_with", pd.Series(dtype=str)).eq("Meeting-prep assistant")].iterrows():
         team = opps.loc[e.record_id, "team"]

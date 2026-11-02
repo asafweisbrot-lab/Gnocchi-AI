@@ -20,7 +20,8 @@
       "APAC": 0.15
     },
     "effects": {
-      "sdr_cycle_days": -8.0,
+      "days_per_response_hour": 1.6,
+      "sdr_cycle_days_via_response": -8.0,
       "prep_cycle_days": -3.0,
       "se_cycle_days": -10.0,
       "resp_hours_before": 6.0,
