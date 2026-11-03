@@ -136,15 +136,75 @@ def main() -> None:
                   "precision": round(float((s.repo[linked] == gtr[linked]).mean()), 3),
                   "recall": round(float((s.repo[gtr.notna()] == gtr[gtr.notna()]).mean()), 3),
                   "window_h": LINK_HOURS, "threshold": LINK_SIM}
-    # metadata beats text: a session linked to a commit is development work
+    # metadata beats text: a session linked to a commit is tool work, building before the
+    # bot's deploy date and maintenance after it
     s["category"] = s.category_text
-    s.loc[linked, "category"] = "Development"
+    deploy = builds.set_index("repo").deployed_at
+    s.loc[linked, "category"] = np.where(s.loc[linked, "ts"] < s.loc[linked, "repo"].map(deploy), "Tool building", "Tool maintenance")
+
+    # ---- Unregistered tools: one team's coding work that keeps going for months, with no
+    # repo, deploy or register entry behind it (vibe-coded on a sheet, a script, a no-code app)
+    from sklearn.cluster import AgglomerativeClustering
+    tvec = TfidfVectorizer(ngram_range=(1, 2), sublinear_tf=True, stop_words="english").fit(s.prompt)
+    s["tool"] = None
+    for bb in builds.itertuples():
+        s.loc[s.repo == bb.repo, "tool"] = bb.repo
+    # sessions with no commit after them still belong to a registered tool when they read like
+    # that tool's linked sessions (same team)
+    chat_free = (s.investment_id == "inv_chatgpt_ent") & s.tool.isna()
+    for bb in builds.itertuples():
+        ref = s[s.repo == bb.repo]
+        cand = s[chat_free & (s.team == bb.team)]
+        sm = cosine_similarity(tvec.transform(cand.prompt), tvec.transform(ref.prompt)).max(1)
+        hit = cand.index[sm >= 0.5]
+        s.loc[hit, "tool"] = bb.repo
+        s.loc[hit, "category"] = np.where(s.loc[hit, "ts"] < bb.deployed_at, "Tool building", "Tool maintenance")
+    pool = s[(s.investment_id == "inv_chatgpt_ent") & s.tool.isna() & s.category_text.isin(["Development", "Tool building", "Tool maintenance"])].copy()
+    Xp = tvec.transform(pool.prompt).toarray()
+    pool["cl"] = AgglomerativeClustering(n_clusters=None, distance_threshold=0.85, metric="cosine", linkage="average").fit_predict(Xp)
+    READY_DAYS = 45  # no deploy date for an unregistered tool: after 45 days of activity, count it as maintenance
+    found = {}
+    for c, x in pool.groupby("cl"):
+        span = (pd.to_datetime(x.ts).max() - pd.to_datetime(x.ts).min()).days
+        if x.team.nunique() == 1 and len(x) >= 20 and span >= 60:
+            words = pd.Series(" ".join(x.prompt).lower().split()).value_counts()
+            name = "quote calculator" if words.get("quote", 0) > len(x) * 0.5 else " ".join(words.index[:2])
+            # first ask: is this a registered tool's work that never got a commit?
+            regs = [bb for bb in builds.itertuples() if bb.team == x.team.iloc[0]]
+            cx = np.asarray(tvec.transform(x.prompt).mean(0))
+            near = [(float(cosine_similarity(cx, np.asarray(tvec.transform(s[s.tool == bb.repo].prompt).mean(0)))[0, 0]), bb) for bb in regs]
+            near = max(near, key=lambda z: z[0]) if near else (0, None)
+            if near[0] >= 0.25:
+                s.loc[x.index, "tool"] = near[1].repo
+                s.loc[x.index, "category"] = np.where(x.ts < near[1].deployed_at, "Tool building", "Tool maintenance")
+                continue
+            tid = f"unregistered:{x.team.iloc[0]}:{name}"
+            found.setdefault(tid, []).append(x.index)
+    unregistered = []
+    for tid, idxs in found.items():
+        core = s.loc[[i for ix in idxs for i in ix]]
+        team = core.team.iloc[0]
+        # widen: same-team sessions that read like the tool's sessions
+        cand = s[(s.investment_id == "inv_chatgpt_ent") & s.tool.isna() & (s.team == team)]
+        cen = np.asarray(tvec.transform(core.prompt).mean(0))
+        sm = cosine_similarity(tvec.transform(cand.prompt), cen).ravel()
+        members = cand.index[sm >= 0.3].union(core.index)
+        s.loc[members, "tool"] = tid
+        first = pd.to_datetime(s.loc[members, "ts"]).min()
+        late = pd.to_datetime(s.loc[members, "ts"]) > first + pd.Timedelta(days=READY_DAYS)
+        s.loc[members, "category"] = np.where((s.loc[members, "category_text"] == "Tool maintenance") | late, "Tool maintenance", "Tool building")
+        unregistered.append({"id": tid, "name": tid.split(":")[2].capitalize(), "team": team, "sessions": int(len(members)),
+                             "first_seen": str(first.date()), "last_seen": s.loc[members, "ts"].max()[:10]})
+    gtp = s.session_id.map(pd.read_csv(OUT / "_ground_truth_session_purpose.csv").set_index("session_id").purpose)
+    tool_check = {"found": len(unregistered),
+                  "recall": round(float(s[gtp.str.contains("quote calculator", na=False)].tool.notna().mean()), 3),
+                  "bot_sessions_attached": round(float(s[gtp.str.contains("deal-summary bot", na=False)].tool.notna().mean()), 3)}
 
     # ---- ChatGPT split: coding vs other tasks, seat cost allocated by session share
     inv0 = inv.copy()
     is_chat = s.investment_id == "inv_chatgpt_ent"
-    s.loc[is_chat & (s.category == "Development"), "investment_id"] = "inv_chatgpt_code"
-    s.loc[is_chat & (s.category != "Development"), "investment_id"] = "inv_chatgpt_other"
+    s.loc[is_chat & s.category.isin({"Development", "Tool building", "Tool maintenance"}), "investment_id"] = "inv_chatgpt_code"
+    s.loc[is_chat & ~s.category.isin({"Development", "Tool building", "Tool maintenance"}), "investment_id"] = "inv_chatgpt_other"
     crow = inv0[inv0.investment_id == "inv_chatgpt_ent"].iloc[0]
     n_chat = int(is_chat.sum())
     split_rows = []
@@ -158,10 +218,83 @@ def main() -> None:
     split = {"parent": "inv_chatgpt_ent", "link": link_check,
              "rows": [{"id": r.investment_id, "name": r["name"], "cost": int(r.annual_cost_usd),
                        "sessions": int((s.investment_id == r.investment_id).sum())} for r in split_rows],
-             "coding_parts": {"Building the deal-summary bots (linked to repo commits)": int(code_s.repo.notna().sum()),
-                              "Formulas, macros and scripts": int(code_s.repo.isna().sum())}}
+             "coding_parts": {"Building the deal-summary bots (before launch)": int((code_s.tool.isin(builds.repo) & (code_s.category == "Tool building")).sum()),
+                              "Maintaining the deal-summary bots (after launch)": int((code_s.tool.isin(builds.repo) & (code_s.category == "Tool maintenance")).sum()),
+                              "Building and maintaining an unregistered tool": int((code_s.tool.notna() & ~code_s.tool.isin(builds.repo)).sum()),
+                              "Formulas, macros and scripts": int(code_s.tool.isna().sum())}}
+
+    # ---- Built tools: what each one costs to build and then to keep running
+    HOURS_PER_SESSION = 1.5  # assumption: engineer time around one coding session
+    HOUR_RATE = 700 / 8
+    built_tools = []
+    for tid, x in s[s.tool.notna()].groupby("tool"):
+        xb, xm = x[x.category == "Tool building"], x[x.category == "Tool maintenance"]
+        reg = builds[builds.repo == tid]
+        mm = xm.groupby(pd.to_datetime(xm.ts).dt.month).size()
+        built_tools.append({
+            "id": tid, "registered": bool(len(reg)),
+            "name": (inv.set_index("identity").loc[reg.deploys_identity.iloc[0], "name"] if len(reg) else
+                     next(u["name"] for u in unregistered if u["id"] == tid) + f" ({tid.split(':')[1]}, unregistered)"),
+            "team": x.team.iloc[0], "build_sessions": int(len(xb)), "maint_sessions": int(len(xm)),
+            "maint_by_month": [int(mm.get(m, 0)) for m in range(1, 13)],
+            "build_cost": int(reg.engineer_days.iloc[0] * 700) if len(reg) else int(len(xb) * HOURS_PER_SESSION * HOUR_RATE),
+            "maint_cost": int(len(xm) * HOURS_PER_SESSION * HOUR_RATE),
+            "run_cost": int(inv.set_index("identity").loc[reg.deploys_identity.iloc[0], "annual_cost_usd"]) if len(reg) else 0,
+            "maint_share": round(len(xm) / max(1, len(x)), 2)})
+    built_tools.sort(key=lambda t: (not t["registered"], t["team"]))
+    tools_out = {"tools": built_tools, "unregistered": unregistered, "hours_per_session": HOURS_PER_SESSION,
+                 "check": tool_check, "ready_days": READY_DAYS}
+    # ---- Edge 2b: link sessions to the CRM records the OKRs point at, by similarity.
+    # KR1-KR3 (bookings, new-logo bookings, cycle) are measured on 2024 New, Expansion and
+    # Upsell deals, so those are the records embedded: account name, deal type, vertical.
+    # A session can only link to a deal of its own team that was open when the session ran.
+    crm_real = pd.read_excel(SRC / "crm_2024.xlsx").set_index("opportunity id")
+    scope = opps[(opps.close_date.dt.year == 2024) & opps.type.isin(["New", "Expansion", "Upsell"])].copy()
+    KIND = {"New": "new-logo new", "Expansion": "expansion", "Upsell": "upsell"}
+    scope["text"] = [f"{crm_real.loc[o, 'account name']} {KIND[t]} {crm_real.loc[o, 'verticals']}"
+                     if o in crm_real.index else "" for o, t in zip(scope.opportunity_id, scope.type)]
+    REC_SIM = 0.3
+    rvec = TfidfVectorizer(ngram_range=(1, 2), sublinear_tf=True, stop_words="english").fit(list(scope.text) + list(s.prompt))
+    s["deal"], s["deal_score"] = None, np.nan
+    cand_s = s[s.investment_id == "inv_chatgpt_other"]
+    for t in TEAMS:
+        st, rt = cand_s[cand_s.team == t], scope[scope.team == t]
+        if not len(st) or not len(rt):
+            continue
+        sm = cosine_similarity(rvec.transform(st.prompt), rvec.transform(rt.text))
+        tsv = pd.to_datetime(st.ts).values[:, None]
+        open_ = (tsv >= rt.created_date.values[None, :]) & (tsv <= rt.close_date.values[None, :])
+        sm = np.where(open_, sm, 0)
+        bi, bs = sm.argmax(1), sm.max(1)
+        ok = bs >= REC_SIM
+        s.loc[st.index[ok], "deal"] = rt.opportunity_id.values[bi[ok]]
+        s.loc[st.index[ok], "deal_score"] = bs[ok]
+    gto = s.session_id.map(pd.read_csv(OUT / "_ground_truth_session_purpose.csv").set_index("session_id").opp)
+    dl = s.deal.notna()
+    rec_check = {"sessions_linked": int(dl.sum()), "deals_linked": int(s.deal.nunique()), "records_embedded": int(len(scope)),
+                 "true_sessions": int(gto.notna().sum()),
+                 "precision": round(float((s.deal[dl] == gto[dl]).mean()), 3) if dl.any() else 0,
+                 "recall": round(float((s.deal[gto.notna()] == gto[gto.notna()]).mean()), 3), "threshold": REC_SIM}
+    ex = s[dl].sort_values("deal_score").iloc[int(dl.sum() * 0.5)]
+    exr = scope.set_index("opportunity_id").loc[ex.deal]
+    st_ = cand_s[cand_s.team == ex.team]
+    rt_ = scope[scope.team == ex.team]
+    row = cosine_similarity(rvec.transform([ex.prompt]), rvec.transform(rt_.text))[0]
+    exo = (pd.Timestamp(ex.ts) >= rt_.created_date) & (pd.Timestamp(ex.ts) <= rt_.close_date)
+    top3 = np.argsort(-row)[:3]
+    rec_link = {"check": rec_check, "scope": [
+        {"kr": "KR1 Total bookings", "records": "2024 New, Expansion and Upsell deals", "n": int(len(scope))},
+        {"kr": "KR2 New-logo bookings", "records": "2024 New deals", "n": int((scope.type == "New").sum())},
+        {"kr": "KR3 New-deal cycle", "records": "2024 New deals (cycle days)", "n": int((scope.type == "New").sum())}],
+        "by_team": [{"team": t, "sessions": int((s.deal.notna() & (s.team == t)).sum()), "deals": int(s[s.team == t].deal.nunique()),
+                     "scope": int((scope.team == t).sum())} for t in TEAMS],
+        "example": {"prompt": ex.prompt, "ts": ex.ts[:10], "team": ex.team,
+                    "candidates": [{"text": rt_.text.iloc[j], "type": rt_.type.iloc[j], "created": str(rt_.created_date.iloc[j].date()),
+                                    "close": str(rt_.close_date.iloc[j].date()), "open": bool(exo.iloc[j]),
+                                    "score": round(float(row[j]), 2)} for j in top3]}}
     s["mode"] = np.where(s.identity.ne("sso_user"), "direct",
-                         np.where(s.writes_record | s.repo.notna(), "indirect_traced", "indirect_untraced"))
+                         np.where(s.writes_record | s.repo.notna(), "indirect_traced",
+                                  np.where(s.deal.notna(), "indirect_linked", "indirect_untraced")))
 
     # ---- 4 Trace: session purpose -> similarity to drivers and key results, then triangulate
     targets = DRIVERS + kr_targets(okrs)
@@ -198,6 +331,10 @@ def main() -> None:
             level = "1 · Closed triangle"
             why = (f"Writes {tnames[written_drivers[0]].lower()} records; {round(100*top.get(top_d,0))}% of its sessions are aimed "
                    f"at that driver, which moves the cycle key result")
+        elif x.deal.notna().any():
+            level = "2 · Records by similarity"
+            why = (f"No CRM writes; {int(x.deal.notna().sum())} of its sessions link by account, timing and text to "
+                   f"{x.deal.nunique()} deals the bookings and cycle key results count; the rest link to nothing")
         elif x.writes_record.any():
             level = "2 · Records only"
             dw = written_drivers[0] if written_drivers else None
@@ -217,7 +354,9 @@ def main() -> None:
               "Drafting: proposal text": {"D4"}, "Summarize: deal notes": {"D6"},
               "Drafting: internal email": {None}, "Summarize: meeting notes": {None, "D2", "D5", "D6"}, "Personal productivity": {None},
               "Analysis: pipeline and cycle": {None, "KR3", "KR1", "KR2"}, "Strategy: account and territory plans": {None, "KR1", "KR2", "D4"},
-              "Development: formulas and scripts": {None}, "Development: build deal-summary bot": {None, "D5", "D2", "D6"}}
+              "Development: formulas and scripts": {None}, "Tool building: deal-summary bot": {None, "D5", "D2", "D6"},
+              "Tool maintenance: deal-summary bot": {None, "D6", "D2", "D5"}, "Tool building: quote calculator": {None, "D4"},
+              "Tool maintenance: quote calculator": {None, "D4"}}
     s["truth"] = s.session_id.map(gt)
     s["ok"] = [(None if pd.isna(m) else m) in EXPECT[t] for m, t in zip(s.match, s.truth)]
     agree = {p: round(float(g_.ok.mean()), 3) for p, g_ in s.groupby("truth")}
@@ -245,7 +384,7 @@ def main() -> None:
     classify_out = {
         "categories": cats, "by_investment": by_inv,
         "by_mode": {m: {c: int(((s["mode"] == m) & (s.category == c)).sum()) for c in cats}
-                    for m in ("direct", "indirect_traced", "indirect_untraced")},
+                    for m in ("direct", "indirect_traced", "indirect_linked", "indirect_untraced")},
         "tokens": {c: int(s[s.category == c].tokens.sum()) for c in cats},
         "aimed": {c: round(float(s[s.category == c].aligned.mean()), 3) for c in cats},
         "agreement": round(float((s.category == s.session_id.map(gtc)).mean()), 3),
@@ -304,7 +443,7 @@ def main() -> None:
     saved_run = int(inv0.set_index("identity").loc[builds.deploys_identity[1]].annual_cost_usd)
     # parallel work outside the bots: development sessions that repeat across teams
     from sklearn.cluster import AgglomerativeClustering
-    dev = s[(s.category == "Development") & s.repo.isna()].copy()
+    dev = s[(s.category == "Development") & s.tool.isna()].copy()
     Xd = TfidfVectorizer(ngram_range=(1, 2), sublinear_tf=True).fit_transform(dev.prompt).toarray()
     dev["cluster"] = AgglomerativeClustering(n_clusters=None, distance_threshold=0.6, metric="cosine",
                                              linkage="average").fit_predict(Xd)
@@ -391,6 +530,22 @@ def main() -> None:
                         "est": round(float(conv(est)), 1), "lo": round(float(conv(lo_)), 1), "hi": round(float(conv(hi_)), 1),
                         "with": round(float(sub[sub.dealsum == 1][y if unit != "%" else "amount"].median()), 1),
                         "without": round(float(sub[sub.dealsum == 0][y if unit != "%" else "amount"].median()), 1)})
+    # ChatGPT, record level: deals its sessions link to vs other deals, same controls
+    g24 = opps[(opps.close_date.dt.year == 2024) & opps.type.isin(["New", "Expansion", "Upsell"])].copy()
+    g24["log_amt"] = np.log1p(g24.amount)
+    g24["gpt"] = g24.opportunity_id.isin(set(s.deal.dropna())).astype(int)
+    def gpt_eff(df, y="cycle_days"):
+        xs = ["gpt", "sdr", "prep", "se"] + (["log_amt"] if y == "cycle_days" else [])
+        return ols(df, y, xs, ["team", "month", "type"])["gpt"][0]
+    g_est = gpt_eff(g24)
+    g_lo, g_hi = boot(g24, gpt_eff)
+    g_raw = float(g24[g24.gpt == 1].cycle_days.mean() - g24[g24.gpt == 0].cycle_days.mean())
+    g_amt = gpt_eff(g24, "log_amt")
+    g_alo, g_ahi = boot(g24, lambda df: gpt_eff(df, "log_amt"), n=200)
+    gpt_prove = {"cycle": round(g_est, 1), "lo": round(g_lo, 1), "hi": round(g_hi, 1), "raw": round(g_raw, 1),
+                 "deals": int(g24.gpt.sum()), "n": int(len(g24)),
+                 "amount_pct": round(100 * (np.exp(g_amt) - 1), 1), "amount_lo": round(100 * (np.exp(g_alo) - 1), 1),
+                 "amount_hi": round(100 * (np.exp(g_ahi) - 1), 1)}
     # KR3 view: median New-deal cycle by team and year
     kr3 = (new.assign(y=new.close_date.dt.year).groupby(["team", "y"]).cycle_days.median().unstack()).round(0)
     kr3_rows = [{"team": t, "y2023": int(kr3.loc[t, 2023]), "y2024": int(kr3.loc[t, 2024])} for t in TEAMS]
@@ -432,6 +587,7 @@ def main() -> None:
                     "new_biz": [round(float(nb.loc[t, 2023])), round(float(nb.loc[t, 2024]))]}})
     prove = {
         "team_fit": team_fit,
+        "chatgpt": gpt_prove,
         "sdr": {"cycle": round(sdr_est, 1), "lo": round(sdr_lo, 1), "hi": round(sdr_hi, 1),
                 "resp": round(resp_est, 1), "deals": int(new.sdr.sum()), "series": m_series},
         "prep": {"raw": round(raw_prep, 1), "adjusted": round(prep_est, 1), "lo": round(prep_lo, 1), "hi": round(prep_hi, 1),
@@ -498,6 +654,7 @@ def main() -> None:
         ("2024-01-08", "build", "EMEA builders start a deal-summary bot (ChatGPT sessions linked to repo commits)"),
         ("2024-03-01", "live", "EMEA deal-summary bot goes live (svc_dealsum_emea)"),
         ("2024-03-12", "build", "NA East builders start a second deal-summary bot"),
+        *[(u["first_seen"], "build", f"Unregistered tool appears: {u['name'].lower()} ({u['team']}), no repo or register entry") for u in unregistered],
         (parallel["alert"]["end"], "alert", f"Parallel build flagged: NA East's sessions match EMEA's bot {parallel['alert']['ratio']}× baseline"),
         ("2024-04-01", "live", "AI SDR agent live in EMEA (svc_ai_sdr)"),
         ("2024-05-01", "live", "NA East deal-summary bot goes live (svc_dealsum_nae)"),
@@ -548,21 +705,23 @@ def main() -> None:
          "decision": "Consolidate into one build", "avoided": 18000,
          "note": f"Flagged as parallel in week {parallel['alert']['week']} of the second build. Built twice: {sum(l['engineer_days'] for l in lineage)} engineer-days (${sum(l['build_cost'] for l in lineage)//1000}K) of build effort on top of run cost"},
         {"id": "inv_chatgpt_code", "name": "ChatGPT Enterprise · coding", "cost": int(cost["inv_chatgpt_code"]), "level": "Via what it built",
-         "impact": f"Built both deal-summary bots ({sum(l['sessions'] for l in lineage)} sessions linked to {len(commits)} commits); "
-                   f"{len(clusters)} scripts rewritten in all five teams; the bots it built show no effect",
+         "impact": f"Built and now maintains both deal-summary bots ({sum(t['build_sessions'] for t in built_tools if t['registered'])} build, "
+                   f"{sum(t['maint_sessions'] for t in built_tools if t['registered'])} maintenance sessions) and {len(unregistered)} unregistered tool; "
+                   f"{len(clusters)} scripts rewritten in all five teams; the bots show no effect",
          "method": "Lineage: sessions linked to repo commits by team, timing and text -> CI deploy -> CRM records", "confidence": "Medium",
          "decision": "Keep coding use; share the repeated scripts; watch for parallel builds weekly", "avoided": 0},
         {"id": "inv_chatgpt_other", "name": "ChatGPT Enterprise · other tasks", "cost": int(cost["inv_chatgpt_other"]),
          "level": next(t["level"] for t in trace if t["id"] == "inv_chatgpt_other").split("· ")[-1],
-         "impact": f"Active seats fell from {round(100*act_first)}% to {round(100*act_last)}%; {100-round(100*chat.aligned.mean())}% of sessions serve no stated goal",
-         "method": "Momentum and purpose only; no record trace to compare", "confidence": "Low",
-         "decision": "Right-size seats at renewal", "avoided": int(54000 * seat_cut)},
+         "impact": f"{gpt_prove['cycle']} days on the {gpt_prove['deals']} deals its sessions link to (90% range {gpt_prove['lo']} to {gpt_prove['hi']}); "
+                   f"active seats fell from {round(100*act_first)}% to {round(100*act_last)}%; {round(100*float(chat.deal.isna().mean()))}% of sessions link to no deal",
+         "method": "Record level: sessions linked to deals by account, timing and text; controls for team, month, type, AI SDR, prep, SE", "confidence": "Medium",
+         "decision": "Keep the seats used on live deals; right-size the rest at renewal", "avoided": int(54000 * seat_cut)},
     ]
     # ---- 9 Open-weights readiness (the customer's): which workloads could move to an open model
     proven = {"inv_ai_sdr": f"{prove['sdr']['cycle']} days (rollout comparison)",
               "inv_meeting_prep": f"{prove['prep']['adjusted']} days (record level)"}
     cost = inv.set_index("investment_id").annual_cost_usd
-    REASONING = {"Analysis", "Strategy", "Development"}
+    REASONING = {"Analysis", "Strategy", "Development", "Tool building", "Tool maintenance"}
     workloads = []
     for (i, c), x in s.groupby(["investment_id", "category"]):
         if len(x) < 20:
@@ -615,7 +774,7 @@ def main() -> None:
         {"source": "Code repos and CI deploy log", "kind": "syn", "rows": int(len(commits)), "unit": "commits"},
     ]
     pipeline = [
-        ["Discover", f"{len(inv0)} AI investments", f"{int((inv0.ai_type == 'acting').sum())} direct, {int((inv0.ai_type != 'acting').sum())} indirect, {len(lineage)} builds"],
+        ["Discover", f"{len(inv0)} AI investments", f"{int((inv0.ai_type == 'acting').sum())} direct, {int((inv0.ai_type != 'acting').sum())} indirect, {len(tools_out['tools'])} built tools"],
         ["Classify", f"{len(s):,} sessions", f"{len(cats)} categories; ChatGPT split"],
         ["Map", f"{sum(len(o['key_results']) for o in okrs)} key results", f"{sum(1 for g_ in gold if g_['record'] is None)} blind spots"],
         ["Learn", f"{int(len(new)):,} new deals", f"{sum(1 for x in drivers if abs(x['days']) > x['ci'])} drivers that move the cycle"],
@@ -625,7 +784,7 @@ def main() -> None:
         ["Find", "5 teams", f"1 AI opportunity, {len(clusters) + 1} parallel efforts"],
         ["Conclude", f"{fmt_k(inv0.annual_cost_usd.sum())} AI spend", f"{len(report)} decisions"],
     ]
-    out = {"coverage": coverage, "team_plans": team_plans, "live": live_map, "split_names": {r["id"]: r["name"] for r in split["rows"]}, "lineage": lineage, "duplicate": duplicate, "parallel": parallel, "processed": processed, "pipeline": pipeline, "classify": classify_out, "open_weights": open_weights,
+    out = {"tools": tools_out, "rec_link": rec_link, "coverage": coverage, "team_plans": team_plans, "live": live_map, "split_names": {r["id"]: r["name"] for r in split["rows"]}, "lineage": lineage, "duplicate": duplicate, "parallel": parallel, "processed": processed, "pipeline": pipeline, "classify": classify_out, "open_weights": open_weights,
            "discover": discover, "map": mapping, "drivers": drivers, "trace": trace, "similarity": similarity, "momentum": mom,
            "driver_trend": driver_trend, "prove": prove, "find": find, "report": report,
            "totals": {"ai_spend": int(inv0.annual_cost_usd.sum()), "avoided": sum(r["avoided"] for r in report)}}

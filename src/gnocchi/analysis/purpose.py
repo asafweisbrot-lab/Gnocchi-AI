@@ -1,5 +1,5 @@
 """Session text -> work category (research, writing, analysis, strategy, development,
-summarization, admin). The first read of the telemetry: what the AI is used for, before
+tool building, tool maintenance, summarization, admin). The first read of the telemetry: what the AI is used for, before
 asking which driver or key result it is aimed at.
 
 Encoder: TF-IDF over words and word pairs, nearest category descriptor. A sentence-embedding
@@ -21,6 +21,10 @@ CATEGORIES = [
                                "competitive outline bookings target"},
     {"id": "Development", "text": "write formula script python function excel macro debug code dedupe normalize csv report formula automate "
                                   "apex trigger api service job retries retry logic rate limiting throttling unit tests write tests connected app configure bot help me debug"},
+    {"id": "Tool building", "text": "apps script builds customer quote price list sheet volume discount tiers quote script "
+                                    "create pdf from the template currency conversion quote calculator"},
+    {"id": "Tool maintenance", "text": "broke fails error throws timing out times out quota changed columns since last week after the release "
+                                       "release api version wrong language skips ignore closed batches batch parser parsing fails on"},
     {"id": "Summarization", "text": "summarize condense notes into bullets status line recap action items activity notes turn the notes"},
     {"id": "Admin", "text": "plan my week priorities convert table bullet points fix grammar linkedin post explain the difference"},
 ]

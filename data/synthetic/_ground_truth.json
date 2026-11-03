@@ -19,7 +19,9 @@
       "LATAM": 0.2,
       "APAC": 0.15
     },
+    "gpt_rate": 0.3,
     "effects": {
+      "chatgpt_deal_cycle_days": -3.0,
       "days_per_response_hour": 1.6,
       "sdr_cycle_days_via_response": -8.0,
       "prep_cycle_days": -3.0,

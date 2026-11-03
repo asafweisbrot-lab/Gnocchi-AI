@@ -52,6 +52,7 @@ section.step{padding-block:44px 8px;display:grid;gap:18px;scroll-margin-top:64px
 .sources .pill.real::before{background:var(--good)}
 .sources .pill.syn::before{background:var(--warn)}
 .panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;min-width:0}
+.panel[style*="display:grid"]{grid-template-columns:minmax(0,1fr)}
 .grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
 .tbl{overflow-x:auto}
 table{border-collapse:collapse;width:100%;font-size:14px;font-variant-numeric:tabular-nums}
@@ -220,13 +221,19 @@ footer{padding-block:8px 0}
     <div id="lineage" style="display:grid;gap:16px"></div>
     <div class="result" style="border-color:var(--warn)"><span class="eyebrow" style="color:var(--warn)">Same bot, built twice</span><p id="dup-text"></p></div>
   </div>
+  <div class="panel" style="display:grid;gap:12px">
+    <div style="display:grid;gap:6px;max-width:78ch"><h3>Built tools: what building, then maintaining, really costs</h3>
+    <p class="muted" style="font-size:14px">Employees vibe-code tools with ChatGPT, and every tool keeps asking for sessions after it ships: API releases, edge cases, timeouts. Gnocchi counts both, so a built tool can be compared fairly with one that is bought. A tool with no repo, deploy or register entry shows up only in session text: one team, the same thing, for months.</p></div>
+    <div class="tbl"><table id="tooltbl"></table></div>
+    <p class="muted" style="font-size:13px" id="tool-note"></p>
+  </div>
   <details><summary>Sample logs: one deal's change history and one session per tool</summary><pre id="logs"></pre></details>
 
   <div class="finding"><span class="eyebrow">Finding</span><p id="f-discover"></p></div>
   <div class="sources" id="src-discover"></div>
 </section>
 <section class="card step" id="classify">
-  <div class="card-head"><span class="num">02</span><h2>Classify: what each session is for</h2><p>Every session’s text is sorted into a work category: research, writing, analysis, strategy, development, summarization or admin. Each is also tagged direct (an agent acts), indirect and traced (a person’s AI output lands on a record), or indirect and untraced.</p></div>
+  <div class="card-head"><span class="num">02</span><h2>Classify: what each session is for</h2><p>Every session’s text is sorted into a work category: research, writing, analysis, strategy, development, tool building, tool maintenance, summarization or admin. Each is also tagged direct (an agent acts), indirect and traced (output lands on a record or repo), indirect and matched to a deal by similarity, or indirect and untraced.</p></div>
   <div class="io">In <b>every AI session’s text and metadata</b> → Out <b>category × activity type; ChatGPT coding vs other</b></div>
   <div class="tbl"><table id="clsinv"></table></div>
   <div class="grid2">
@@ -270,8 +277,17 @@ footer{padding-block:8px 0}
     <h3>Example sessions and their closest matches</h3>
     <div id="simex" style="display:grid;gap:14px"></div>
   </div>
+  <div class="panel" style="display:grid;gap:12px">
+    <div style="display:grid;gap:6px;max-width:78ch"><h3>Edge 2b · AI → records, by similarity, through the OKR lens</h3>
+    <p class="muted" style="font-size:14px">ChatGPT writes nothing to the CRM, so its sessions are matched to the records the key results count. Each key result says which records to embed: for bookings and the new-deal cycle, the 2024 New, Expansion and Upsell deals (account, deal type, vertical). A session can only match a deal of its own team that was open when it ran. This is more direct than matching to a driver: it names the deal.</p></div>
+    <div class="grid2">
+      <div class="tbl"><table id="rlscope" style="min-width:0"></table></div>
+      <div class="result"><span class="eyebrow">Matched</span><span class="big" id="rl-big"></span><p id="rl-text"></p></div>
+    </div>
+    <div style="display:grid;gap:8px;grid-template-columns:minmax(0,1fr)"><h3 style="font-size:15px">One match, and the candidates it beat</h3><div id="rlex"></div></div>
+  </div>
   <div class="panel" style="display:grid;gap:10px">
-    <h3>Triangulated: Edge 1 (AI → OKR) + Edge 2 (AI → records, by identity writes) + Edge 3 (OKR → records, from step 3)</h3>
+    <h3>Triangulated: Edge 1 (AI → OKR) + Edge 2 (AI → records: identity writes, commits, or similarity) + Edge 3 (OKR → records, step 3)</h3>
     <div class="tbl"><table id="tracetbl"></table></div>
   </div>
   <div class="panel" style="display:grid;gap:10px">
@@ -317,7 +333,7 @@ footer{padding-block:8px 0}
     <div class="result"><span class="eyebrow">Deal-summary bots · record level, with controls</span>
       <span class="big" id="ds-big"></span><p id="ds-text"></p>
       <div class="tbl" style="margin-top:6px"><table id="dskpi" style="min-width:0"></table></div></div>
-    <div class="result" style="border-color:var(--muted)"><span class="eyebrow" style="color:var(--muted)">ChatGPT Enterprise · no record trace</span>
+    <div class="result"><span class="eyebrow">ChatGPT · other tasks · record level, linked by similarity</span>
       <span class="big" id="chat-big"></span><p id="chat-text"></p></div>
   </div>
 
@@ -563,8 +579,9 @@ $("dskpi").innerHTML = `<tr><th>KPI (OKR)</th><th class="num">Deals with a note<
     return `<tr><td>${esc(k.kpi)}<br><span class="muted" style="font-size:12px">${esc(k.okr)}</span></td><td class="num">${k.deals} of ${k.n}</td><td class="num muted">${k.unit==="%"?sgn(Math.round(100*(k.with/k.without-1)))+"%":sgn(Math.round((k.with-k.without)*10)/10)+u}</td><td class="num"><b>${sgn(k.est)}${u}</b><br><span class="muted" style="font-size:12px">${sgn(k.lo)} to ${sgn(k.hi)}${zero?" · no effect":""}</span></td></tr>`; }).join("") +
   `<tr><td colspan="4" class="muted" style="font-size:12px">Raw gaps compare medians; the new-deal cycle looks 6 days faster with a note only because the bots run in the teams that also have the AI SDR. Win rate can’t be tested: the CRM extract holds only closed-won deals.</td></tr>`;
 const cm = D.momentum.inv_chatgpt_other;
-$("chat-big").textContent = `${Math.round(cm[0].active_share*100)}% → ${Math.round(cm[11].active_share*100)}%`;
-$("chat-text").innerHTML = `active seats, January to December. It writes nothing to the CRM, so there’s no record to compare; only ${Math.round(D.trace.find(t=>t.id==="inv_chatgpt_other").aligned*100)}% of its other-task sessions match a driver or key result. Evidence is usage and purpose only.`;
+const GP = P.chatgpt, RL = D.rec_link.check;
+$("chat-big").textContent = `${sgn(GP.cycle)} days`;
+$("chat-text").innerHTML = `on the cycle of the ${GP.deals} deals its sessions link to, 90% range ${sgn(GP.lo)} to ${sgn(GP.hi)}, against ${GP.n - GP.deals} similar deals without, with team, month, type, AI SDR, prep and SE controls. The raw gap was ${sgn(GP.raw)}. Deal size shows no clear effect (${sgn(GP.amount_pct)}%, ${sgn(GP.amount_lo)} to ${sgn(GP.amount_hi)}). A match is right ${Math.round(RL.precision*100)}% of the time, so the true effect is likely a little larger. Active seats still fell from ${Math.round(cm[0].active_share*100)}% to ${Math.round(cm[11].active_share*100)}%.`;
 
 // 8 find: coverage and plans
 (function(){
@@ -589,7 +606,7 @@ $("total-text").innerHTML = `Of ${fmt$(D.totals.ai_spend)} in AI spend, two inve
 
 // 2 classify
 (function(){
-  const C = D.classify, cats = C.categories, modeName = {direct:"Direct · agent acts", indirect_traced:"Indirect · output on a record or repo", indirect_untraced:"Indirect · no record"};
+  const C = D.classify, cats = C.categories, modeName = {direct:"Direct · agent acts", indirect_traced:"Indirect · output on a record or repo", indirect_linked:"Indirect · matched to a deal", indirect_untraced:"Indirect · no record"};
   const heat = (v, max) => { const a = max ? v/max : 0; return `background:${v>0?`color-mix(in srgb, var(--accent) ${Math.round(Math.min(1,a)*80)}%, transparent)`:"transparent"};color:${a>0.6?"var(--accent-ink)":"inherit"}`; };
   $("clsinv").innerHTML = `<tr><th>AI investment</th><th>Activity</th>` + cats.map(c=>`<th class="num">${c}</th>`).join("") + `</tr>` +
     C.by_investment.map(r => `<tr><td><b>${esc(nameOf[r.id])}</b><br><span class="muted" style="font-size:12px">${r.n.toLocaleString()} sessions</span></td><td><span class="tag ${r.mode==="direct"?"acting":""}">${modeName[r.mode]}</span></td>` +
@@ -677,20 +694,45 @@ $("total-text").innerHTML = `Of ${fmt$(D.totals.ai_spend)} in AI spend, two inve
     `<tr><td class="muted">Other tasks: writing, research, analysis, strategy, summarization, admin</td><td class="num">${oth.sessions.toLocaleString()}</td></tr>`;
 })();
 
+// built tools
+(function(){
+  const Tl = D.tools;
+  const bars = (v) => { const m = Math.max(1,...v); return `<svg viewBox="0 0 120 26" style="width:120px;height:26px" role="img" aria-label="maintenance sessions per month">${v.map((x,i)=>`<rect x="${i*10}" y="${24-(x/m)*22}" width="8" height="${(x/m)*22}" rx="1" fill="var(--accent)"></rect>`).join("")}<line x1="0" x2="120" y1="24.5" y2="24.5" stroke="var(--line)"></line></svg>`; };
+  $("tooltbl").innerHTML = `<tr><th>Tool</th><th class="num">Build sessions</th><th class="num">Maintenance sessions</th><th>Maintenance per month, 2024</th><th class="num">Build</th><th class="num">Maintain</th><th class="num">Run / yr</th><th class="num">Total, 2024</th></tr>` +
+    Tl.tools.map(t => `<tr><td><b>${esc(t.name)}</b><br><span class="muted" style="font-size:12px">${esc(t.team)} · ${t.registered?"repo + CI + register":'<span style="color:var(--warn)">no repo, no register entry</span>'}</span></td>
+      <td class="num">${t.build_sessions}</td><td class="num">${t.maint_sessions} <span class="muted">(${Math.round(t.maint_share*100)}%)</span></td><td>${bars(t.maint_by_month)}</td>
+      <td class="num">${fmt$(t.build_cost)}</td><td class="num">${fmt$(t.maint_cost)}</td><td class="num">${t.run_cost?fmt$(t.run_cost):"·"}</td><td class="num"><b>${fmt$(t.build_cost+t.maint_cost+t.run_cost)}</b></td></tr>`).join("");
+  const u = Tl.unregistered[0];
+  $("tool-note").innerHTML = `Build cost is engineer-days from the repo where one exists, otherwise ${Tl.hours_per_session} h per session; maintenance is ${Tl.hours_per_session} h per session at the same day rate (assumptions). With no deploy date, an unregistered tool’s sessions count as maintenance after its first ${Tl.ready_days} days. ${u?`Found: ${esc(u.name.toLowerCase())}, ${esc(u.team)}, ${u.sessions} sessions from ${esc(u.first_seen)}; ${Math.round(Tl.check.recall*100)}% of its planted sessions were found.`:""} Bot sessions with no commit after them are attached by similarity to the bot’s other sessions (${Math.round(Tl.check.bot_sessions_attached*100)}% of all bot work found).`;
+})();
+
+// record links
+(function(){
+  const R_ = D.rec_link, c = R_.check;
+  $("rlscope").innerHTML = `<tr><th>Key result</th><th>Records embedded</th><th class="num">Records</th></tr>` + R_.scope.map(x=>`<tr><td>${esc(x.kr)}</td><td style="font-size:13px">${esc(x.records)}</td><td class="num">${x.n}</td></tr>`).join("") +
+    `<tr><td colspan="3" class="muted" style="font-size:12px">By team: ` + R_.by_team.map(t=>`${esc(t.team)} ${t.sessions} sessions → ${t.deals} deals`).join(" · ") + `</td></tr>`;
+  $("rl-big").textContent = `${c.deals_linked} deals`;
+  $("rl-text").innerHTML = `${c.sessions_linked} ChatGPT sessions match ${c.deals_linked} of the ${c.records_embedded} deals in scope (threshold ${c.threshold}). Checked against the planted links: ${Math.round(c.precision*100)}% of matches are the right deal, and ${Math.round(c.recall*100)}% of true links are found. The other ${(D.classify.split.rows[1].sessions - c.sessions_linked).toLocaleString()} other-task sessions match no deal. Results are reported by team, never by person.`;
+  const e = R_.example;
+  $("rlex").innerHTML = `<p style="font-size:15px">“${esc(e.prompt)}” <span class="muted mono" style="font-size:12px">${esc(e.team)} · ${esc(e.ts)}</span></p>
+    <div class="tbl"><table style="min-width:0"><tr><th>Candidate deal (embedded text)</th><th>Open</th><th class="num">Similarity</th><th>Result</th></tr>` +
+    e.candidates.map((k,i)=>`<tr><td class="mono" style="font-size:12px">${esc(k.text)}</td><td class="mono" style="font-size:12px">${esc(k.created)} → ${esc(k.close)}</td><td class="num">${k.score.toFixed(2)}</td><td style="font-size:13px">${k.open && k.score>=c.threshold && e.candidates.filter(z=>z.open).sort((a,b)=>b.score-a.score)[0]===k?"<b>Matched</b>":k.open?"Below threshold":"Not open when the session ran"}</td></tr>`).join("") + `</table></div>`;
+})();
+
 // findings: each step moves one step closer to the conclusion
 (function(){
   const inv = D.discover.inventory, C = D.classify, tot = (o) => Object.values(o).reduce((a,b)=>a+b,0);
-  const nDirect = tot(C.by_mode.direct), nTr = tot(C.by_mode.indirect_traced), nUn = tot(C.by_mode.indirect_untraced), N = nDirect+nTr+nUn;
+  const nDirect = tot(C.by_mode.direct), nTr = tot(C.by_mode.indirect_traced) + tot(C.by_mode.indirect_linked), nUn = tot(C.by_mode.indirect_untraced), N = nDirect+nTr+nUn;
   const dir = inv.filter(r=>r.ai_type==="acting"), ind = inv.filter(r=>r.ai_type!=="acting");
   const sum = (a) => a.reduce((x,r)=>x+r.cost,0);
   const F = {
-    discover: `${inv.length} AI investments, ${fmt$(sum(inv))} a year. ${dir.length} are direct (${fmt$(sum(dir))}): agents with their own CRM identity. ${ind.length} are indirect (${fmt$(sum(ind))}): tools people use. Two of them, the deal-summary bots, were built in house: ${D.lineage.reduce((a,l)=>a+l.sessions,0)} ChatGPT sessions link to the commits of the two repos that deploy them, about ${fmt$(D.lineage.reduce((a,l)=>a+l.build_cost,0))} of engineering time for the same bot, built twice.`,
-    classify: `${Math.round(100*nUn/N)}% of sessions are indirect and leave no record; only ${Math.round(100*(nDirect+nTr)/N)}% can be tied to a deal. Writing and admin are the biggest categories. Analysis and strategy sessions exist, but only in ChatGPT. ChatGPT splits into coding (${Math.round(100*C.split.rows[0].sessions/(C.split.rows[0].sessions+C.split.rows[1].sessions))}%: the two bot builds plus scripts and formulas) and other tasks. Text alone classified ${(C.agreement_text_only*100).toFixed(1)}% of sessions correctly; it mistook bot-building for summarizing. The commit link brings it to ${(C.agreement*100).toFixed(1)}%. Synthetic templates make this easy; real prompts will score lower.`,
+    discover: `${inv.length} AI investments, ${fmt$(sum(inv))} a year. ${dir.length} are direct (${fmt$(sum(dir))}): agents with their own CRM identity. ${ind.length} are indirect (${fmt$(sum(ind))}): tools people use. Two of them, the deal-summary bots, were built in house: ${D.lineage.reduce((a,l)=>a+l.sessions,0)} ChatGPT sessions link to the commits of the two repos that deploy them, about ${fmt$(D.lineage.reduce((a,l)=>a+l.build_cost,0))} of engineering time for the same bot, built twice. Maintenance keeps growing: ${D.tools.tools.filter(t=>t.registered).reduce((a,t)=>a+t.maint_sessions,0)} sessions since launch. A third tool, ${D.tools.unregistered.length?esc(D.tools.unregistered[0].name.toLowerCase())+" in "+esc(D.tools.unregistered[0].team):"none"}, is in no register.`,
+    classify: `${Math.round(100*nUn/N)}% of sessions are indirect and leave no record; only ${Math.round(100*(nDirect+nTr)/N)}% can be tied to a deal. Writing and admin are the biggest categories. Analysis and strategy sessions exist, but only in ChatGPT. Tool building and tool maintenance are their own categories. ChatGPT splits into coding (${Math.round(100*C.split.rows[0].sessions/(C.split.rows[0].sessions+C.split.rows[1].sessions))}%: building and maintaining three tools, plus scripts and formulas) and other tasks. Text alone classified ${(C.agreement_text_only*100).toFixed(1)}% of sessions correctly; it mistook bot-building for summarizing. The commit link brings it to ${(C.agreement*100).toFixed(1)}%. Synthetic templates make this easy; real prompts will score lower.`,
     map: `Four of EMEA’s five key results map to CRM records. Onboarding satisfaction has no record, so its progress can’t be seen in any team.`,
     learn: `Three drivers move the new-deal cycle: first response (${sgn(D.drivers[0].days)} days per hour slower), a solutions engineer before Proposal (${sgn(D.drivers[1].days)} days) and a prep brief (${sgn(D.drivers[2].days)} days). Extra meetings don’t, and neither do deal-note summaries (${sgn(D.drivers[4].days)} ± ${D.drivers[4].ci} days), the element the summary bots write.`,
-    trace: `The AI SDR and meeting prep close the triangle: their sessions are aimed at a driver and their output lands on that driver’s records. The deal-summary bots are aimed squarely at deal notes (D6) and write them, but step 4 found deal notes don’t move the cycle, so the triangle doesn’t close. ChatGPT coding reaches records only through the bots it built; ChatGPT other tasks reach none, and ${100-Math.round(D.trace.find(t=>t.id==="inv_chatgpt_other").aligned*100)}% of them are aimed at nothing. Teams aiming more of their AI spend at drivers moved KR3 more.`,
+    trace: `The AI SDR and meeting prep close the triangle: their sessions are aimed at a driver and their output lands on that driver’s records. The deal-summary bots are aimed squarely at deal notes (D6) and write them, but step 4 found deal notes don’t move the cycle, so the triangle doesn’t close. ChatGPT coding reaches records only through the bots it built; ChatGPT other tasks write none, but ${D.rec_link.check.sessions_linked} of their sessions match ${D.rec_link.check.deals_linked} specific deals by account, timing and text; overall ${100-Math.round(D.trace.find(t=>t.id==="inv_chatgpt_other").aligned*100)}% of them are aimed at nothing. Teams aiming more of their AI spend at drivers moved KR3 more.`,
     momentum: `The AI SDR ramps with each rollout and EMEA’s first response drops from April. Meeting prep is live everywhere but used in few deals outside EMEA and NA East. ChatGPT’s active seats fall all year.`,
-    prove: `Two effects survive comparison: the AI SDR (${sgn(P.sdr.cycle)} days, ${sgn(P.sdr.lo)} to ${sgn(P.sdr.hi)}) and meeting prep (${sgn(P.prep.adjusted)} days per brief). The deal-summary bots show none (${sgn(P.dealsum.cycle)}), so neither does the coding work that built them. ChatGPT can’t be tested against records.`,
+    prove: `Two effects survive comparison: the AI SDR (${sgn(P.sdr.cycle)} days, ${sgn(P.sdr.lo)} to ${sgn(P.sdr.hi)}) and meeting prep (${sgn(P.prep.adjusted)} days per brief). The deal-summary bots show none (${sgn(P.dealsum.cycle)}), so neither does the coding work that built them. Matched to deals, ChatGPT other tasks show ${sgn(P.chatgpt.cycle)} days (${sgn(P.chatgpt.lo)} to ${sgn(P.chatgpt.hi)}) on the deals they touch.`,
     find: `D3, a solutions engineer before the proposal, has no AI on it: APAC and LATAM lag by about ${D.coverage[2].teams.find(t=>t.team==="APAC").days_per_deal} and ${D.coverage[2].teams.find(t=>t.team==="LATAM").days_per_deal} days per new deal; that is the next AI requirement. D1 lags wherever the AI SDR isn’t live yet (extend it), and D2 lags in NA West, LATAM and APAC, where the prep assistant is bought but rarely used (adoption, not a new tool). Parallel development: NA East’s rebuild of EMEA’s bot is flagged in week ${D.parallel.alert.week}, worth about ${fmt$(D.parallel.saved_build + D.parallel.saved_run)} in the first year, and ${D.parallel.clusters.length} scripts are being rewritten in all five teams.`,
   };
   for (const k in F) $("f-"+k).innerHTML = F[k];
@@ -704,7 +746,7 @@ $("total-text").innerHTML = `Of ${fmt$(D.totals.ai_spend)} in AI spend, two inve
   $("ow-big").textContent = fmt$(O.in_scope);
   $("ow-text").innerHTML = `a year of AI run cost in workloads that are ready to pilot or ready after consolidation. At an assumed ${Math.round(O.cut[0]*100)}–${Math.round(O.cut[1]*100)}% lower run cost for a comparable open model the organization hosts, that is <b>${fmt$(O.potential[0])}–${fmt$(O.potential[1])}</b> a year. The assumption is not measured here; the pilot measures it, and step 7’s comparison checks the outcome holds.`;
   const vt = (v) => `<span class="tag ${v==="Ready to pilot"?"l1":v.startsWith("Consolidate")?"l2":"l3"}">${esc(v)}</span>`;
-  const modeShort = {direct:"Direct", indirect_traced:"Indirect · traced", indirect_untraced:"Indirect · untraced"};
+  const modeShort = {direct:"Direct", indirect_traced:"Indirect · traced", indirect_linked:"Indirect · matched to a deal", indirect_untraced:"Indirect · untraced"};
   $("owtbl").innerHTML = `<tr><th>Workload</th><th>Activity</th><th class="num">Sessions</th><th class="num">Run cost / yr</th><th>Readiness</th><th>Why</th></tr>` +
     O.workloads.map(w => `<tr><td><b>${esc(nameOf[w.id])}</b><br><span class="muted" style="font-size:12px">${esc(w.category)}</span></td><td style="font-size:13px">${modeShort[w.mode]}</td><td class="num">${w.sessions.toLocaleString()}</td><td class="num">${fmt$(w.spend)}</td><td>${vt(w.verdict)}</td><td style="font-size:13px">${esc(minus(w.why))}</td></tr>`).join("");
   $("f-next").innerHTML = `1. Renew the AI SDR and roll it to NA West and LATAM in waves, so the next comparison is built in. 2. Lift meeting-prep use in APAC and LATAM. 3. Merge the deal-summary bots and right-size ChatGPT seats (${fmt$(D.totals.avoided)}); turn on the weekly parallel-development watch and share the ${D.parallel.clusters.length} repeated scripts. 4. Scope an agent for the solutions-engineer driver. 5. Pilot an open model on the AI SDR’s writing and research workloads and re-run the rollout comparison before switching.`;
@@ -720,6 +762,9 @@ const truth = [
   ["ChatGPT Enterprise", "usage fades ~7% a month", `${Math.round(cm[0].active_share*100)}% → ${Math.round(cm[11].active_share*100)}% active`],
   ["Onboarding-satisfaction key result", "no CRM record", "flagged as blind spot"],
   ["Build lineage (ChatGPT → repo)", "291 build sessions, 70% followed by a commit", `${D.classify.split.link.linked} linked, precision ${Math.round(D.classify.split.link.precision*100)}%, recall ${Math.round(D.classify.split.link.recall*100)}%`],
+  ["ChatGPT on live deals", "−3 days on ~30% of 2024 deals", `${sgn(P.chatgpt.cycle)} (${sgn(P.chatgpt.lo)} to ${sgn(P.chatgpt.hi)}) on ${P.chatgpt.deals} matched deals`],
+  ["Session → deal matching", `${D.rec_link.check.true_sessions} true links`, `precision ${Math.round(D.rec_link.check.precision*100)}%, recall ${Math.round(D.rec_link.check.recall*100)}%`],
+  ["Unregistered tool", "LATAM quote calculator", D.tools.unregistered.length?`found: ${esc(D.tools.unregistered[0].name.toLowerCase())}, ${D.tools.unregistered[0].team}`:"missed"],
   ["Deal-notes element (D6)", "no effect planted", `${sgn(D.drivers[4].days)} ± ${D.drivers[4].ci} days`],
   ["Parallel build, caught early", "NA East starts 2024-03-11", `flagged week ${D.parallel.alert.week} (${D.parallel.alert.end})`],
   ["Duplicate build", "NA East rebuilt EMEA’s bot", `flagged: ${Math.round(D.duplicate.mean_best/Math.max(D.duplicate.mean_baseline,0.01))}× closer than other coding work`],

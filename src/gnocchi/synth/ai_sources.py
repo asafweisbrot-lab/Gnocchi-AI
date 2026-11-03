@@ -18,7 +18,7 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
-from .common import OUT, rng, update_ground_truth, write_json
+from .common import OUT, load_crm, rng, update_ground_truth, write_json
 
 INVESTMENTS = [
     {"investment_id": "inv_ai_sdr", "name": "AI SDR agent", "kind": "bought", "ai_type": "acting",
@@ -40,6 +40,12 @@ BUILDS = [
      "deploys_identity": "svc_dealsum_nae", "start": "2024-03-11", "deployed_at": "2024-05-01", "engineer_days": 29},
 ]
 DAY_RATE = 700  # loaded engineer cost per day (assumption)
+COMMIT_MSGS_MAINT = {
+    "EMEA": ["Bump Salesforce API version after release", "Skip closed opportunities", "Batch large opportunities to avoid timeouts",
+             "Fix parser: summaries fail on a note with an attachment", "Fix summaries in the wrong language"],
+    "NA East": ["Update API version for the new Salesforce release", "Ignore closed opps in the summary job", "Split big opps into batches (timeouts)",
+                "Support notes that include files", "Fix language of generated summaries"],
+}
 COMMIT_MSGS = {
     "EMEA": ["Add trigger: send new opp notes to summarizer", "Summarize opportunity notes into 3-bullet status",
              "Retry and rate limit for notes summary job", "Tests for opportunity notes summarizer",
@@ -59,7 +65,8 @@ PURPOSE_CATEGORY = {"Outreach: first touch": "Writing", "Research: account and c
                     "Drafting: internal email": "Writing", "Drafting: proposal text": "Writing",
                     "Personal productivity": "Admin", "Analysis: pipeline and cycle": "Analysis",
                     "Strategy: account and territory plans": "Strategy", "Development: formulas and scripts": "Development",
-                    "Development: build deal-summary bot": "Development"}
+                    "Tool building: deal-summary bot": "Tool building", "Tool maintenance: deal-summary bot": "Tool maintenance",
+                    "Tool building: quote calculator": "Tool building", "Tool maintenance: quote calculator": "Tool maintenance"}
 SEATS = {"EMEA": 12, "NA East": 12, "NA West": 10, "LATAM": 9, "APAC": 4}
 
 
@@ -108,15 +115,41 @@ def sessions(opps: pd.DataFrame, ev: pd.DataFrame, g: np.random.Generator) -> pd
         days = (live - start).days
         for _ in range(int(g.integers(110, 130))):
             ts = start + pd.Timedelta(days=int(g.integers(0, days)), hours=int(g.integers(8, 19)))
-            add(ts.strftime("%Y-%m-%dT%H:%M"), "inv_chatgpt_ent", "sso_user", b["team"], "Development: build deal-summary bot",
+            add(ts.strftime("%Y-%m-%dT%H:%M"), "inv_chatgpt_ent", "sso_user", b["team"], "Tool building: deal-summary bot",
                 None, "none", g.normal(3600, 700))
             rows[-1]["_repo"] = b["repo"]
+        # maintenance grows as the bot ages (API releases, edge cases, timeouts)
         for month in range(live.month, 13):
-            for _ in range(int(g.integers(2, 6))):
+            for _ in range(int(g.integers(6, 10)) + (month - live.month)):
                 ts = pd.Timestamp(2024, month, int(g.integers(1, 28)), int(g.integers(8, 18)))
-                add(ts.strftime("%Y-%m-%dT%H:%M"), "inv_chatgpt_ent", "sso_user", b["team"], "Development: build deal-summary bot",
+                add(ts.strftime("%Y-%m-%dT%H:%M"), "inv_chatgpt_ent", "sso_user", b["team"], "Tool maintenance: deal-summary bot",
                     None, "none", g.normal(3000, 600))
                 rows[-1]["_repo"] = b["repo"]
+    # An unregistered tool: a LATAM seller vibe-codes a quote calculator (Apps Script on a
+    # sheet). No repo, no CI, no register entry: only the session text shows it.
+    qs, ql = pd.Timestamp("2024-02-05"), pd.Timestamp("2024-03-25")
+    for _ in range(int(g.integers(40, 50))):
+        ts = qs + pd.Timedelta(days=int(g.integers(0, (ql - qs).days)), hours=int(g.integers(8, 19)))
+        add(ts.strftime("%Y-%m-%dT%H:%M"), "inv_chatgpt_ent", "sso_user", "LATAM", "Tool building: quote calculator",
+            None, "none", g.normal(3200, 600))
+    for month in range(4, 13):
+        for _ in range(int(g.integers(3, 7)) + (month - 4) // 2):
+            ts = pd.Timestamp(2024, month, int(g.integers(1, 28)), int(g.integers(8, 18)))
+            add(ts.strftime("%Y-%m-%dT%H:%M"), "inv_chatgpt_ent", "sso_user", "LATAM", "Tool maintenance: quote calculator",
+                None, "none", g.normal(2600, 500))
+    # ChatGPT on live deals: proposal and account work for the deals planted in crm_history
+    gpt_deals = set(pd.read_csv(OUT / "_ground_truth_chatgpt_deals.csv").opportunity_id)
+    for oid in gpt_deals:
+        if oid not in opps.index:
+            continue
+        o = opps.loc[oid]
+        created = pd.Timestamp(o.created_date)
+        for _ in range(int(g.integers(1, 4))):
+            p_ = ["Drafting: proposal text", "Research: account background", "Strategy: account and territory plans"][
+                int(g.choice(3, p=[0.5, 0.3, 0.2]))]
+            ts = created + pd.Timedelta(days=float(o.cycle_days) * float(g.uniform(0.15, 0.55)), hours=int(g.integers(8, 18)))
+            add(ts.strftime("%Y-%m-%dT%H:%M"), "inv_chatgpt_ent", "sso_user", o.team, p_, None, "none", g.normal(1400, 300))
+            rows[-1]["_opp"] = oid
     # ChatGPT Enterprise: usage fades through the year, mostly not tied to records
     for month in range(1, 13):
         for team, seats in SEATS.items():
@@ -188,7 +221,33 @@ TEMPLATES = {
         "Write a Python script to dedupe the lead export CSV and normalize phone numbers.",
         "Debug this Excel macro that merges the weekly forecast sheets.",
     ],
-    "Development: build deal-summary bot": [
+    "Tool maintenance: deal-summary bot": [
+        "The notes summarizer broke after the Salesforce release. Fix the API version error.",
+        "Update the summary job so it skips closed opportunities.",
+        "The summary bot times out on opportunities with hundreds of notes. How do I batch them?",
+        "Summaries fail when a note has an attachment. Fix the parser.",
+        "The bot writes summaries in the wrong language for some accounts. Fix it.",
+    ],
+    "Tool maintenance: deal-summary bot (NA East wording)": [
+        "After the new Salesforce release our summary bot throws an API version error. Fix it.",
+        "Change the opportunity summary job to ignore closed opps.",
+        "Opp summary bot is timing out on big opportunities. Help me split them into batches.",
+        "The bot fails on notes that include files. Update the parsing.",
+        "Some summaries come out in the wrong language. Fix the bot.",
+    ],
+    "Tool building: quote calculator": [
+        "Write an Apps Script that builds a customer quote from our price list sheet.",
+        "Add volume discount tiers to the quote calculator script.",
+        "Make the quote script create a PDF from the template and email it to me.",
+        "Add currency conversion to the quote calculator for BRL and MXN.",
+    ],
+    "Tool maintenance: quote calculator": [
+        "The quote calculator script fails when the discount is over 20%. Fix it.",
+        "The price list sheet changed columns and the quote script broke. Update it.",
+        "Quote PDFs show the wrong currency since last week. Fix the script.",
+        "The quote script hits the Apps Script quota. How do I fix the error?",
+    ],
+    "Tool building: deal-summary bot": [
         "Write an Apex trigger that sends new opportunity activity notes to the summarization service.",
         "Write a Python function that condenses an opportunity's activity notes into a three-bullet status.",
         "Add retries and rate limiting to the job that summarizes opportunity notes.",
@@ -196,7 +255,7 @@ TEMPLATES = {
         "Set up the connected app so the bot can write the summary note back to the opportunity.",
         "Debug why the summarizer posts duplicate notes on the same opportunity.",
     ],
-    "Development: build deal-summary bot (NA East wording)": [
+    "Tool building: deal-summary bot (NA East wording)": [
         "Create an Apex trigger to push new opportunity notes to our summary API.",
         "Python: summarize all activity notes on an opportunity into three short bullets.",
         "Add retry logic and throttling to the opportunity summary job.",
@@ -205,8 +264,8 @@ TEMPLATES = {
         "The summary bot writes the same note twice on one opportunity. Help me debug it.",
     ],
     "Drafting: proposal text": [
-        "Draft the executive summary for a proposal to {acct} covering pricing options and the rollout plan.",
-        "Write the pricing and implementation section of our quote for {acct}.",
+        "Draft the executive summary for a {kind} proposal to {acct} covering pricing options and the rollout plan.",
+        "Write the pricing and implementation section of our {kind} quote for {acct}.",
     ],
 }
 
@@ -217,13 +276,17 @@ def add_prompts(sess: pd.DataFrame, g: np.random.Generator) -> pd.DataFrame:
     prompts = []
     tpl = []
     repos = sess["_repo"] if "_repo" in sess else pd.Series([None] * len(sess), index=sess.index)
-    for p, rec in zip(sess.purpose, repos):
-        if isinstance(rec, str) and rec.startswith("salesops-nae/"):
-            p = "Development: build deal-summary bot (NA East wording)"
+    accts = sess["_acct"] if "_acct" in sess else pd.Series([None] * len(sess), index=sess.index)
+    kinds = sess["_kind"] if "_kind" in sess else pd.Series([None] * len(sess), index=sess.index)
+    KIND = {"New": "new-logo", "Expansion": "expansion", "Upsell": "upsell", "Renewal": "renewal"}
+    for p, rec, acct, kind in zip(sess.purpose, repos, accts, kinds):
+        if isinstance(rec, str) and rec.startswith("salesops-nae/") and p.startswith("Tool"):
+            p = p + " (NA East wording)"
         k = int(g.integers(len(TEMPLATES[p])))
         tpl.append(k)
         t = TEMPLATES[p][k]
-        prompts.append(t.format(acct=ACCOUNTS[int(g.integers(len(ACCOUNTS)))],
+        prompts.append(t.format(acct=acct if isinstance(acct, str) else ACCOUNTS[int(g.integers(len(ACCOUNTS)))],
+                                kind=KIND.get(kind) if isinstance(kind, str) else ["new-logo", "expansion", "renewal"][int(g.integers(3))],
                                 role=ROLES[int(g.integers(len(ROLES)))],
                                 pain=PAINS[int(g.integers(len(PAINS)))]))
     sess = sess.copy()
@@ -252,9 +315,14 @@ def main() -> None:
     opps = pd.read_csv(OUT / "crm_opportunity_history_2024.csv").set_index("opportunity_id")
     ev = pd.read_csv(OUT / "crm_change_log_2024.csv")
     pd.DataFrame(INVESTMENTS).assign(teams=lambda d: d.teams.str.join(";")).to_csv(OUT / "ai_investments.csv", index=False)
-    sess = add_prompts(sessions(opps, ev, g), g)
+    raw = sessions(opps, ev, g)
+    crm = load_crm(2024).set_index("opportunity id")
+    tie = raw["_opp"].where(raw["_opp"].notna(), raw.record_ids) if "_opp" in raw else raw.record_ids
+    raw["_acct"] = tie.map(crm["account name"])
+    raw["_kind"] = tie.map(crm["type"])
+    sess = add_prompts(raw, g)
     sess["category"] = sess.purpose.map(PURPOSE_CATEGORY)
-    sess[["session_id", "purpose", "category", "_repo"]].rename(columns={"_repo": "repo"}).to_csv(
+    sess[["session_id", "purpose", "category", "_repo", "_opp"]].rename(columns={"_repo": "repo", "_opp": "opp"}).to_csv(
         OUT / "_ground_truth_session_purpose.csv", index=False)
     # Git/CI source: commits follow most build sessions within a day or so
     commits = []
@@ -262,10 +330,10 @@ def main() -> None:
         if g.random() < 0.7:
             ts = pd.Timestamp(r.ts) + pd.Timedelta(minutes=int(g.integers(30, 1800)))
             commits.append({"ts": ts.strftime("%Y-%m-%dT%H:%M"), "repo": r["_repo"], "team": r.team,
-                            "message": COMMIT_MSGS[r.team][r["_tpl"]]})
+                            "message": (COMMIT_MSGS if r.purpose.startswith("Tool building") else COMMIT_MSGS_MAINT)[r.team][r["_tpl"]]})
     commits = pd.DataFrame(commits).sort_values("ts")
     commits.to_csv(OUT / "code_commits.csv", index=False)
-    sess.drop(columns=["purpose", "category", "_repo", "_tpl"]).to_json(OUT / "ai_telemetry_2024.jsonl", orient="records", lines=True)
+    sess.drop(columns=["purpose", "category", "_repo", "_tpl", "_opp", "_acct", "_kind"]).to_json(OUT / "ai_telemetry_2024.jsonl", orient="records", lines=True)
     admin_usage(sess).to_csv(OUT / "ai_admin_usage_2024.csv", index=False)
     # Git/CI source: one row per build repo
     build_log = pd.DataFrame([{**{k: v for k, v in b.items() if k != "builds"},

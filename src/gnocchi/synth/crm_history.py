@@ -14,6 +14,9 @@ Planted effects (also written to _ground_truth.json):
     opportunity at a team-specific rate (dose); each attached brief shortens the cycle ~3 days.
   * Solutions engineer added before Proposal (a human action, no AI): ~10 days shorter
     cycle; APAC and LATAM rarely do it -> an AI opportunity, not an AI effect.
+  * ChatGPT on live deals (standalone AI, no record trace): in 2024 ~30% of New, Expansion
+    and Upsell deals get proposal and account work in ChatGPT; those deals close ~3 days
+    faster. The CRM never sees it: only the session text (account name, timing) links it.
 Cycle lengths also depend on deal type and size, plus noise and a Q4 push.
 """
 from __future__ import annotations
@@ -28,7 +31,8 @@ PREP_START = pd.Timestamp("2024-07-01")
 PREP_RATE = {"EMEA": 0.70, "NA East": 0.55, "NA West": 0.30, "LATAM": 0.20, "APAC": 0.10}
 SE_RATE = {"EMEA": 0.55, "NA East": 0.50, "NA West": 0.45, "LATAM": 0.20, "APAC": 0.15}
 BASE_CYCLE = {"New": 78, "Expansion": 48, "Upsell": 40, "Renewal": 30, "Partner Showroom": 30}
-EFFECT = {"days_per_response_hour": 1.6, "sdr_cycle_days_via_response": -8.0, "prep_cycle_days": -3.0, "se_cycle_days": -10.0,
+GPT_RATE = 0.30
+EFFECT = {"chatgpt_deal_cycle_days": -3.0, "days_per_response_hour": 1.6, "sdr_cycle_days_via_response": -8.0, "prep_cycle_days": -3.0, "se_cycle_days": -10.0,
           "resp_hours_before": 6.0, "resp_hours_with_sdr": 1.0}
 STAGES = ["Discovery", "Demo", "Proposal", "Negotiation", "Closed Won"]
 STAGE_SHARE = [0.0, 0.25, 0.55, 0.8, 1.0]
@@ -57,6 +61,9 @@ def enrich(year: int, teams: pd.DataFrame, g: np.random.Generator) -> tuple[pd.D
                 and bool(g.random() < PREP_RATE.get(team, 0.2)))
         if prep:
             cycle += EFFECT["prep_cycle_days"]
+        gpt = year == 2024 and typ in ("New", "Expansion", "Upsell") and bool(g.random() < GPT_RATE)
+        if gpt:
+            cycle += EFFECT["chatgpt_deal_cycle_days"]
         cycle = max(10, int(round(cycle)))
         created = close - pd.Timedelta(days=cycle)
         resp_h = (max(0.2, g.normal(EFFECT["resp_hours_with_sdr"], 0.4)) if sdr
@@ -70,7 +77,7 @@ def enrich(year: int, teams: pd.DataFrame, g: np.random.Generator) -> tuple[pd.D
         opps.append({"opportunity_id": oid, "year": year, "team": team, "type": typ,
                      "amount": amt, "created_date": created.date(), "close_date": close.date(),
                      "cycle_days": cycle, "first_response_hours": None if resp_h is None else round(resp_h, 1),
-                     "meetings": meetings})
+                     "meetings": meetings, "_gpt": gpt})
         # stage events
         for s, share in zip(STAGES, STAGE_SHARE):
             ts = created + pd.Timedelta(days=int(round(cycle * share)))
@@ -109,12 +116,14 @@ def main() -> None:
     g = rng(1)
     for y in YEARS:
         opps, ev = enrich(y, teams, g)
-        opps.to_csv(OUT / f"crm_opportunity_history_{y}.csv", index=False)
+        if y == 2024:
+            opps[opps._gpt][["opportunity_id"]].to_csv(OUT / "_ground_truth_chatgpt_deals.csv", index=False)
+        opps.drop(columns=["_gpt"]).to_csv(OUT / f"crm_opportunity_history_{y}.csv", index=False)
         ev.to_csv(OUT / f"crm_change_log_{y}.csv", index=False)
         print(y, "opps", len(opps), "events", len(ev))
     update_ground_truth("crm_history", {"sdr_start": {k: str(v.date()) for k, v in SDR_START.items()},
                                         "prep_start": str(PREP_START.date()), "prep_rate": PREP_RATE,
-                                        "se_rate": SE_RATE, "effects": EFFECT})
+                                        "se_rate": SE_RATE, "gpt_rate": GPT_RATE, "effects": EFFECT})
 
 
 if __name__ == "__main__":
