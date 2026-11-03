@@ -315,7 +315,8 @@ footer{padding-block:8px 0}
   </div>
   <div class="panel grid2">
     <div class="result"><span class="eyebrow">Deal-summary bots · record level, with controls</span>
-      <span class="big" id="ds-big"></span><p id="ds-text"></p></div>
+      <span class="big" id="ds-big"></span><p id="ds-text"></p>
+      <div class="tbl" style="margin-top:6px"><table id="dskpi" style="min-width:0"></table></div></div>
     <div class="result" style="border-color:var(--muted)"><span class="eyebrow" style="color:var(--muted)">ChatGPT Enterprise · no record trace</span>
       <span class="big" id="chat-big"></span><p id="chat-text"></p></div>
   </div>
@@ -556,7 +557,11 @@ $("prep-text").innerHTML = `per deal with a prep brief, 90% range ${sgn(P.prep.l
     txt(svg, sx(d.prep_share)+6, y+19, `${d.prep_share}%`, {class:"lbl"}); });
 })();
 $("ds-big").textContent = `${sgn(P.dealsum.cycle)} days`;
-$("ds-text").innerHTML = `on the cycle, 90% range ${sgn(P.dealsum.lo)} to ${sgn(P.dealsum.hi)}, across ${P.dealsum.deals} deals summarized. Two teams built the same bot separately; neither moves a driver.`;
+$("ds-text").innerHTML = `on the cycle, 90% range ${sgn(P.dealsum.lo)} to ${sgn(P.dealsum.hi)}, across ${P.dealsum.deals} deals summarized. Two teams built the same bot separately; neither moves a driver. Checked against every KPI the OKRs track, with the same controls (team, month, deal type, AI SDR, prep, SE):`;
+$("dskpi").innerHTML = `<tr><th>KPI (OKR)</th><th class="num">Deals with a note</th><th class="num">Raw gap</th><th class="num">After controls, 90% range</th></tr>` +
+  P.dealsum.kpis.map(k => { const u = k.unit==="%"?"%":k.unit==="d"?" d":""; const zero = k.lo <= 0 && k.hi >= 0;
+    return `<tr><td>${esc(k.kpi)}<br><span class="muted" style="font-size:12px">${esc(k.okr)}</span></td><td class="num">${k.deals} of ${k.n}</td><td class="num muted">${k.unit==="%"?sgn(Math.round(100*(k.with/k.without-1)))+"%":sgn(Math.round((k.with-k.without)*10)/10)+u}</td><td class="num"><b>${sgn(k.est)}${u}</b><br><span class="muted" style="font-size:12px">${sgn(k.lo)} to ${sgn(k.hi)}${zero?" · no effect":""}</span></td></tr>`; }).join("") +
+  `<tr><td colspan="4" class="muted" style="font-size:12px">Raw gaps compare medians; the new-deal cycle looks 6 days faster with a note only because the bots run in the teams that also have the AI SDR. Win rate can’t be tested: the CRM extract holds only closed-won deals.</td></tr>`;
 const cm = D.momentum.inv_chatgpt_other;
 $("chat-big").textContent = `${Math.round(cm[0].active_share*100)}% → ${Math.round(cm[11].active_share*100)}%`;
 $("chat-text").innerHTML = `active seats, January to December. It writes nothing to the CRM, so there’s no record to compare; only ${Math.round(D.trace.find(t=>t.id==="inv_chatgpt_other").aligned*100)}% of its other-task sessions match a driver or key result. Evidence is usage and purpose only.`;

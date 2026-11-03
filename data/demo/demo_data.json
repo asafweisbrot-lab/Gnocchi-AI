@@ -6299,7 +6299,69 @@
    "cycle": 0.0,
    "lo": -1.5,
    "hi": 1.5,
-   "deals": 244
+   "deals": 244,
+   "kpis": [
+    {
+     "kpi": "Deal size (amount)",
+     "okr": "KR1 total bookings",
+     "unit": "%",
+     "deals": 244,
+     "n": 439,
+     "est": -19.8,
+     "lo": -35.7,
+     "hi": 3.2,
+     "with": 8947.7,
+     "without": 13500.0
+    },
+    {
+     "kpi": "New-logo deal size",
+     "okr": "KR2 new-logo bookings",
+     "unit": "%",
+     "deals": 82,
+     "n": 160,
+     "est": -10.2,
+     "lo": -42.0,
+     "hi": 41.2,
+     "with": 26966.8,
+     "without": 26595.7
+    },
+    {
+     "kpi": "New-deal cycle",
+     "okr": "KR3 cycle under 60 days",
+     "unit": "d",
+     "deals": 82,
+     "n": 160,
+     "est": 0.2,
+     "lo": -2.5,
+     "hi": 2.4,
+     "with": 66.2,
+     "without": 71.8
+    },
+    {
+     "kpi": "Renewal cycle",
+     "okr": "KR4 renewals",
+     "unit": "d",
+     "deals": 115,
+     "n": 207,
+     "est": 0.5,
+     "lo": -1.2,
+     "hi": 2.6,
+     "with": 32.0,
+     "without": 31.0
+    },
+    {
+     "kpi": "Customer meetings per deal",
+     "okr": "driver D5",
+     "unit": "n",
+     "deals": 244,
+     "n": 439,
+     "est": 0.0,
+     "lo": -0.2,
+     "hi": 0.2,
+     "with": 3.0,
+     "without": 3.0
+    }
+   ]
   },
   "kr3": [
    {

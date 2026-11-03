@@ -371,6 +371,26 @@ def main() -> None:
         return ols(df, "cycle_days", ["dealsum", "sdr", "prep", "se", "log_amt"], ["team", "month", "type"])["dealsum"][0]
     ds_est = ds_eff(ds)
     ds_lo, ds_hi = boot(ds, ds_eff)
+    # Do deals with a summary note do better on any KPI the OKRs track? Same controls, per KPI.
+    # Only closed-won deals exist, so win rate (and the OKR it would feed) can't be tested.
+    def eff_on(df, y, xs, fe):
+        return ols(df, y, ["dealsum"] + xs, fe)["dealsum"][0]
+    ds_kpis = []
+    for kpi, okr, sub, y, xs, fe, unit in [
+        ("Deal size (amount)", "KR1 total bookings", ds, "log_amt", ["sdr", "prep", "se"], ["team", "month", "type"], "%"),
+        ("New-logo deal size", "KR2 new-logo bookings", ds[ds.type == "New"], "log_amt", ["sdr", "prep", "se"], ["team", "month"], "%"),
+        ("New-deal cycle", "KR3 cycle under 60 days", ds[ds.type == "New"], "cycle_days", ["sdr", "prep", "se", "log_amt"], ["team", "month"], "d"),
+        ("Renewal cycle", "KR4 renewals", ds[ds.type == "Renewal"], "cycle_days", ["log_amt"], ["team", "month"], "d"),
+        ("Customer meetings per deal", "driver D5", ds, "meetings", ["sdr", "prep", "se", "log_amt"], ["team", "month", "type"], "n"),
+    ]:
+        f = lambda df, y=y, xs=xs, fe=fe: eff_on(df, y, xs, fe)
+        est = f(sub)
+        lo_, hi_ = boot(sub, f, n=200)
+        conv = (lambda v: 100 * (np.exp(v) - 1)) if unit == "%" else (lambda v: v)
+        ds_kpis.append({"kpi": kpi, "okr": okr, "unit": unit, "deals": int(sub.dealsum.sum()), "n": int(len(sub)),
+                        "est": round(float(conv(est)), 1), "lo": round(float(conv(lo_)), 1), "hi": round(float(conv(hi_)), 1),
+                        "with": round(float(sub[sub.dealsum == 1][y if unit != "%" else "amount"].median()), 1),
+                        "without": round(float(sub[sub.dealsum == 0][y if unit != "%" else "amount"].median()), 1)})
     # KR3 view: median New-deal cycle by team and year
     kr3 = (new.assign(y=new.close_date.dt.year).groupby(["team", "y"]).cycle_days.median().unstack()).round(0)
     kr3_rows = [{"team": t, "y2023": int(kr3.loc[t, 2023]), "y2024": int(kr3.loc[t, 2024])} for t in TEAMS]
@@ -416,7 +436,8 @@ def main() -> None:
                 "resp": round(resp_est, 1), "deals": int(new.sdr.sum()), "series": m_series},
         "prep": {"raw": round(raw_prep, 1), "adjusted": round(prep_est, 1), "lo": round(prep_lo, 1), "hi": round(prep_hi, 1),
                  "briefs": int(ne.prep.sum()), "dose": dose},
-        "dealsum": {"cycle": round(ds_est, 1), "lo": round(ds_lo, 1), "hi": round(ds_hi, 1), "deals": int(ds.dealsum.sum())},
+        "dealsum": {"cycle": round(ds_est, 1), "lo": round(ds_lo, 1), "hi": round(ds_hi, 1), "deals": int(ds.dealsum.sum()),
+                    "kpis": ds_kpis},
         "kr3": kr3_rows,
     }
 
