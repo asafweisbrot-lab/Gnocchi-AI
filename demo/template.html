@@ -291,6 +291,19 @@ footer{padding-block:8px 0}
     </div>
   </div>
 
+  <div class="panel" style="display:grid;gap:14px">
+    <div style="display:grid;gap:6px;max-width:78ch"><h3>Parallel development, caught while it happens</h3>
+    <p class="muted" style="font-size:14px">Every week Gnocchi compares new coding sessions with earlier coding work in other teams, against a baseline of unrelated work. When a team starts building something another team already built or is building, it is flagged, and the work is saved to the build register as one shared asset so the next team finds it before it starts.</p></div>
+    <div class="grid2">
+      <div class="result"><span class="eyebrow">Replayed on 2024: NA East’s summary bot</span><span class="big" id="par-big"></span><p id="par-text"></p></div>
+      <div style="display:grid;gap:8px"><h3 style="font-size:15px">Similarity to EMEA’s build ÷ baseline, by week of NA East’s build</h3>
+        <div class="legend"><span><i style="background:var(--accent)"></i>NA East vs EMEA’s build</span><span><i style="background:var(--good)"></i>alert threshold</span></div>
+        <svg id="parchart" role="img" aria-label="Weekly similarity ratio of NA East's coding sessions to EMEA's build"></svg></div>
+    </div>
+    <h3 style="font-size:15px">Repeated development work across teams, saved to the build register</h3>
+    <div class="tbl"><table id="partbl"></table></div>
+    <p class="muted" style="font-size:13px" id="par-note"></p>
+  </div>
   <div class="finding"><span class="eyebrow">Finding</span><p id="f-find"></p></div>
   <div class="sources" id="src-find"></div>
 </section>
@@ -552,6 +565,19 @@ $("total-text").innerHTML = `Of ${fmt$(D.totals.ai_spend)} in AI spend, two inve
   $("dup-text").innerHTML = `${esc(later.team)}’s coding sessions match EMEA’s earlier build ${Math.round(Dp.mean_best/Math.max(Dp.mean_baseline,0.01))}× more closely than other coding work (similarity ${Dp.mean_best} vs ${Dp.mean_baseline}), and both bots write the same note type. The second build cost about ${fmt$(Dp.wasted_cost)} of engineering time, plus ${fmt$(later.run_cost)} a year to run.`;
 })();
 
+// 8b parallel development
+(function(){
+  const Pa = D.parallel, A = Pa.alert;
+  $("par-big").textContent = `Week ${A.week}`;
+  $("par-text").innerHTML = `By ${esc(A.end)}, ${A.sessions} sessions into NA East’s build (${Math.round(Pa.done_share*100)}% of it), its coding sessions match EMEA’s live bot ${A.ratio}× more closely than unrelated work, above the ${Pa.threshold}× threshold. Acting on the flag, reusing EMEA’s bot instead, saves about <b>${fmt$(Pa.saved_build)}</b> of the remaining build and <b>${fmt$(Pa.saved_run)}</b> a year to run a second bot.`;
+  lines("parchart", [{values: Pa.weeks.map(w=>w.ratio), color: css("--accent")}],
+    {lo:0, hi:6, step:1, xlabels: Pa.weeks.map(w=>"W"+w.week), target: Pa.threshold, targetLabel: `alert at ${Pa.threshold}×`});
+  $("partbl").innerHTML = `<tr><th>Work</th><th>Teams</th><th class="num">Sessions</th><th>First seen</th><th class="num">Repeats in other teams</th><th>Saved as</th></tr>` +
+    Pa.clusters.map(c => `<tr><td>“${esc(c.work)}”</td><td style="font-size:13px">${c.teams.map(esc).join(", ")}</td><td class="num">${c.sessions}</td><td class="mono" style="font-size:12px">${esc(c.first_seen)} · ${esc(c.first_team)}</td><td class="num">${c.repeat} <span class="muted">≈ ${c.hours} h</span></td><td style="font-size:13px">Shared asset, owner ${esc(c.first_team)}</td></tr>`).join("") +
+    `<tr><td style="font-size:13px"><b>NA East summary bot build</b></td><td style="font-size:13px">EMEA, NA East</td><td class="num">${D.lineage.reduce((a,l)=>a+l.sessions,0)}</td><td class="mono" style="font-size:12px">${esc(D.lineage[0].first_commit)} · EMEA</td><td class="num">${Pa.pre_launch}</td><td style="font-size:13px">Flagged week ${A.week}; reuse EMEA’s bot</td></tr>`;
+  $("par-note").innerHTML = `Clusters: development sessions grouped by text similarity, kept when two or more teams appear. Hours assume ${Pa.min_per_session} minutes per repeat once a shared version exists; that is an assumption, not a measurement. Session text and team only; no person is named.`;
+})();
+
 // findings: each step moves one step closer to the conclusion
 (function(){
   const inv = D.discover.inventory, C = D.classify, tot = (o) => Object.values(o).reduce((a,b)=>a+b,0);
@@ -566,7 +592,7 @@ $("total-text").innerHTML = `Of ${fmt$(D.totals.ai_spend)} in AI spend, two inve
     trace: `The AI SDR and meeting prep close the triangle: their sessions are aimed at a driver and their output lands on that driver’s records. The deal-summary bots write records no driver depends on. ChatGPT reaches no record and ${100-Math.round(D.trace.find(t=>t.id==="inv_chatgpt_ent").aligned*100)}% of its sessions are aimed at nothing. Teams aiming more of their AI spend at drivers moved KR3 more.`,
     momentum: `The AI SDR ramps with each rollout and EMEA’s first response drops from April. Meeting prep is live everywhere but used in few deals outside EMEA and NA East. ChatGPT’s active seats fall all year.`,
     prove: `Two effects survive comparison: the AI SDR (${sgn(P.sdr.cycle)} days, ${sgn(P.sdr.lo)} to ${sgn(P.sdr.hi)}) and meeting prep (${sgn(P.prep.adjusted)} days per brief). The deal-summary bots show none (${sgn(P.dealsum.cycle)}), so neither does the coding work that built them. ChatGPT can’t be tested against records.`,
-    find: `No AI works the solutions-engineer driver. LATAM and APAC rarely add one before the proposal, worth days on every new deal. That is the next AI requirement.`,
+    find: `No AI works the solutions-engineer driver. LATAM and APAC rarely add one before the proposal, worth days on every new deal. That is the next AI requirement. Parallel development: NA East’s rebuild of EMEA’s bot is flagged in week ${D.parallel.alert.week}, worth about ${fmt$(D.parallel.saved_build + D.parallel.saved_run)} in the first year, and ${D.parallel.clusters.length} scripts are being rewritten in all five teams.`,
   };
   for (const k in F) $("f-"+k).innerHTML = F[k];
   $("bottom").innerHTML = `Of ${fmt$(D.totals.ai_spend)} in AI spend, <b>${fmt$(96000+38000)}</b> is proven to shorten the new-deal cycle and should grow; <b>${fmt$(D.totals.avoided)}</b> a year can be saved by consolidating duplicate bots and right-sizing seats; and <b>${fmt$(D.open_weights.in_scope)}</b> of run cost is in scope for open-weights models once the organization is ready.`;
@@ -582,7 +608,7 @@ $("total-text").innerHTML = `Of ${fmt$(D.totals.ai_spend)} in AI spend, two inve
   const modeShort = {direct:"Direct", indirect_traced:"Indirect · traced", indirect_untraced:"Indirect · untraced"};
   $("owtbl").innerHTML = `<tr><th>Workload</th><th>Activity</th><th class="num">Sessions</th><th class="num">Run cost / yr</th><th>Readiness</th><th>Why</th></tr>` +
     O.workloads.map(w => `<tr><td><b>${esc(nameOf[w.id])}</b><br><span class="muted" style="font-size:12px">${esc(w.category)}</span></td><td style="font-size:13px">${modeShort[w.mode]}</td><td class="num">${w.sessions.toLocaleString()}</td><td class="num">${fmt$(w.spend)}</td><td>${vt(w.verdict)}</td><td style="font-size:13px">${esc(minus(w.why))}</td></tr>`).join("");
-  $("f-next").innerHTML = `1. Renew the AI SDR and roll it to NA West and LATAM in waves, so the next comparison is built in. 2. Lift meeting-prep use in APAC and LATAM. 3. Merge the deal-summary bots and right-size ChatGPT seats (${fmt$(D.totals.avoided)}); register each new build so a duplicate is caught before it starts. 4. Scope an agent for the solutions-engineer driver. 5. Pilot an open model on the AI SDR’s writing and research workloads and re-run the rollout comparison before switching.`;
+  $("f-next").innerHTML = `1. Renew the AI SDR and roll it to NA West and LATAM in waves, so the next comparison is built in. 2. Lift meeting-prep use in APAC and LATAM. 3. Merge the deal-summary bots and right-size ChatGPT seats (${fmt$(D.totals.avoided)}); turn on the weekly parallel-development watch and share the ${D.parallel.clusters.length} repeated scripts. 4. Scope an agent for the solutions-engineer driver. 5. Pilot an open model on the AI SDR’s writing and research workloads and re-run the rollout comparison before switching.`;
 })();
 
 // check
@@ -595,6 +621,7 @@ const truth = [
   ["ChatGPT Enterprise", "usage fades ~7% a month", `${Math.round(cm[0].active_share*100)}% → ${Math.round(cm[11].active_share*100)}% active`],
   ["Onboarding-satisfaction key result", "no CRM record", "flagged as blind spot"],
   ["Build lineage", "2 repos deploy the 2 bot identities", `${D.lineage.length} builds traced, session → repo → identity → records`],
+  ["Parallel build, caught early", "NA East starts 2024-03-11", `flagged week ${D.parallel.alert.week} (${D.parallel.alert.end})`],
   ["Duplicate build", "NA East rebuilt EMEA’s bot", `flagged: ${Math.round(D.duplicate.mean_best/Math.max(D.duplicate.mean_baseline,0.01))}× closer than other coding work`],
   ["Session work category", "7 planted categories", `${Math.round(D.classify.agreement*100)}% of sessions classified correctly`],
   ["Session purpose (similarity to drivers and key results)", "12 planted purposes", `${Math.round(D.similarity.overall_agreement*100)}% of sessions matched correctly`],

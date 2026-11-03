@@ -41,6 +41,135 @@
   "mean_baseline": 0.07,
   "wasted_cost": 20300
  },
+ "parallel": {
+  "weeks": [
+   {
+    "week": 1,
+    "end": "2024-03-19",
+    "sessions": 16,
+    "sim": 0.36,
+    "base": 0.08,
+    "ratio": 4.8
+   },
+   {
+    "week": 2,
+    "end": "2024-03-26",
+    "sessions": 28,
+    "sim": 0.36,
+    "base": 0.07,
+    "ratio": 4.9
+   },
+   {
+    "week": 3,
+    "end": "2024-04-02",
+    "sessions": 41,
+    "sim": 0.36,
+    "base": 0.07,
+    "ratio": 4.9
+   },
+   {
+    "week": 4,
+    "end": "2024-04-09",
+    "sessions": 60,
+    "sim": 0.35,
+    "base": 0.07,
+    "ratio": 4.7
+   },
+   {
+    "week": 5,
+    "end": "2024-04-16",
+    "sessions": 77,
+    "sim": 0.35,
+    "base": 0.07,
+    "ratio": 4.8
+   },
+   {
+    "week": 6,
+    "end": "2024-04-23",
+    "sessions": 92,
+    "sim": 0.35,
+    "base": 0.07,
+    "ratio": 4.8
+   },
+   {
+    "week": 7,
+    "end": "2024-04-30",
+    "sessions": 110,
+    "sim": 0.35,
+    "base": 0.07,
+    "ratio": 4.7
+   },
+   {
+    "week": 8,
+    "end": "2024-05-07",
+    "sessions": 111,
+    "sim": 0.35,
+    "base": 0.07,
+    "ratio": 4.6
+   }
+  ],
+  "alert": {
+   "week": 1,
+   "end": "2024-03-19",
+   "sessions": 16,
+   "sim": 0.36,
+   "base": 0.08,
+   "ratio": 4.8
+  },
+  "pre_launch": 111,
+  "done_share": 0.14,
+  "saved_build": 17373,
+  "saved_run": 22000,
+  "threshold": 3,
+  "clusters": [
+   {
+    "work": "Write a Salesforce report formula that calculates days in each stage.",
+    "teams": [
+     "APAC",
+     "EMEA",
+     "LATAM",
+     "NA East",
+     "NA West"
+    ],
+    "sessions": 197,
+    "first_seen": "2024-01-01",
+    "first_team": "LATAM",
+    "repeat": 158,
+    "hours": 79
+   },
+   {
+    "work": "Debug this Excel macro that merges the weekly forecast sheets.",
+    "teams": [
+     "APAC",
+     "EMEA",
+     "LATAM",
+     "NA East",
+     "NA West"
+    ],
+    "sessions": 191,
+    "first_seen": "2024-01-01",
+    "first_team": "LATAM",
+    "repeat": 155,
+    "hours": 78
+   },
+   {
+    "work": "Write a Python script to dedupe the lead export CSV and normalize phone numbers.",
+    "teams": [
+     "APAC",
+     "EMEA",
+     "LATAM",
+     "NA East",
+     "NA West"
+    ],
+    "sessions": 185,
+    "first_seen": "2024-01-02",
+    "first_team": "LATAM",
+    "repeat": 157,
+    "hours": 78
+   }
+  ],
+  "min_per_session": 30
+ },
  "processed": [
   {
    "source": "CRM closed-won deals, 2023\u20132024",
@@ -136,7 +265,7 @@
   [
    "Find",
    "5 teams",
-   "1 AI opportunity"
+   "1 AI opportunity, 4 parallel efforts"
   ],
   [
    "Conclude",
@@ -2099,7 +2228,7 @@
    "confidence": "Medium",
    "decision": "Consolidate into one build",
    "avoided": 18000,
-   "note": "Built twice: 63 engineer-days ($44K) of build effort on top of run cost"
+   "note": "Flagged as parallel in week 1 of the second build. Built twice: 63 engineer-days ($44K) of build effort on top of run cost"
   },
   {
    "id": "inv_coding_asst",

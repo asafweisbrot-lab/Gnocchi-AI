@@ -234,6 +234,48 @@ def main() -> None:
                  "mean_best": round(float(best.mean()), 2), "mean_baseline": round(float(base.mean()), 2),
                  "wasted_cost": int(builds.engineer_days[1] * 700)}
 
+    # ---- 8b Parallel development, caught while it happens: each week the new coding
+    # sessions are compared with earlier coding work in other teams, against a baseline
+    ea = code[code.record_ids == builds.repo[0]]
+    nb_ = code[code.record_ids == builds.repo[1]].sort_values("ts")
+    w0, live = pd.Timestamp(nb_.ts.min()[:10]), pd.Timestamp(builds.deployed_at[1])
+    weeks, alert = [], None
+    for w in range(8):
+        end = w0 + pd.Timedelta(days=7 * (w + 1))
+        cur, prior = nb_[pd.to_datetime(nb_.ts) < end], ea[pd.to_datetime(ea.ts) < end]
+        if not len(cur) or not len(prior):
+            continue
+        sm = float(cosine_similarity(vec.transform(cur.prompt), vec.transform(prior.prompt)).max(1).mean())
+        bs = float(cosine_similarity(vec.transform(cur.prompt), vec.transform(other)).max(1).mean())
+        weeks.append({"week": w + 1, "end": str(end.date()), "sessions": int(len(cur)), "sim": round(sm, 2),
+                      "base": round(bs, 2), "ratio": round(sm / max(bs, 0.01), 1)})
+        if alert is None and len(cur) >= 5 and sm / max(bs, 0.01) >= 3:
+            alert = weeks[-1]
+    pre_launch = int((pd.to_datetime(nb_.ts) < live).sum())
+    done = alert["sessions"] / pre_launch
+    saved_build = int(builds.engineer_days[1] * (1 - done) * 700)
+    saved_run = int(inv.set_index("identity").loc[builds.deploys_identity[1]].annual_cost_usd)
+    # parallel work outside the bots: development sessions that repeat across teams
+    from sklearn.cluster import AgglomerativeClustering
+    dev = s[(s.category == "Development") & (s.writes != "Commit to repo")].copy()
+    Xd = TfidfVectorizer(ngram_range=(1, 2), sublinear_tf=True).fit_transform(dev.prompt).toarray()
+    dev["cluster"] = AgglomerativeClustering(n_clusters=None, distance_threshold=0.6, metric="cosine",
+                                             linkage="average").fit_predict(Xd)
+    MIN_PER_SESSION = 30  # assumption: time a repeat session costs when a shared version exists
+    clusters = []
+    for c, x in dev.groupby("cluster"):
+        if x.team.nunique() < 2:
+            continue
+        first_team = x.sort_values("ts").team.iloc[0]
+        repeat = int((x.team != first_team).sum())
+        clusters.append({"work": x.prompt.mode().iloc[0], "teams": sorted(x.team.unique().tolist()),
+                         "sessions": int(len(x)), "first_seen": x.ts.min()[:10], "first_team": first_team,
+                         "repeat": repeat, "hours": round(repeat * MIN_PER_SESSION / 60)})
+    clusters.sort(key=lambda c: -c["sessions"])
+    parallel = {"weeks": weeks, "alert": alert, "pre_launch": pre_launch, "done_share": round(done, 2),
+                "saved_build": saved_build, "saved_run": saved_run, "threshold": 3,
+                "clusters": clusters, "min_per_session": MIN_PER_SESSION}
+
     # ---- 5 Momentum (monthly, 2024)
     s["m"] = pd.to_datetime(s.ts).dt.month
     mom = {}
@@ -352,7 +394,7 @@ def main() -> None:
          "impact": f"{prove['dealsum']['cycle']} days (90% range {prove['dealsum']['lo']} to {prove['dealsum']['hi']}): no measurable effect",
          "method": "Record-level with controls", "confidence": "Medium",
          "decision": "Consolidate into one build", "avoided": 18000,
-         "note": f"Built twice: {sum(l['engineer_days'] for l in lineage)} engineer-days (${sum(l['build_cost'] for l in lineage)//1000}K) of build effort on top of run cost"},
+         "note": f"Flagged as parallel in week {parallel['alert']['week']} of the second build. Built twice: {sum(l['engineer_days'] for l in lineage)} engineer-days (${sum(l['build_cost'] for l in lineage)//1000}K) of build effort on top of run cost"},
         {"id": "inv_coding_asst", "name": "Coding assistant (RevOps builders)", "cost": 9600, "level": "Via what it built",
          "impact": f"Built both deal-summary bots ({sum(l['sessions'] for l in lineage)} sessions, {int(builds.commits.sum())} commits); "
                    f"the second build's sessions match the first's {duplicate['mean_best']/max(duplicate['mean_baseline'],0.01):.0f}× more closely than other work; its impact is the bots': none measured",
@@ -427,10 +469,10 @@ def main() -> None:
         ["Trace", f"{len(targets)} drivers and KRs", f"{sum(1 for t in trace if t['level'].startswith('1'))} closed triangles"],
         ["Momentum", "12 months", "1 tool fading"],
         ["Prove", "3 comparisons", "2 effects, 1 null"],
-        ["Find", "5 teams", "1 AI opportunity"],
+        ["Find", "5 teams", f"1 AI opportunity, {len(clusters) + 1} parallel efforts"],
         ["Conclude", f"{fmt_k(inv.annual_cost_usd.sum())} AI spend", f"{len(report)} decisions"],
     ]
-    out = {"lineage": lineage, "duplicate": duplicate, "processed": processed, "pipeline": pipeline, "classify": classify_out, "open_weights": open_weights,
+    out = {"lineage": lineage, "duplicate": duplicate, "parallel": parallel, "processed": processed, "pipeline": pipeline, "classify": classify_out, "open_weights": open_weights,
            "discover": discover, "map": mapping, "drivers": drivers, "trace": trace, "similarity": similarity, "momentum": mom,
            "driver_trend": driver_trend, "prove": prove, "find": find, "report": report,
            "totals": {"ai_spend": int(inv.annual_cost_usd.sum()), "avoided": sum(r["avoided"] for r in report)}}
