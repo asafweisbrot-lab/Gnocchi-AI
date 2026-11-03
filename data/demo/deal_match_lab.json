@@ -1,75 +1,122 @@
 {
  "variants": {
   "Deal text (account, type, vertical)": {
-   "linked": 210,
-   "precision": 0.871,
-   "recall": 0.782
+   "linked": 142,
+   "precision": 0.887,
+   "recall": 0.538
   },
   "Deal text + OKR in one sentence": {
-   "linked": 195,
-   "precision": 0.887,
-   "recall": 0.739
+   "linked": 135,
+   "precision": 0.904,
+   "recall": 0.521
   },
-  "Chunks, best chunk per field": {
-   "linked": 214,
-   "precision": 0.86,
-   "recall": 0.786
+  "Deal text + full change log in one text": {
+   "linked": 98,
+   "precision": 0.949,
+   "recall": 0.397
+  },
+  "Chunks, best chunk per field (incl. each log entry)": {
+   "linked": 210,
+   "precision": 0.919,
+   "recall": 0.825
   },
   "Story per deal": {
-   "linked": 147,
-   "precision": 0.898,
-   "recall": 0.564
+   "linked": 81,
+   "precision": 0.926,
+   "recall": 0.321
   },
   "Exact account name, then deal type": {
-   "linked": 214,
-   "precision": 0.85,
-   "recall": 0.778
+   "linked": 209,
+   "precision": 0.9,
+   "recall": 0.803
   },
   "Exact account name, then type and stage at session time": {
-   "linked": 214,
-   "precision": 0.888,
-   "recall": 0.812
+   "linked": 209,
+   "precision": 0.919,
+   "recall": 0.821
+  },
+  "Exact account name, then change-log details, then type and stage": {
+   "linked": 209,
+   "precision": 0.928,
+   "recall": 0.829
   }
  },
- "ceiling_recall": 0.915,
+ "ceiling_recall": 0.893,
+ "detail_subset": {
+  "sessions_with_detail": 120,
+  "stage_rule": {
+   "linked": 108,
+   "precision": 0.944,
+   "recall": 0.85
+  },
+  "log_rule": {
+   "linked": 108,
+   "precision": 0.963,
+   "recall": 0.867
+  }
+ },
  "n_sessions": 7649,
  "true_links": 234,
- "multi_candidate": 50,
- "example_story": "Verdant Logistics: a new-logo deal in State and Local Government, small deal under $25K, opened 2024-10-15, Demo on 2024-11-05, proposal added 2024-11-30, Proposal on 2024-11-30, closed won 2025-01-09. Counts toward: Book $4.2M in total bookings in 2025; Grow new-logo bookings 25% to $0.85M.",
+ "multi_candidate": 36,
+ "example_story": "Nexora Dynamics: a new-logo deal in Federal, large deal over $100K, opened 2024-11-06, Demo on 2024-11-28, proposal added 2024-12-24, Proposal on 2024-12-25, closed won 2025-02-02. History: close date set to Dec 30; amount set to $265K; next step: Map current camera estate (40 cameras); next step: Discovery call with the Head of security operations; contact: CIO; contact: IT director; next step: Security review with IT; amount changed to $212K; close date moved to Jan 16; next step: Send revised quote for 12 cameras; close date moved to Feb 02; amount changed to $191K; next step: Board approval expected in February; next step: Procurement approval from the CIO. Counts toward: Book $4.2M in total bookings in 2025; Grow new-logo bookings 25% to $0.85M.",
  "example_chunks": [
-  "Verdant Logistics",
-  "new-logo new State and Local Government",
+  "Nexora Dynamics",
+  "new-logo new Federal",
   "State and Local Government Commercial",
-  "tech partner tech_partner21",
-  "small deal under $25K",
-  "Discovery on 2024-10-15 Demo on 2024-11-05 proposal added 2024-11-30 Proposal on 2024-11-30 Negotiation on 2024-12-21 Closed Won on 2025-01-07",
-  "Book $4.2M in total bookings in 2025 Grow new-logo bookings 25% to $0.85M Cut the new-business sales cycle to under 60 days, median"
+  "tech partner tech_partner01",
+  "large deal over $100K",
+  "Discovery on 2024-11-06 Demo on 2024-11-28 proposal added 2024-12-24 Proposal on 2024-12-25 Negotiation on 2025-01-16 Closed Won on 2025-02-03",
+  "Book $4.2M in total bookings in 2025 Grow new-logo bookings 25% to $0.85M Cut the new-business sales cycle to under 60 days, median",
+  "probability 10%",
+  "close date set to Dec 30",
+  "amount set to $265K",
+  "next step: Map current camera estate (40 cameras)",
+  "next step: Discovery call with the Head of security operations",
+  "contact: CIO",
+  "contact: IT director",
+  "probability 25%",
+  "next step: Security review with IT",
+  "amount changed to $212K",
+  "probability 50%",
+  "close date moved to Jan 16",
+  "next step: Send revised quote for 12 cameras",
+  "close date moved to Feb 02",
+  "probability 75%",
+  "amount changed to $191K",
+  "next step: Board approval expected in February",
+  "next step: Procurement approval from the CIO",
+  "probability 100%"
  ],
  "judge": {
   "model": "openai/qwen2.5-1.5b",
   "n": 55,
-  "calls": 63,
-  "median_call_s": 4.17,
+  "calls": 53,
+  "median_call_s": 6.7,
   "name_then_judge": {
-   "linked": 35,
-   "precision": 0.686,
-   "recall": 0.533
-  },
-  "name_then_type_same_sample": {
-   "linked": 38,
-   "precision": 0.737,
-   "recall": 0.622
-  },
-  "name_then_stage_same_sample": {
-   "linked": 38,
-   "precision": 0.868,
-   "recall": 0.733
-  },
-  "blob_same_sample": {
-   "linked": 37,
-   "precision": 0.811,
+   "linked": 36,
+   "precision": 0.833,
    "recall": 0.667
   },
-  "ran_at": "2026-11-03 17:23"
+  "name_then_type_same_sample": {
+   "linked": 39,
+   "precision": 0.846,
+   "recall": 0.733
+  },
+  "name_then_stage_same_sample": {
+   "linked": 39,
+   "precision": 0.872,
+   "recall": 0.756
+  },
+  "name_then_log_same_sample": {
+   "linked": 39,
+   "precision": 0.872,
+   "recall": 0.756
+  },
+  "blob_same_sample": {
+   "linked": 30,
+   "precision": 0.8,
+   "recall": 0.533
+  },
+  "ran_at": "2026-11-03 19:38"
  }
 }

@@ -52,3 +52,4 @@ The reverse keys never left Asaf's machine.
 
 ## Demo years
 - The demo years are 2024 (baseline) and 2025 (AI year). The real CRM has full years 2022–2024 (2025 only to June), so the demo uses the real 2023 and 2024 deals with every date moved one year later (`SHIFT` in `synth/common.py`). Targets are taken from the source year.
+- Change log fields: StageName, Probability, Amount (estimate, revision, final), CloseDate (first guess and pushes), NextStep (with sites, camera counts, contact roles), OpportunityContactRole, plus tasks, meetings, solutions engineer and attachments. About half the ChatGPT deal sessions mention one such detail ("Context: ..."). The report matches sessions to deals by exact account name, then change-log details, then stage and deal type.

@@ -279,7 +279,7 @@ footer{padding-block:8px 0}
   </div>
   <div class="panel" style="display:grid;gap:12px">
     <div style="display:grid;gap:6px;max-width:78ch"><h3>Edge 2b · AI → records, by similarity, through the OKR lens</h3>
-    <p class="muted" style="font-size:14px">ChatGPT writes nothing to the CRM, so its sessions are matched to the records the key results count. Each key result says which records to embed: for bookings and the new-deal cycle, the 2025 New, Expansion and Upsell deals (account, deal type, vertical). A session can only match a deal of its own team that was open when it ran. This is more direct than matching to a driver: it names the deal.</p></div>
+    <p class="muted" style="font-size:14px">ChatGPT writes nothing to the CRM, so its sessions are matched to the records the key results count: for bookings and the new-deal cycle, the 2025 New, Expansion and Upsell deals. A session matches when it names the account of a deal its team had open that day. When the account has several open deals, the deal’s change log decides: amount, close-date moves, next steps and contacts against the details in the session; failing that, the deal still before its proposal and the deal type the session names (Appendix B compares eight methods). This is more direct than matching to a driver: it names the deal.</p></div>
     <div class="grid2">
       <div class="tbl"><table id="rlscope" style="min-width:0"></table></div>
       <div class="result"><span class="eyebrow">Matched</span><span class="big" id="rl-big"></span><p id="rl-text"></p></div>
@@ -394,7 +394,7 @@ footer{padding-block:8px 0}
   <div id="jex" style="display:grid;gap:8px"></div>
   <p class="muted" style="font-size:13px" id="j-note"></p>
   <div style="display:grid;gap:8px;padding-top:6px"><h3>Second round: better ways to describe a deal</h3>
-  <p class="muted" style="font-size:14px">Same goal, matching a ChatGPT session to the deal it is about, with the deal described six ways. Chunks keep each field separate so none drowns another; a story is a short narrative built from the deal’s CRM history; the name rules look for the exact account name among the team’s open deals, then break ties by deal type and by stage at the time of the session.</p></div>
+  <p class="muted" style="font-size:14px">Same goal, matching a ChatGPT session to the deal it is about, with the deal described eight ways, now including its change log. Chunks keep each field separate so none drowns another; a story is a short narrative built from the deal’s CRM history; the name rules look for the exact account name among the team’s open deals, then break ties by deal type and by stage at the time of the session.</p></div>
   <div class="tbl"><table id="labtbl" style="min-width:0"></table></div>
   <div class="tbl"><table id="labjudge" style="min-width:0"></table></div>
   <p class="muted" style="font-size:13px" id="lab-note"></p>
@@ -725,11 +725,12 @@ $("total-text").innerHTML = `Of ${fmt$(D.totals.ai_spend)} in AI spend, two inve
   $("rlscope").innerHTML = `<tr><th>Key result</th><th>Records embedded</th><th class="num">Records</th></tr>` + R_.scope.map(x=>`<tr><td>${esc(x.kr)}</td><td style="font-size:13px">${esc(x.records)}</td><td class="num">${x.n}</td></tr>`).join("") +
     `<tr><td colspan="3" class="muted" style="font-size:12px">By team: ` + R_.by_team.map(t=>`${esc(t.team)} ${t.sessions} sessions → ${t.deals} deals`).join(" · ") + `</td></tr>`;
   $("rl-big").textContent = `${c.deals_linked} deals`;
-  $("rl-text").innerHTML = `${c.sessions_linked} ChatGPT sessions match ${c.deals_linked} of the ${c.records_embedded} deals in scope (threshold ${c.threshold}). Checked against the planted links: ${Math.round(c.precision*100)}% of matches are the right deal, and ${Math.round(c.recall*100)}% of true links are found. The other ${(D.classify.split.rows[1].sessions - c.sessions_linked).toLocaleString()} other-task sessions match no deal. Results are reported by team, never by person.`;
+  const wc = R_.why_counts || {};
+  $("rl-text").innerHTML = `${c.sessions_linked} ChatGPT sessions match ${c.deals_linked} of the ${c.records_embedded} deals in scope: ${wc["only open deal with that account"]||0} had one open deal with the account, ${wc["change-log details matched"]||0} were settled by the change log, the rest by stage and deal type. Checked against the planted links: ${Math.round(c.precision*100)}% of matches are the right deal, and ${Math.round(c.recall*100)}% of true links are found. The other ${(D.classify.split.rows[1].sessions - c.sessions_linked).toLocaleString()} other-task sessions match no deal. Results are reported by team, never by person.`;
   const e = R_.example;
   $("rlex").innerHTML = `<p style="font-size:15px">“${esc(e.prompt)}” <span class="muted mono" style="font-size:12px">${esc(e.team)} · ${esc(e.ts)}</span></p>
-    <div class="tbl"><table style="min-width:0"><tr><th>Candidate deal (embedded text)</th><th>Open</th><th class="num">Similarity</th><th>Result</th></tr>` +
-    e.candidates.map((k,i)=>`<tr><td class="mono" style="font-size:12px">${esc(k.text)}</td><td class="mono" style="font-size:12px">${esc(k.created)} → ${esc(k.close)}</td><td class="num">${k.score.toFixed(2)}</td><td style="font-size:13px">${k.open && k.score>=c.threshold && e.candidates.filter(z=>z.open).sort((a,b)=>b.score-a.score)[0]===k?"<b>Matched</b>":k.open?"Below threshold":"Not open when the session ran"}</td></tr>`).join("") + `</table></div>`;
+    <div class="tbl"><table style="min-width:0"><tr><th>Open deals with that account</th><th>Change log up to that day</th><th>Open</th><th class="num">Log match</th><th>Result</th></tr>` +
+    e.candidates.map(k=>`<tr><td style="font-size:13px">${esc(k.text)}</td><td style="font-size:13px">${esc(k.log)}</td><td class="mono" style="font-size:12px">${esc(k.created)} → ${esc(k.close)}</td><td class="num">${k.score.toFixed(2)}</td><td style="font-size:13px">${k.chosen?"<b>Matched</b>":"Not chosen"}</td></tr>`).join("") + `</table></div>`;
 })();
 
 // B judge experiment
@@ -761,10 +762,10 @@ $("total-text").innerHTML = `Of ${fmt$(D.totals.ai_spend)} in AI spend, two inve
     `<tr><td colspan="4" class="muted" style="font-size:12px">${L.true_links} true links among ${L.n_sessions.toLocaleString()} sessions; at most ${pc(L.ceiling_recall)} can be found by any method, because the rest never name the account. ${L.multi_candidate} sessions name an account with more than one open deal.</td></tr>`;
   const J = L.judge;
   if (J) $("labjudge").innerHTML = `<tr><th>Same ${J.n} sessions</th><th class="num">Right deal</th><th class="num">True links found</th></tr>` +
-    [["Exact name, then a small model says yes or no (Qwen2.5-1.5B, local)", J.name_then_judge], ["Exact name, then deal type", J.name_then_type_same_sample], ["Exact name, then type and stage at session time", J.name_then_stage_same_sample], ["Deal text, word matching", J.blob_same_sample]]
+    [["Exact name, then a small model reads each deal’s story and says yes or no (Qwen2.5-1.5B, local)", J.name_then_judge], ["Exact name, then deal type", J.name_then_type_same_sample], ["Exact name, then type and stage at session time", J.name_then_stage_same_sample], ["Exact name, then change log, then type and stage", J.name_then_log_same_sample], ["Deal text, word matching", J.blob_same_sample]].filter(r=>r[1])
       .map(([k,v]) => `<tr><td>${esc(k)}</td><td class="num">${pc(v.precision)}</td><td class="num">${pc(v.recall)}</td></tr>`).join("");
   const sv = L.variants[best];
-  $("lab-note").innerHTML = `Best: ${esc(best.toLowerCase())}, ${pc(sv.precision)} right and ${pc(sv.recall)} found, against ${pc(L.variants["Deal text (account, type, vertical)"].precision)} and ${pc(L.variants["Deal text (account, type, vertical)"].recall)} today. Adding OKR text or writing stories doesn’t help word matching; stories are written for a model to read. ${J?`The small model answered ${J.calls} yes/no questions at ${J.median_call_s} s each and still lost to the rules: it is too small to read dates and deal types reliably.`:""} Example story: “${esc(L.example_story)}”`;
+  $("lab-note").innerHTML = `Best: ${esc(best.toLowerCase())}, ${pc(sv.precision)} right and ${pc(sv.recall)} found, against ${pc(L.variants["Deal text (account, type, vertical)"].precision)} and ${pc(L.variants["Deal text (account, type, vertical)"].recall)} today. The change log now holds probability, amount revisions, close-date moves, next steps and contacts. Put into one text it drowns the account name; kept as separate chunks, or used only to break ties between same-account deals, it lifts both numbers. On the ${L.detail_subset.sessions_with_detail} sessions that mention such a detail, the log rule gets ${pc(L.detail_subset.log_rule.precision)} right against ${pc(L.detail_subset.stage_rule.precision)} without it. ${J?`With the richer stories the small model improved, but it still trails the rules (${J.calls} yes/no questions at ${J.median_call_s} s each).`:""} Example story: “${esc(L.example_story)}”`;
 })();
 
 // findings: each step moves one step closer to the conclusion

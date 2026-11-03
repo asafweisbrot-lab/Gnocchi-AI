@@ -58,22 +58,35 @@ def deal_docs(o, crm, ev, krt):
         c = crm.loc[r.opportunity_id]
         band = next(b for lim, b in BAND if r.amount < lim)
         krs = [krt[(r.team, 1)]] + ([krt[(r.team, 2)], krt[(r.team, 3)]] if r.type == "New" else [])
-        steps = []
+        steps, log = [], []
         if r.opportunity_id in evs.groups:
             for e in evs.get_group(r.opportunity_id).sort_values("ts").itertuples():
                 if e.field == "StageName":
                     steps.append(f"{e.new_value} on {e.ts[:10]}")
                 elif e.new_value in ("Proposal", "Meeting prep brief", "Solutions Engineer"):
                     steps.append(f"{e.new_value.lower()} added {e.ts[:10]}")
+                elif e.field == "Amount":
+                    log.append(f"amount {'set to' if pd.isna(e.old_value) else 'changed to'} ${float(e.new_value)/1000:.0f}K")
+                elif e.field == "CloseDate":
+                    log.append(f"close date {'set to' if pd.isna(e.old_value) else 'moved to'} {pd.Timestamp(e.new_value):%b %d}")
+                elif e.field == "Probability":
+                    log.append(f"probability {e.new_value}%")
+                elif e.field == "NextStep":
+                    log.append(f"next step: {e.new_value}")
+                elif e.field == "Role":
+                    log.append(f"contact: {e.new_value}")
         chunks = [c["account name"], f"{KIND[r.type]} {c['verticals']}",
                   f"{c['sub-vertical']} {c['market']}" if isinstance(c["sub-vertical"], str) else str(c["market"]),
                   f"tech partner {c['tech partner']}" if isinstance(c["tech partner"], str) else "",
-                  band, " ".join(steps), " ".join(krs)]
+                  band, " ".join(steps), " ".join(krs)] + log
         story = (f"{c['account name']}: a {KIND[r.type].split()[0]} deal in {c['verticals']}, {band}, opened {r.created_date.date()}"
                  f"{', ' + ', '.join(steps[1:4]) if len(steps) > 1 else ''}, closed won {r.close_date.date()}. "
-                 f"Counts toward: {krs[0]}" + (f"; {krs[1]}" if len(krs) > 1 else "") + ".")
+                 + (f"History: {'; '.join(x for x in log if not x.startswith('probability'))}. " if log else "")
+                 + f"Counts toward: {krs[0]}" + (f"; {krs[1]}" if len(krs) > 1 else "") + ".")
         docs[r.opportunity_id] = {"blob": f"{c['account name']} {KIND[r.type]} {c['verticals']}",
                                   "blob_okr": f"{c['account name']} {KIND[r.type]} {c['verticals']}. Counts toward {' '.join(krs)}",
+                                  "blob_log": f"{c['account name']} {KIND[r.type]} {c['verticals']}. " + ". ".join(log),
+                                  "log": ". ".join(log),
                                   "chunks": [x for x in chunks if x], "story": story, "account": c["account name"]}
     return docs
 
@@ -131,6 +144,35 @@ def candidates_by_name(s, o, docs):
     return out
 
 
+def link_deals(s, o, docs, ev, log_thr=0.12):
+    """The rule the report uses: exact account name among the team's deals open on the
+    session date; among several, the one whose change log best matches the session's
+    details; otherwise the one still before its proposal, then the deal type the text names."""
+    cand = candidates_by_name(s, o, docs)
+    prop = ev[ev.new_value == "Proposal"].groupby("record_id").ts.min()
+    oi = o.set_index("opportunity_id")
+    lv = TfidfVectorizer(ngram_range=(1, 2), sublinear_tf=True, stop_words="english").fit(
+        [docs[i]["log"] for i in o.opportunity_id] + list(s.prompt))
+    pred, why, sims_out = {}, {}, {}
+    for k, cs in cand.items():
+        if not cs:
+            continue
+        if len(cs) == 1:
+            pred[k], why[k] = cs[0], "only open deal with that account"
+            continue
+        ts, p = s.loc[k].ts, s.loc[k].prompt.lower()
+        live = [c for c in cs if prop.get(c, "9999") > ts] or cs
+        sm = cosine_similarity(lv.transform([s.loc[k].prompt]), lv.transform([docs[c]["log"] for c in live]))[0]
+        sims_out[k] = dict(zip(live, sm.round(2)))
+        if sm.max() > log_thr:
+            pred[k], why[k] = live[int(sm.argmax())], "change-log details matched"
+            continue
+        typed = [c for c in live if any(w in p for w in KIND[oi.loc[c, "type"]].split())]
+        pred[k] = (typed or live)[0]
+        why[k] = "still before proposal" + (", deal type named" if typed else ", first of several")
+    return pd.Series(pred, dtype=object).reindex(s.index), pd.Series(why, dtype=object).reindex(s.index), cand, sims_out
+
+
 def score(pred, truth):
     made, has = pred.notna(), truth.notna()
     return {"linked": int(made.sum()), "precision": round(float((pred[made] == truth[made]).mean()), 3) if made.any() else None,
@@ -156,7 +198,8 @@ def main() -> None:
     res = {}
     for name, fn in [("Deal text (account, type, vertical)", lambda: match_text(s, o, docs, "blob", 0.3)),
                      ("Deal text + OKR in one sentence", lambda: match_text(s, o, docs, "blob_okr", 0.2)),
-                     ("Chunks, best chunk per field", lambda: match_chunks(s, o, docs, 0.3)),
+                     ("Deal text + full change log in one text", lambda: match_text(s, o, docs, "blob_log", 0.15)),
+                     ("Chunks, best chunk per field (incl. each log entry)", lambda: match_chunks(s, o, docs, 0.3)),
                      ("Story per deal", lambda: match_text(s, o, docs, "story", 0.15))]:
         res[name] = score(fn(), truth)
     cand = candidates_by_name(s, o, docs)
@@ -181,10 +224,28 @@ def main() -> None:
         return (typed or live or cs)[0]
     stage_pred = pd.Series({k: pick_by_stage(k, cs) for k, cs in cand.items()}, dtype=object).reindex(s.index)
     res["Exact account name, then type and stage at session time"] = score(stage_pred, truth)
+    # tie-break with the change log: among the same-account deals still being worked, the one
+    # whose history best matches the session's details (amount, close date, next step, contact)
+    lv = TfidfVectorizer(ngram_range=(1, 2), sublinear_tf=True, stop_words="english").fit(
+        [docs[i]["log"] for i in o.opportunity_id] + list(s.prompt))
+    def pick_by_log(k, cs):
+        if len(cs) <= 1:
+            return cs[0] if cs else None
+        ts = s.loc[k].ts
+        live = [c for c in cs if prop.get(c, "9999") > ts] or cs
+        sims = cosine_similarity(lv.transform([s.loc[k].prompt]), lv.transform([docs[c]["log"] for c in live]))[0]
+        if sims.max() > 0.12:
+            return live[int(sims.argmax())]
+        return pick_by_stage(k, cs)
+    log_pred = pd.Series({k: pick_by_log(k, cs) for k, cs in cand.items()}, dtype=object).reindex(s.index)
+    res["Exact account name, then change-log details, then type and stage"] = score(log_pred, truth)
+    det = s.prompt.str.contains("Context:") & truth.notna()
+    out_detail = {"sessions_with_detail": int(det.sum()),
+                  "stage_rule": score(stage_pred[det], truth[det]), "log_rule": score(log_pred[det], truth[det])}
     named = s.index[[bool(re.search(re.escape(docs[d]["account"].lower()), s.loc[k].prompt.lower())) if isinstance(d, str) else False
                      for k, d in zip(s.index, truth)]]
     upper = round(len(named) / max(1, int(truth.notna().sum())), 3)
-    out = {"variants": res, "ceiling_recall": upper, "n_sessions": int(len(s)), "true_links": int(truth.notna().sum()),
+    out = {"variants": res, "ceiling_recall": upper, "detail_subset": out_detail, "n_sessions": int(len(s)), "true_links": int(truth.notna().sum()),
            "multi_candidate": int(sum(1 for c in cand.values() if len(c) > 1)),
            "example_story": docs[truth.dropna().iloc[0]]["story"], "example_chunks": docs[truth.dropna().iloc[0]]["chunks"]}
 
@@ -213,6 +274,7 @@ def main() -> None:
                         "name_then_judge": score(jp, sub_truth),
                         "name_then_type_same_sample": score(name_pred.loc[jp.index], sub_truth),
                         "name_then_stage_same_sample": score(stage_pred.loc[jp.index], sub_truth),
+                        "name_then_log_same_sample": score(log_pred.loc[jp.index], sub_truth),
                         "blob_same_sample": score(match_text(s, o, docs, "blob", 0.3).loc[jp.index], sub_truth),
                         "ran_at": time.strftime("%Y-%m-%d %H:%M")}
     elif (DEMO / "deal_match_lab.json").exists():

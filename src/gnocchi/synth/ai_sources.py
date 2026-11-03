@@ -139,7 +139,9 @@ def sessions(opps: pd.DataFrame, ev: pd.DataFrame, g: np.random.Generator) -> pd
                 None, "none", g.normal(2600, 500))
     # ChatGPT on live deals: proposal and account work for the deals planted in crm_history
     gpt_deals = set(pd.read_csv(OUT / "_ground_truth_chatgpt_deals.csv").opportunity_id)
-    for oid in gpt_deals:
+    evd = ev[ev.field.isin(["Amount", "CloseDate", "NextStep", "Role"])].groupby("record_id")
+    gd = np.random.default_rng(99)  # own generator: the session draws below don't move
+    for oid in sorted(gpt_deals):
         if oid not in opps.index:
             continue
         o = opps.loc[oid]
@@ -150,6 +152,18 @@ def sessions(opps: pd.DataFrame, ev: pd.DataFrame, g: np.random.Generator) -> pd
             ts = created + pd.Timedelta(days=float(o.cycle_days) * float(g.uniform(0.15, 0.55)), hours=int(g.integers(8, 18)))
             add(ts.strftime("%Y-%m-%dT%H:%M"), "inv_chatgpt_ent", "sso_user", o.team, p_, None, "none", g.normal(1400, 300))
             rows[-1]["_opp"] = oid
+            # about half the sessions carry a detail the deal's history also holds
+            if oid in evd.groups and gd.random() < 0.55:
+                hist = evd.get_group(oid)
+                hist = hist[hist.ts <= ts.strftime("%Y-%m-%dT%H:%M")]
+                if len(hist):
+                    e = hist.iloc[int(gd.integers(len(hist)))]
+                    rows[-1]["_detail"] = {
+                        "Amount": lambda: f"Context: the deal is now about ${float(e.new_value)/1000:.0f}K.",
+                        "CloseDate": lambda: f"Context: they moved the close date to {pd.Timestamp(e.new_value):%b %d}.",
+                        "NextStep": lambda: f"Context: next step is {str(e.new_value)[0].lower() + str(e.new_value)[1:]}.",
+                        "Role": lambda: f"Context: it is for their {e.new_value}.",
+                    }[e.field]()
     # ChatGPT Enterprise: usage fades through the year, mostly not tied to records
     for month in range(1, 13):
         for team, seats in SEATS.items():
@@ -290,6 +304,8 @@ def add_prompts(sess: pd.DataFrame, g: np.random.Generator) -> pd.DataFrame:
                                 role=ROLES[int(g.integers(len(ROLES)))],
                                 pain=PAINS[int(g.integers(len(PAINS)))]))
     sess = sess.copy()
+    if "_detail" in sess:
+        prompts = [p_ + (" " + d if isinstance(d, str) else "") for p_, d in zip(prompts, sess["_detail"])]
     sess["prompt"] = prompts
     sess["_tpl"] = tpl
     return sess
@@ -333,7 +349,7 @@ def main() -> None:
                             "message": (COMMIT_MSGS if r.purpose.startswith("Tool building") else COMMIT_MSGS_MAINT)[r.team][r["_tpl"]]})
     commits = pd.DataFrame(commits).sort_values("ts")
     commits.to_csv(OUT / "code_commits.csv", index=False)
-    sess.drop(columns=["purpose", "category", "_repo", "_tpl", "_opp", "_acct", "_kind"]).to_json(OUT / "ai_telemetry_2025.jsonl", orient="records", lines=True)
+    sess.drop(columns=["purpose", "category", "_repo", "_tpl", "_opp", "_acct", "_kind", "_detail"], errors="ignore").to_json(OUT / "ai_telemetry_2025.jsonl", orient="records", lines=True)
     admin_usage(sess).to_csv(OUT / "ai_admin_usage_2025.csv", index=False)
     # Git/CI source: one row per build repo
     build_log = pd.DataFrame([{**{k: v for k, v in b.items() if k != "builds"},

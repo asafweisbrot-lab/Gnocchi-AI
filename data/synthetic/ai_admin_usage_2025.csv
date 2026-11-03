@@ -83,66 +83,66 @@ inv_meeting_prep,APAC,2025-09,4,0,0
 inv_meeting_prep,APAC,2025-10,4,0,0
 inv_meeting_prep,APAC,2025-11,4,0,0
 inv_meeting_prep,APAC,2025-12,4,0,0
-inv_chatgpt_ent,EMEA,2025-01,12,12,336
+inv_chatgpt_ent,EMEA,2025-01,12,12,334
 inv_chatgpt_ent,EMEA,2025-02,12,12,331
-inv_chatgpt_ent,EMEA,2025-03,12,12,243
-inv_chatgpt_ent,EMEA,2025-04,12,12,230
+inv_chatgpt_ent,EMEA,2025-03,12,12,242
+inv_chatgpt_ent,EMEA,2025-04,12,12,231
 inv_chatgpt_ent,EMEA,2025-05,12,11,220
-inv_chatgpt_ent,EMEA,2025-06,12,10,195
-inv_chatgpt_ent,EMEA,2025-07,12,9,180
-inv_chatgpt_ent,EMEA,2025-08,12,9,169
-inv_chatgpt_ent,EMEA,2025-09,12,8,152
-inv_chatgpt_ent,EMEA,2025-10,12,7,136
-inv_chatgpt_ent,EMEA,2025-11,12,6,107
-inv_chatgpt_ent,EMEA,2025-12,12,5,91
-inv_chatgpt_ent,NA East,2025-01,12,12,277
-inv_chatgpt_ent,NA East,2025-02,12,12,260
-inv_chatgpt_ent,NA East,2025-03,12,12,292
+inv_chatgpt_ent,EMEA,2025-06,12,10,196
+inv_chatgpt_ent,EMEA,2025-07,12,10,183
+inv_chatgpt_ent,EMEA,2025-08,12,9,167
+inv_chatgpt_ent,EMEA,2025-09,12,8,151
+inv_chatgpt_ent,EMEA,2025-10,12,7,132
+inv_chatgpt_ent,EMEA,2025-11,12,6,106
+inv_chatgpt_ent,EMEA,2025-12,12,5,90
+inv_chatgpt_ent,NA East,2025-01,12,12,284
+inv_chatgpt_ent,NA East,2025-02,12,12,258
+inv_chatgpt_ent,NA East,2025-03,12,12,289
 inv_chatgpt_ent,NA East,2025-04,12,12,293
-inv_chatgpt_ent,NA East,2025-05,12,11,209
-inv_chatgpt_ent,NA East,2025-06,12,10,196
-inv_chatgpt_ent,NA East,2025-07,12,9,175
-inv_chatgpt_ent,NA East,2025-08,12,8,153
-inv_chatgpt_ent,NA East,2025-09,12,8,142
+inv_chatgpt_ent,NA East,2025-05,12,11,211
+inv_chatgpt_ent,NA East,2025-06,12,10,197
+inv_chatgpt_ent,NA East,2025-07,12,9,176
+inv_chatgpt_ent,NA East,2025-08,12,8,154
+inv_chatgpt_ent,NA East,2025-09,12,8,146
 inv_chatgpt_ent,NA East,2025-10,12,7,123
-inv_chatgpt_ent,NA East,2025-11,12,6,103
-inv_chatgpt_ent,NA East,2025-12,12,5,86
-inv_chatgpt_ent,NA West,2025-01,10,10,229
+inv_chatgpt_ent,NA East,2025-11,12,6,102
+inv_chatgpt_ent,NA East,2025-12,12,5,89
+inv_chatgpt_ent,NA West,2025-01,10,10,228
 inv_chatgpt_ent,NA West,2025-02,10,10,211
 inv_chatgpt_ent,NA West,2025-03,10,10,195
 inv_chatgpt_ent,NA West,2025-04,10,10,182
 inv_chatgpt_ent,NA West,2025-05,10,9,166
 inv_chatgpt_ent,NA West,2025-06,10,8,149
-inv_chatgpt_ent,NA West,2025-07,10,7,135
+inv_chatgpt_ent,NA West,2025-07,10,7,136
 inv_chatgpt_ent,NA West,2025-08,10,7,121
 inv_chatgpt_ent,NA West,2025-09,10,6,103
-inv_chatgpt_ent,NA West,2025-10,10,5,91
-inv_chatgpt_ent,NA West,2025-11,10,4,74
+inv_chatgpt_ent,NA West,2025-10,10,5,89
+inv_chatgpt_ent,NA West,2025-11,10,4,73
 inv_chatgpt_ent,NA West,2025-12,10,3,58
 inv_chatgpt_ent,LATAM,2025-01,9,9,203
 inv_chatgpt_ent,LATAM,2025-02,9,9,213
 inv_chatgpt_ent,LATAM,2025-03,9,9,195
-inv_chatgpt_ent,LATAM,2025-04,9,9,170
-inv_chatgpt_ent,LATAM,2025-05,9,8,156
+inv_chatgpt_ent,LATAM,2025-04,9,9,171
+inv_chatgpt_ent,LATAM,2025-05,9,8,158
 inv_chatgpt_ent,LATAM,2025-06,9,8,144
 inv_chatgpt_ent,LATAM,2025-07,9,7,124
-inv_chatgpt_ent,LATAM,2025-08,9,6,113
+inv_chatgpt_ent,LATAM,2025-08,9,6,115
 inv_chatgpt_ent,LATAM,2025-09,9,6,101
-inv_chatgpt_ent,LATAM,2025-10,9,5,90
-inv_chatgpt_ent,LATAM,2025-11,9,4,80
-inv_chatgpt_ent,LATAM,2025-12,9,4,64
-inv_chatgpt_ent,APAC,2025-01,4,4,91
-inv_chatgpt_ent,APAC,2025-02,4,4,95
+inv_chatgpt_ent,LATAM,2025-10,9,5,87
+inv_chatgpt_ent,LATAM,2025-11,9,5,81
+inv_chatgpt_ent,LATAM,2025-12,9,4,62
+inv_chatgpt_ent,APAC,2025-01,4,4,90
+inv_chatgpt_ent,APAC,2025-02,4,4,91
 inv_chatgpt_ent,APAC,2025-03,4,4,82
 inv_chatgpt_ent,APAC,2025-04,4,4,72
-inv_chatgpt_ent,APAC,2025-05,4,4,67
-inv_chatgpt_ent,APAC,2025-06,4,3,59
+inv_chatgpt_ent,APAC,2025-05,4,4,66
+inv_chatgpt_ent,APAC,2025-06,4,3,60
 inv_chatgpt_ent,APAC,2025-07,4,3,55
 inv_chatgpt_ent,APAC,2025-08,4,3,47
-inv_chatgpt_ent,APAC,2025-09,4,3,41
+inv_chatgpt_ent,APAC,2025-09,4,3,42
 inv_chatgpt_ent,APAC,2025-10,4,2,37
-inv_chatgpt_ent,APAC,2025-11,4,2,29
-inv_chatgpt_ent,APAC,2025-12,4,2,25
+inv_chatgpt_ent,APAC,2025-11,4,2,31
+inv_chatgpt_ent,APAC,2025-12,4,2,23
 inv_dealsum_emea,EMEA,2025-01,1,0,0
 inv_dealsum_emea,EMEA,2025-02,1,1,8
 inv_dealsum_emea,EMEA,2025-03,1,1,16

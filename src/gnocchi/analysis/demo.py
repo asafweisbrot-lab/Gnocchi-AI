@@ -253,45 +253,50 @@ def main() -> None:
     KIND = {"New": "new-logo new", "Expansion": "expansion", "Upsell": "upsell"}
     scope["text"] = [f"{crm_real.loc[o, 'account name']} {KIND[t]} {crm_real.loc[o, 'verticals']}"
                      if o in crm_real.index else "" for o, t in zip(scope.opportunity_id, scope.type)]
-    REC_SIM = 0.3
+    REC_SIM = 0.3  # used only for the judge experiment's shortlist
     rvec = TfidfVectorizer(ngram_range=(1, 2), sublinear_tf=True, stop_words="english").fit(list(scope.text) + list(s.prompt))
-    s["deal"], s["deal_score"] = None, np.nan
+    from gnocchi.analysis.deal_match_lab import deal_docs, link_deals
+    krt = {(x["team"], i): kr["text"] for x in okrs for i, kr in enumerate(x["key_results"], 1)}
+    ev25 = ev[ev.ts.str[:4] >= "2024"]
+    docs = deal_docs(scope, crm_real, ev25, krt)
     cand_s = s[s.investment_id == "inv_chatgpt_other"]
-    for t in TEAMS:
-        st, rt = cand_s[cand_s.team == t], scope[scope.team == t]
-        if not len(st) or not len(rt):
-            continue
-        sm = cosine_similarity(rvec.transform(st.prompt), rvec.transform(rt.text))
-        tsv = pd.to_datetime(st.ts).values[:, None]
-        open_ = (tsv >= rt.created_date.values[None, :]) & (tsv <= rt.close_date.values[None, :])
-        sm = np.where(open_, sm, 0)
-        bi, bs = sm.argmax(1), sm.max(1)
-        ok = bs >= REC_SIM
-        s.loc[st.index[ok], "deal"] = rt.opportunity_id.values[bi[ok]]
-        s.loc[st.index[ok], "deal_score"] = bs[ok]
+    dpred, dwhy, dcand, dsims = link_deals(cand_s, scope, docs, ev25)
+    s["deal"], s["deal_why"] = None, None
+    s.loc[cand_s.index, "deal"] = dpred.values
+    s.loc[cand_s.index, "deal_why"] = dwhy.values
     gto = s.session_id.map(pd.read_csv(OUT / "_ground_truth_session_purpose.csv").set_index("session_id").opp)
     dl = s.deal.notna()
     rec_check = {"sessions_linked": int(dl.sum()), "deals_linked": int(s.deal.nunique()), "records_embedded": int(len(scope)),
                  "true_sessions": int(gto.notna().sum()),
                  "precision": round(float((s.deal[dl] == gto[dl]).mean()), 3) if dl.any() else 0,
-                 "recall": round(float((s.deal[gto.notna()] == gto[gto.notna()]).mean()), 3), "threshold": REC_SIM}
-    ex = s[dl].sort_values("deal_score").iloc[int(dl.sum() * 0.5)]
-    exr = scope.set_index("opportunity_id").loc[ex.deal]
-    st_ = cand_s[cand_s.team == ex.team]
-    rt_ = scope[scope.team == ex.team]
-    row = cosine_similarity(rvec.transform([ex.prompt]), rvec.transform(rt_.text))[0]
-    exo = (pd.Timestamp(ex.ts) >= rt_.created_date) & (pd.Timestamp(ex.ts) <= rt_.close_date)
-    top3 = np.argsort(-row)[:3]
+                 "recall": round(float((s.deal[gto.notna()] == gto[gto.notna()]).mean()), 3)}
+    # example: a session whose account has several open deals, settled by the change log
+    multi = [k for k, v in dsims.items() if s.loc[k, "deal_why"] == "change-log details matched" and s.loc[k, "deal"] == gto.get(k)]
+    exk = multi[0] if multi else s[dl].index[0]
+    ex = s.loc[exk]
+    oi_ = scope.set_index("opportunity_id")
+    cands = dcand.get(exk, [ex.deal])
+    def last(c, field):
+        h = ev25[(ev25.record_id == c) & (ev25.field == field) & (ev25.ts <= ex.ts)]
+        return h.new_value.iloc[-1] if len(h) else None
+    ex_c = []
+    for c in cands[:4]:
+        steps = ev25[(ev25.record_id == c) & (ev25.field == "NextStep") & (ev25.ts <= ex.ts)].new_value.tolist()[-2:]
+        amt_ = last(c, "Amount")
+        ex_c.append({"text": f"{docs[c]['account']} · {oi_.loc[c, 'type'].lower()} · {crm_real.loc[c, 'verticals']}",
+                     "log": "; ".join(([f"amount ${float(amt_)/1000:.0f}K"] if amt_ is not None else []) +
+                                      ([f"close {pd.Timestamp(last(c, 'CloseDate')):%b %d}"] if last(c, "CloseDate") else []) +
+                                      [f"next: {x}" for x in steps]),
+                     "created": str(oi_.loc[c, "created_date"].date()), "close": str(oi_.loc[c, "close_date"].date()),
+                     "score": float(dsims.get(exk, {}).get(c, 0)), "chosen": c == ex.deal})
     rec_link = {"check": rec_check, "scope": [
         {"kr": "KR1 Total bookings", "records": "2025 New, Expansion and Upsell deals", "n": int(len(scope))},
         {"kr": "KR2 New-logo bookings", "records": "2025 New deals", "n": int((scope.type == "New").sum())},
         {"kr": "KR3 New-deal cycle", "records": "2025 New deals (cycle days)", "n": int((scope.type == "New").sum())}],
         "by_team": [{"team": t, "sessions": int((s.deal.notna() & (s.team == t)).sum()), "deals": int(s[s.team == t].deal.nunique()),
                      "scope": int((scope.team == t).sum())} for t in TEAMS],
-        "example": {"prompt": ex.prompt, "ts": ex.ts[:10], "team": ex.team,
-                    "candidates": [{"text": rt_.text.iloc[j], "type": rt_.type.iloc[j], "created": str(rt_.created_date.iloc[j].date()),
-                                    "close": str(rt_.close_date.iloc[j].date()), "open": bool(exo.iloc[j]),
-                                    "score": round(float(row[j]), 2)} for j in top3]}}
+        "example": {"prompt": ex.prompt, "ts": ex.ts[:10], "team": ex.team, "why": ex.deal_why, "candidates": ex_c},
+        "why_counts": s.deal_why.value_counts().to_dict()}
     s["mode"] = np.where(s.identity.ne("sso_user"), "direct",
                          np.where(s.writes_record | s.repo.notna(), "indirect_traced",
                                   np.where(s.deal.notna(), "indirect_linked", "indirect_untraced")))
