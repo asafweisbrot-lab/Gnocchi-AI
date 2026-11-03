@@ -28,7 +28,8 @@ DEMO = ROOT / "data" / "demo"
 SYSTEM = (
     "You read one session from a company's AI tools and decide what it serves. "
     "Pick the single best target from the list, or NONE if the session serves none of them. "
-    "If deal candidates are listed, pick the deal the session is about, or NONE. "
+    "If deal candidates are listed, pick the deal the session is about, or NONE: a deal matches when the session "
+    "names its account; if several deals share that account, pick the one whose deal type matches the session. "
     "Prefer NONE over a weak guess. Answer with JSON only: "
     '{"target": "<id or NONE>", "deal": "<id or NONE>", "reason": "<under 20 words>"}'
 )
@@ -48,7 +49,8 @@ def judge_one(model: str, item: dict) -> dict:
     t0 = time.time()
     for attempt in range(3):
         try:
-            r = litellm.completion(model=model, temperature=0, max_tokens=120,
+            extra = {"api_base": os.environ["GNOCCHI_JUDGE_API_BASE"], "api_key": "local"} if os.environ.get("GNOCCHI_JUDGE_API_BASE") else {}
+            r = litellm.completion(model=model, temperature=0, max_tokens=120, **extra,
                                    messages=[{"role": "system", "content": SYSTEM},
                                              {"role": "user", "content": prompt(item)}])
             text = r.choices[0].message.content.strip()
@@ -73,6 +75,10 @@ def main() -> None:
     if not model:
         sys.exit("Set GNOCCHI_JUDGE_MODEL (a LiteLLM model string) and the provider's API key.")
     sample = json.loads((DEMO / "judge_sample.json").read_text())
+    limit = int(os.environ.get("GNOCCHI_JUDGE_LIMIT", "0"))
+    if limit and limit < len(sample["items"]):
+        import random
+        sample["items"] = random.Random(7).sample(sample["items"], limit)
     with ThreadPoolExecutor(max_workers=int(os.environ.get("GNOCCHI_JUDGE_WORKERS", "6"))) as ex:
         preds = list(ex.map(lambda it: judge_one(model, it), sample["items"]))
     ok = [p for p in preds if "error" not in p]

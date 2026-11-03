@@ -398,7 +398,10 @@ def main() -> None:
     word = score([None if pd.isna(m) else m for m in smp.match], [None if pd.isna(d_) else d_ for d_ in smp.deal])
     judge_out = {"n": len(items), "word": word, "status": "not_run", "model": None}
     if jpred:
-        pm = {x["session_id"]: x for x in jpred["predictions"]}
+        pm = {x["session_id"]: x for x in jpred["predictions"] if "error" not in x}
+        smp = smp[smp.session_id.isin(pm)]
+        word = score([None if pd.isna(m) else m for m in smp.match], [None if pd.isna(d_) else d_ for d_ in smp.deal])
+        judge_out.update({"n": int(len(smp)), "word": word})
         jt = [pm.get(sid, {}).get("target") for sid in smp.session_id]
         jd = [pm.get(sid, {}).get("deal") for sid in smp.session_id]
         judge_out.update({"status": "run", "model": jpred["summary"]["model"], "summary": jpred["summary"],

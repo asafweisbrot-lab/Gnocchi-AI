@@ -1,14 +1,48 @@
 {
  "judge": {
-  "n": 440,
+  "n": 199,
   "word": {
-   "target_acc": 0.975,
-   "outreach_acc": 0.64,
-   "deal_precision": 0.854,
-   "deal_recall": 0.714
+   "target_acc": 0.995,
+   "outreach_acc": 0.9,
+   "deal_precision": 0.875,
+   "deal_recall": 0.778
   },
-  "status": "not_run",
-  "model": null
+  "status": "run",
+  "model": "openai/qwen2.5-1.5b",
+  "summary": {
+   "model": "openai/qwen2.5-1.5b",
+   "n": 200,
+   "errors": 1,
+   "median_latency_s": 10.34,
+   "cost_usd": 0,
+   "ran_at": "2026-11-03 16:28"
+  },
+  "judge": {
+   "target_acc": 0.472,
+   "outreach_acc": 0.3,
+   "deal_precision": 0.056,
+   "deal_recall": 0.111
+  },
+  "examples": [
+   {
+    "prompt": "Draft a short intro message for a new inbound lead from Ferro Technologies who requested a demo yesterday.",
+    "word": "D1",
+    "judge": null,
+    "reason": "The session does not mention any specific account or deal type. It is a generic introduction message for an inbound lead from Ferro Technologies requesting a demo."
+   },
+   {
+    "prompt": "Create a 3-step outreach sequence for net-new prospects like Northwind Networks, opening on a coming tender.",
+    "word": "D1",
+    "judge": "D1",
+    "reason": "The session targets a first-touch activity (first response) and an initial outreach sequence for net-new prospects, but does not specify any deal type or account. It focuses on creating a 3-step outreach sequence rather than serving a specific deal."
+   },
+   {
+    "prompt": "Create a 3-step outreach sequence for net-new prospects like Aurelia Solutions, opening on slow incident response.",
+    "word": "D1",
+    "judge": "D1",
+    "reason": "The session focuses on creating an outreach sequence for net-new prospects, but does not specify a particular deal or account."
+   }
+  ]
  },
  "tools": {
   "tools": [

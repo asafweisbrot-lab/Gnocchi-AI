@@ -731,14 +731,16 @@ $("total-text").innerHTML = `Of ${fmt$(D.totals.ai_spend)} in AI spend, two inve
 (function(){
   const J = D.judge, W = J.word, run = J.status === "run", M = run ? J.judge : null;
   const pc = (v) => v == null ? "·" : `${Math.round(v*100)}%`;
+  const mname = run ? (J.model.includes("qwen") ? "Qwen2.5-1.5B, local CPU" : J.model) : "";
+  const per1k = run ? (J.summary.cost_usd ? "$"+(J.summary.cost_usd/J.n*1000).toFixed(2) : "$0 (runs locally)") : "·";
   $("j-in").textContent = `${J.n} labelled sessions`;
   const rows = [["Right driver or key result (or none)", "target_acc"], ["Outreach paraphrases", "outreach_acc"], ["Deal matches that are the right deal", "deal_precision"], ["True deal links found", "deal_recall"]];
-  $("jtbl").innerHTML = `<tr><th>Metric</th><th class="num">Word matching</th><th class="num">${run?esc(J.model):"Judge model (not run)"}</th></tr>` +
+  $("jtbl").innerHTML = `<tr><th>Metric</th><th class="num">Word matching</th><th class="num">${run?esc(mname):"Judge model (not run)"}</th></tr>` +
     rows.map(([l,k]) => `<tr><td>${l}</td><td class="num">${pc(W[k])}</td><td class="num"><b>${run?pc(M[k]):"·"}</b></td></tr>`).join("") +
-    `<tr><td>Cost per 1,000 sessions</td><td class="num">≈ $0</td><td class="num">${run&&J.summary.cost_usd!=null?"$"+(J.summary.cost_usd/J.n*1000).toFixed(2):"·"}</td></tr>` +
+    `<tr><td>Cost per 1,000 sessions</td><td class="num">≈ $0</td><td class="num">${per1k}</td></tr>` +
     `<tr><td>Median time per session</td><td class="num">&lt; 0.01 s</td><td class="num">${run?J.summary.median_latency_s+" s":"·"}</td></tr>`;
   $("j-sum").innerHTML = run
-    ? `On ${J.n} labelled sessions, ${esc(J.model)} picked the right driver or key result for ${pc(M.target_acc)} (word matching ${pc(W.target_acc)}), lifted outreach paraphrases from ${pc(W.outreach_acc)} to ${pc(M.outreach_acc)}, and matched the right deal ${pc(M.deal_precision)} of the time while finding ${pc(M.deal_recall)} of true links (word matching ${pc(W.deal_precision)} and ${pc(W.deal_recall)}), at $${(J.summary.cost_usd/J.n*1000).toFixed(2)} per 1,000 sessions.`
+    ? `On ${J.n} labelled sessions, ${esc(mname)} got the right driver or key result for ${pc(M.target_acc)} against ${pc(W.target_acc)} for word matching, outreach paraphrases ${pc(M.outreach_acc)} against ${pc(W.outreach_acc)}, and the right deal ${pc(M.deal_precision)} of the time against ${pc(W.deal_precision)}, at ${J.summary.median_latency_s} s per session. ${M.target_acc < W.target_acc ? "At this size the model loses: it reads generic outreach as serving nothing and misses account names. The next run should use a 7B model or a hosted small model, on real rather than templated prompts." : "The model wins and earns its cost."}`
     : `Not run yet: it needs a model key. On the same ${J.n} sessions, word matching gets the right driver or key result for ${pc(W.target_acc)}, outreach paraphrases ${pc(W.outreach_acc)}, and deals ${pc(W.deal_precision)} right with ${pc(W.deal_recall)} of true links found. The judge has to beat those numbers to earn its cost.`;
   $("jex").innerHTML = run && J.examples ? `<h3 style="font-size:15px">Outreach sessions, both methods</h3>` + J.examples.map(e => `<div style="font-size:14px">“${esc(e.prompt)}” → word: <b>${esc(e.word||"none")}</b> · judge: <b>${esc(e.judge||"none")}</b> <span class="muted">${esc(e.reason)}</span></div>`).join("") : "";
   $("j-note").innerHTML = `Synthetic prompts come from templates, so both methods score higher here than on real text. ${run?`Ran ${esc(J.summary.ran_at)}; ${J.summary.errors} errors.`:"Run: set GNOCCHI_JUDGE_MODEL (for example anthropic/claude-haiku-4-5, or ollama/qwen2.5:7b on your machine) and the provider key, then run analysis/judge.py."}`;

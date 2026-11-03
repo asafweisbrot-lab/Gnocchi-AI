@@ -1,0 +1,1807 @@
+{
+ "summary": {
+  "model": "openai/qwen2.5-1.5b",
+  "n": 200,
+  "errors": 1,
+  "median_latency_s": 10.34,
+  "cost_usd": 0,
+  "ran_at": "2026-11-03 16:28"
+ },
+ "predictions": [
+  {
+   "session_id": "S-000156",
+   "target": null,
+   "deal": "None",
+   "reason": "The session does not mention any specific account or deal type. It focuses on finding the facilities manager at Delphi Labs and their recent announcements, which are too general to match any of the provided targets.",
+   "latency_s": 12.05,
+   "cost_usd": null,
+   "tokens": 281
+  },
+  {
+   "session_id": "S-003599",
+   "target": null,
+   "deal": null,
+   "reason": "The session serves none of the provided targets or deal candidates.",
+   "latency_s": 11.83,
+   "cost_usd": null,
+   "tokens": 506
+  },
+  {
+   "session_id": "S-000345",
+   "target": null,
+   "deal": "D6",
+   "reason": "The session serves to summarize the account history and prepare for a customer meeting, which aligns with D6: Deal-notes summary on the opportunity.",
+   "latency_s": 8.23,
+   "cost_usd": null,
+   "tokens": 287
+  },
+  {
+   "session_id": "S-001113",
+   "target": "D4",
+   "deal": "Proposal attached",
+   "reason": "The session mentions building a customer quote, which is typically part of the proposal process.",
+   "latency_s": 6.73,
+   "cost_usd": null,
+   "tokens": 261
+  },
+  {
+   "session_id": "S-006675",
+   "target": null,
+   "deal": null,
+   "reason": "The session focuses on analyzing the Q3 pipeline by stage and flagging deals most likely to slip, but it does not name any specific account or deal type.",
+   "latency_s": 14.53,
+   "cost_usd": null,
+   "tokens": 530
+  },
+  {
+   "session_id": "S-004697",
+   "target": null,
+   "deal": null,
+   "reason": "The session is about writing a Salesforce report formula to calculate days in each stage, which does not match any of the target accounts or deal types.",
+   "latency_s": 7.44,
+   "cost_usd": null,
+   "tokens": 280
+  },
+  {
+   "session_id": "S-001187",
+   "target": "D1",
+   "deal": "deal_001839",
+   "reason": "The session is about a meeting-prep brief, which typically involves the first-touch activity (first response). The account 'Port of Cedarbrook' matches this target.",
+   "latency_s": 15.46,
+   "cost_usd": null,
+   "tokens": 542
+  },
+  {
+   "session_id": "S-000503",
+   "target": "D6",
+   "deal": null,
+   "reason": "The session summarizes the latest notes on an Aurelia Ventures opportunity into a status line, which is related to D6: Deal-notes summary on the opportunity.",
+   "latency_s": 8.19,
+   "cost_usd": null,
+   "tokens": 275
+  },
+  {
+   "session_id": "S-003137",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session mentions writing a Python script to dedupe the lead export CSV and normalize phone numbers, which is related to first-touch activity (first response).",
+   "latency_s": 9.43,
+   "cost_usd": null,
+   "tokens": 289
+  },
+  {
+   "session_id": "S-004530",
+   "target": null,
+   "deal": null,
+   "reason": "The session asks about Harbor County, which is not associated with any of the provided deals. The session also does not match any of the D2-D5 categories or deal types.",
+   "latency_s": 15.32,
+   "cost_usd": null,
+   "tokens": 523
+  },
+  {
+   "session_id": "S-006149",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session focuses on summarizing notes from a weekly sales sync, not serving any specific deal.",
+   "latency_s": 12.5,
+   "cost_usd": null,
+   "tokens": 520
+  },
+  {
+   "session_id": "S-008103",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session mentions writing a Python script to dedupe the lead export CSV and normalize phone numbers, which is related to first-touch activity (first response).",
+   "latency_s": 9.84,
+   "cost_usd": null,
+   "tokens": 289
+  },
+  {
+   "session_id": "S-000538",
+   "target": "D6",
+   "deal": null,
+   "reason": "The session summarizes the latest notes on the Redmoor University opportunity into a status line, which is for D6: Deal-notes summary on the opportunity.",
+   "latency_s": 8.49,
+   "cost_usd": null,
+   "tokens": 276
+  },
+  {
+   "session_id": "S-000197",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session focuses on creating an outreach sequence for net-new prospects, but does not specify a particular deal or account.",
+   "latency_s": 8.8,
+   "cost_usd": null,
+   "tokens": 296
+  },
+  {
+   "session_id": "S-003517",
+   "target": null,
+   "deal": "None",
+   "reason": "The session focuses on comparing win rates and average deal size by vertical for the last two quarters, but does not name any specific account or deal.",
+   "latency_s": 14.62,
+   "cost_usd": null,
+   "tokens": 533
+  },
+  {
+   "session_id": "S-006152",
+   "target": null,
+   "deal": null,
+   "reason": "The session does not mention any specific account or deal type. It is focused on creating a Salesforce report formula to calculate days in each stage of the sales process, which could apply to multiple accounts and deals.",
+   "latency_s": 9.9,
+   "cost_usd": null,
+   "tokens": 288
+  },
+  {
+   "session_id": "S-000290",
+   "target": "D5",
+   "deal": "KR4",
+   "reason": "The session mentions customer meetings and renewal, which align with KR4: Renew at least 117 contracts. The brief is specifically requested for a CIO meeting, matching D5: Customer meetings.",
+   "latency_s": 9.97,
+   "cost_usd": null,
+   "tokens": 309
+  },
+  {
+   "session_id": "S-000371",
+   "target": "D5",
+   "deal": null,
+   "reason": "The session is about summarizing the account history and questions for a customer meeting, which does not match any of the provided deal types. The target 'D5' refers to customer meetings, but there are no specific deals mentioned in the session description.",
+   "latency_s": 11.08,
+   "cost_usd": null,
+   "tokens": 308
+  },
+  {
+   "session_id": "S-004390",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session mentions writing a Python script to dedupe the lead export CSV and normalize phone numbers, which is related to first-touch activity (first response). However, it does not mention any specific deals or meetings.",
+   "latency_s": 10.82,
+   "cost_usd": null,
+   "tokens": 300
+  },
+  {
+   "session_id": "S-000259",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session is about writing a first-touch email to the procurement lead at Granite Bank, which does not match any of the targets provided.",
+   "latency_s": 10.21,
+   "cost_usd": null,
+   "tokens": 307
+  },
+  {
+   "session_id": "S-006724",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session is about writing a Python script to dedupe the lead export CSV and normalize phone numbers, which does not match any of the targets provided.",
+   "latency_s": 8.91,
+   "cost_usd": null,
+   "tokens": 288
+  },
+  {
+   "session_id": "S-005241",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session is about summarizing internal team meeting notes into action items, not serving any specific deal.",
+   "latency_s": 13.44,
+   "cost_usd": null,
+   "tokens": 513
+  },
+  {
+   "session_id": "S-000368",
+   "target": "D2",
+   "deal": null,
+   "reason": "The session is preparing a briefing for the next call with Montvale Health, which aligns with target D2: Meeting-prep brief attached.",
+   "latency_s": 8.25,
+   "cost_usd": null,
+   "tokens": 275
+  },
+  {
+   "session_id": "S-003453",
+   "target": null,
+   "deal": null,
+   "reason": "The session does not mention any specific account or deal type. It is focused on creating a Salesforce report formula to calculate days in each stage of the sales process, which could apply to multiple accounts and deals.",
+   "latency_s": 9.82,
+   "cost_usd": null,
+   "tokens": 288
+  },
+  {
+   "session_id": "S-009072",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session is about turning notes from a weekly sales sync into a short recap, which does not match any of the deal types provided.",
+   "latency_s": 14.74,
+   "cost_usd": null,
+   "tokens": 527
+  },
+  {
+   "session_id": "S-001907",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session is about drafting a note for the team, not serving any of the deal types provided.",
+   "latency_s": 14.14,
+   "cost_usd": null,
+   "tokens": 497
+  },
+  {
+   "session_id": "S-000226",
+   "target": null,
+   "deal": "None",
+   "reason": "The session does not mention any specific account or deal type. It is a generic introduction message for an inbound lead from Bayline Energy requesting a demo.",
+   "latency_s": 9.59,
+   "cost_usd": null,
+   "tokens": 296
+  },
+  {
+   "session_id": "S-000635",
+   "target": "D6",
+   "deal": null,
+   "reason": "The session is about debugging why the summarizer posts duplicate notes on the same opportunity, which does not match any of the deal targets provided.",
+   "latency_s": 9.47,
+   "cost_usd": null,
+   "tokens": 269
+  },
+  {
+   "session_id": "S-000966",
+   "target": "D6",
+   "deal": null,
+   "reason": "The session mentions creating an Apex trigger to push new opportunity notes to the summary API, which is related to D6: Deal-notes summary on the opportunity.",
+   "latency_s": 9.96,
+   "cost_usd": null,
+   "tokens": 293
+  },
+  {
+   "session_id": "S-001263",
+   "target": null,
+   "deal": "None",
+   "reason": "The session asks about Bridgeton Health, but does not provide enough information to identify a specific deal or account. The session focuses on general inquiries rather than targeting any particular deal.",
+   "latency_s": 15.13,
+   "cost_usd": null,
+   "tokens": 519
+  },
+  {
+   "session_id": "S-008807",
+   "target": "D5",
+   "deal": null,
+   "reason": "The session is about calculating days in each stage of the sales process, specifically focusing on customer meetings. This does not match any of the targets provided.",
+   "latency_s": 9.53,
+   "cost_usd": null,
+   "tokens": 282
+  },
+  {
+   "session_id": "S-003852",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session is about turning notes from a weekly sales sync into a short recap, not serving any specific deal or account. The closest match would be the first-touch activity (first response), but it's not explicitly mentioned in the session description.",
+   "latency_s": 16.97,
+   "cost_usd": null,
+   "tokens": 539
+  },
+  {
+   "session_id": "S-005165",
+   "target": "D1",
+   "deal": "None",
+   "reason": "The session is about summarizing internal team meeting notes into action items, not serving any specific deal.",
+   "latency_s": 13.77,
+   "cost_usd": null,
+   "tokens": 505
+  },
+  {
+   "session_id": "S-000364",
+   "target": null,
+   "deal": "None",
+   "reason": "The session does not mention any specific account or deal type. It is focused on building a one-page prep brief for a customer meeting with the CIO at Granite Technologies, which is unrelated to any of the provided targets.",
+   "latency_s": 10.1,
+   "cost_usd": null,
+   "tokens": 309
+  },
+  {
+   "session_id": "S-006822",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session mentions writing a Python script to dedupe the lead export CSV and normalize phone numbers, which is related to first-touch activity (first response).",
+   "latency_s": 8.07,
+   "cost_usd": null,
+   "tokens": 284
+  },
+  {
+   "session_id": "S-000075",
+   "target": null,
+   "deal": null,
+   "reason": "The session does not mention any specific account or deal type. It is a generic introduction message for an inbound lead from Port of Danforth requesting a demo.",
+   "latency_s": 8.44,
+   "cost_usd": null,
+   "tokens": 298
+  },
+  {
+   "session_id": "S-004327",
+   "target": null,
+   "deal": null,
+   "reason": "The session asks about segments with the longest sales cycle and correlates it with a specific export of closed deals, but does not name any deal.",
+   "latency_s": 12.75,
+   "cost_usd": null,
+   "tokens": 529
+  },
+  {
+   "session_id": "S-008029",
+   "target": "D1",
+   "deal": "None",
+   "reason": "The session focuses on summarizing notes from a weekly sales sync, not serving any specific deal.",
+   "latency_s": 12.77,
+   "cost_usd": null,
+   "tokens": 508
+  },
+  {
+   "session_id": "S-006133",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session is about drafting a note for the team about quarterly offsite logistics, which does not match any of the deal types provided.",
+   "latency_s": 12.99,
+   "cost_usd": null,
+   "tokens": 511
+  },
+  {
+   "session_id": "S-009192",
+   "target": null,
+   "deal": null,
+   "reason": "The session is about fixing grammar in a LinkedIn post, not serving any of the provided deals or being related to meeting-prep briefs, solutions engineer before Proposal, proposal attached, customer meetings, or any deal type. The target is likely an individual action rather than a business activity.",
+   "latency_s": 15.98,
+   "cost_usd": null,
+   "tokens": 539
+  },
+  {
+   "session_id": "S-001264",
+   "target": null,
+   "deal": "None",
+   "reason": "The session asks about Lumina Technologies' offerings, size, and competitors but does not mention any specific deal.",
+   "latency_s": 12.49,
+   "cost_usd": null,
+   "tokens": 512
+  },
+  {
+   "session_id": "S-004420",
+   "target": null,
+   "deal": null,
+   "reason": "The session serves neither a team nor an account, and it does not name any specific deal type or account. The message is about Polishing a finance-related message for an expense report correction.",
+   "latency_s": 13.13,
+   "cost_usd": null,
+   "tokens": 520
+  },
+  {
+   "session_id": "S-005859",
+   "target": "D1",
+   "deal": "None",
+   "reason": "The session serves to summarize internal team meeting notes into action items, but does not name any specific deal.",
+   "latency_s": 12.71,
+   "cost_usd": null,
+   "tokens": 508
+  },
+  {
+   "session_id": "S-007413",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session is about drafting a note for the team about quarterly offsite logistics, which does not match any of the deal types provided.",
+   "latency_s": 13.02,
+   "cost_usd": null,
+   "tokens": 512
+  },
+  {
+   "session_id": "S-002075",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session is about summarizing internal team meeting notes into action items, which does not match any of the deal candidates.",
+   "latency_s": 11.71,
+   "cost_usd": null,
+   "tokens": 414
+  },
+  {
+   "session_id": "S-000154",
+   "target": null,
+   "deal": "None",
+   "reason": "The session does not name any account or mention a specific deal type.",
+   "latency_s": 6.78,
+   "cost_usd": null,
+   "tokens": 280
+  },
+  {
+   "session_id": "S-006858",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session is about turning notes from a weekly sales sync into a short recap, which does not match any of the deal types provided.",
+   "latency_s": 13.34,
+   "cost_usd": null,
+   "tokens": 525
+  },
+  {
+   "session_id": "S-001088",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session is asking for currency conversion in the quote calculator, which typically occurs during the first touch activity (first response).",
+   "latency_s": 6.82,
+   "cost_usd": null,
+   "tokens": 261
+  },
+  {
+   "session_id": "S-006169",
+   "target": null,
+   "deal": "None",
+   "reason": "The session does not serve any of the provided targets or deal candidates.",
+   "latency_s": 12.44,
+   "cost_usd": null,
+   "tokens": 521
+  },
+  {
+   "session_id": "S-008159",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session is about drafting a note for quarterly offsite logistics, which does not match any of the deal types provided.",
+   "latency_s": 12.23,
+   "cost_usd": null,
+   "tokens": 509
+  },
+  {
+   "session_id": "S-005539",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session is about turning notes from a weekly sales sync into a short recap, not serving any specific deal or account. The closest match would be the first-touch activity (first response), but it's not explicitly mentioned in the session description.",
+   "latency_s": 16.2,
+   "cost_usd": null,
+   "tokens": 541
+  },
+  {
+   "session_id": "S-001160",
+   "target": "D4",
+   "deal": null,
+   "reason": "The session mentions a price list sheet change and a quote script breaking. The target 'Proposal attached' is the most relevant as it pertains to the proposal aspect of the process.",
+   "latency_s": 8.19,
+   "cost_usd": null,
+   "tokens": 274
+  },
+  {
+   "session_id": "S-001092",
+   "target": "D4",
+   "deal": null,
+   "reason": "The session mentions 'Proposal attached', which is the target for D4. The deal type isn't specified in this session, so we can't determine a specific deal to match it with D4.",
+   "latency_s": 8.84,
+   "cost_usd": null,
+   "tokens": 293
+  },
+  {
+   "session_id": "S-008525",
+   "target": null,
+   "deal": "None",
+   "reason": "The session does not name any specific account or deal.",
+   "latency_s": 12.26,
+   "cost_usd": null,
+   "tokens": 524
+  },
+  {
+   "session_id": "S-006162",
+   "target": null,
+   "deal": "None",
+   "reason": "The session asks about Lakeside University, which is not related to any of the provided deals. The session also does not match any of the D2-D5 categories or deal types.",
+   "latency_s": 14.05,
+   "cost_usd": null,
+   "tokens": 526
+  },
+  {
+   "session_id": "S-004748",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session mentions writing a Python script to dedupe the lead export CSV and normalize phone numbers, which is not related to any of the targets provided.",
+   "latency_s": 9.3,
+   "cost_usd": null,
+   "tokens": 288
+  },
+  {
+   "session_id": "S-002397",
+   "target": "D1",
+   "deal": "None",
+   "reason": "The session is about turning notes from a weekly sales sync into a short recap, which does not match any of the provided deals or target types. The closest match would be 'D1: First-touch activity (first response)', but this also doesn't apply to any of the open deals listed.",
+   "latency_s": 16.99,
+   "cost_usd": null,
+   "tokens": 552
+  },
+  {
+   "session_id": "S-000792",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session mentions 'First-touch activity (first response)', which is the first touchpoint in a customer journey. This suggests it's about an initial interaction or response to a request for help.",
+   "latency_s": 8.28,
+   "cost_usd": null,
+   "tokens": 276
+  },
+  {
+   "session_id": "S-005317",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session is about writing a Python script to dedupe the lead export CSV and normalize phone numbers, which does not match any of the targets provided.",
+   "latency_s": 9.05,
+   "cost_usd": null,
+   "tokens": 288
+  },
+  {
+   "session_id": "S-006006",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session focuses on summarizing notes from a weekly sales sync, not serving any specific deal.",
+   "latency_s": 13.62,
+   "cost_usd": null,
+   "tokens": 521
+  },
+  {
+   "session_id": "S-001349",
+   "target": null,
+   "deal": null,
+   "reason": "The session does not name any account or match the deal type.",
+   "latency_s": 12.53,
+   "cost_usd": null,
+   "tokens": 519
+  },
+  {
+   "session_id": "S-000878",
+   "target": "D6",
+   "deal": null,
+   "reason": "The session mentions configuring a connected app to post the bot's summary note to the opportunity record, which aligns with D6: Deal-notes summary on the opportunity.",
+   "latency_s": 8.21,
+   "cost_usd": null,
+   "tokens": 277
+  },
+  {
+   "session_id": "S-000169",
+   "target": null,
+   "deal": "None",
+   "reason": "The session does not mention any specific account or deal type. It is a generic introduction message for an inbound lead from Ferro Technologies requesting a demo.",
+   "latency_s": 8.73,
+   "cost_usd": null,
+   "tokens": 296
+  },
+  {
+   "session_id": "S-000397",
+   "target": "D6",
+   "deal": null,
+   "reason": "The session is about summarizing notes on the Granite Technologies opportunity into a status line, which aligns with D6: Deal-notes summary on the opportunity.",
+   "latency_s": 7.99,
+   "cost_usd": null,
+   "tokens": 274
+  },
+  {
+   "session_id": "S-001102",
+   "target": "D4",
+   "deal": "Proposal attached",
+   "reason": "The session mentions building a customer quote, which is typically part of the proposal process.",
+   "latency_s": 7.12,
+   "cost_usd": null,
+   "tokens": 265
+  },
+  {
+   "session_id": "S-000452",
+   "target": null,
+   "deal": "D6",
+   "reason": "The session condenses the activity notes for the Delphi Technologies deal into three bullets, but it does not serve any of the provided targets. The target 'D6' is closest to serving this session as it relates to a summary on the opportunity, which aligns with the condensed information provided in the session's notes.",
+   "latency_s": 12.58,
+   "cost_usd": null,
+   "tokens": 319
+  },
+  {
+   "session_id": "S-000332",
+   "target": "D5",
+   "deal": null,
+   "reason": "The session is about summarizing the account history and questions to ask before a meeting with Verdant Holdings, which does not match any of the provided deal types. The target 'D5' refers to customer meetings, but there are no specific deals mentioned in the session description.",
+   "latency_s": 10.26,
+   "cost_usd": null,
+   "tokens": 313
+  },
+  {
+   "session_id": "S-000046",
+   "error": "Expecting value: line 1 column 26 (char 25)"
+  },
+  {
+   "session_id": "S-003724",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session is about developing a competitive strategy for the Northgate Transit tender, not targeting any specific deal.",
+   "latency_s": 14.0,
+   "cost_usd": null,
+   "tokens": 509
+  },
+  {
+   "session_id": "S-001320",
+   "target": null,
+   "deal": "None",
+   "reason": "The session does not name any account or deal.",
+   "latency_s": 11.72,
+   "cost_usd": null,
+   "tokens": 523
+  },
+  {
+   "session_id": "S-005612",
+   "target": "KR2",
+   "deal": "deal_001846",
+   "reason": "The session outlines a territory strategy for hitting the new-logo bookings target, which is KR2.",
+   "latency_s": 14.61,
+   "cost_usd": null,
+   "tokens": 549
+  },
+  {
+   "session_id": "S-008138",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session is about background information on Granite Bank's industry and recent news, not a specific deal.",
+   "latency_s": 12.68,
+   "cost_usd": null,
+   "tokens": 507
+  },
+  {
+   "session_id": "S-000188",
+   "target": null,
+   "deal": "None",
+   "reason": "The session does not name any specific account or deal type. It focuses on identifying the CIO of Onyx Global and asking about their initiatives for this year, which is a general inquiry rather than targeting a particular account or deal.",
+   "latency_s": 9.44,
+   "cost_usd": null,
+   "tokens": 287
+  },
+  {
+   "session_id": "S-004951",
+   "target": null,
+   "deal": null,
+   "reason": "The session explains the difference between a pivot table and a lookup, which are not directly related to any of the provided deals.",
+   "latency_s": 13.1,
+   "cost_usd": null,
+   "tokens": 508
+  },
+  {
+   "session_id": "S-001151",
+   "target": "D4",
+   "deal": null,
+   "reason": "The session mentions a price list sheet change and a quote script breaking. The target 'Proposal attached' is the most relevant as it suggests an updated proposal needs to be created.",
+   "latency_s": 8.78,
+   "cost_usd": null,
+   "tokens": 273
+  },
+  {
+   "session_id": "S-000754",
+   "target": "D6",
+   "deal": null,
+   "reason": "The session mentions a summary bot that times out on opportunities with hundreds of notes. This is related to the 'Deal-notes summary' feature, which could be used for batch processing of opportunity notes.",
+   "latency_s": 8.81,
+   "cost_usd": null,
+   "tokens": 284
+  },
+  {
+   "session_id": "S-000049",
+   "target": null,
+   "deal": "None",
+   "reason": "The session does not mention any specific account or deal type. It is a generic introduction message for an inbound lead from Northwind Ventures.",
+   "latency_s": 7.83,
+   "cost_usd": null,
+   "tokens": 293
+  },
+  {
+   "session_id": "S-006396",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session is about debugging an Excel macro for merging weekly forecast sheets. This likely pertains to the first touch activity (first response) in a customer engagement process.",
+   "latency_s": 7.04,
+   "cost_usd": null,
+   "tokens": 267
+  },
+  {
+   "session_id": "S-004513",
+   "target": "D1",
+   "deal": "None",
+   "reason": "The session focuses on summarizing notes from a weekly sales sync, which is not related to any specific deal.",
+   "latency_s": 12.69,
+   "cost_usd": null,
+   "tokens": 522
+  },
+  {
+   "session_id": "S-000795",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session mentions a specific account where the bot is writing summaries in the wrong language, indicating it's likely related to an initial response or first-touch activity.",
+   "latency_s": 7.78,
+   "cost_usd": null,
+   "tokens": 269
+  },
+  {
+   "session_id": "S-000625",
+   "target": null,
+   "deal": "D6",
+   "reason": "The session condenses the activity notes for the Lumina Networks deal into three bullets, but it does not serve any of the provided targets. The target 'D6' is closest as it relates to a summary on the opportunity, which could be considered part of the overall deal context.",
+   "latency_s": 10.64,
+   "cost_usd": null,
+   "tokens": 312
+  },
+  {
+   "session_id": "S-000608",
+   "target": "D6",
+   "deal": null,
+   "reason": "The session summarizes the latest notes on the Vantor Holdings opportunity into a status line, which is related to D6: Deal-notes summary on the opportunity.",
+   "latency_s": 7.27,
+   "cost_usd": null,
+   "tokens": 275
+  },
+  {
+   "session_id": "S-007055",
+   "target": null,
+   "deal": null,
+   "reason": "The session asks about Metro Water's services, size, and competitors but does not mention any specific deal or account.",
+   "latency_s": 11.48,
+   "cost_usd": null,
+   "tokens": 459
+  },
+  {
+   "session_id": "S-001324",
+   "target": "KR2",
+   "deal": "deal_001636",
+   "reason": "The session mentions 'Grow new-logo bookings 25% to $10.31M', which is a specific target for KR2.",
+   "latency_s": 15.28,
+   "cost_usd": null,
+   "tokens": 544
+  },
+  {
+   "session_id": "S-002344",
+   "target": null,
+   "deal": null,
+   "reason": "The session explains the difference between a pivot table and a lookup, which are concepts related to data analysis. Neither of the provided deals match these terms.",
+   "latency_s": 12.08,
+   "cost_usd": null,
+   "tokens": 470
+  },
+  {
+   "session_id": "S-000949",
+   "target": "D6",
+   "deal": null,
+   "reason": "The session mentions that the summary bot writes the same note twice on one opportunity, which is related to D6: Deal-notes summary on the opportunity.",
+   "latency_s": 8.58,
+   "cost_usd": null,
+   "tokens": 274
+  },
+  {
+   "session_id": "S-001403",
+   "target": null,
+   "deal": "None",
+   "reason": "The session does not name any specific account or deal.",
+   "latency_s": 12.48,
+   "cost_usd": null,
+   "tokens": 528
+  },
+  {
+   "session_id": "S-001146",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session mentions a quote script error, which is related to the first touch activity (first response) in the sales process.",
+   "latency_s": 7.28,
+   "cost_usd": null,
+   "tokens": 265
+  },
+  {
+   "session_id": "S-000469",
+   "target": "D6",
+   "deal": null,
+   "reason": "The session summarizes the latest notes on the Lumina Ventures opportunity into a status line, which is related to D6: Deal-notes summary on the opportunity.",
+   "latency_s": 7.69,
+   "cost_usd": null,
+   "tokens": 275
+  },
+  {
+   "session_id": "S-001149",
+   "target": "D4",
+   "deal": null,
+   "reason": "The session mentions a price list sheet change and a quote script breaking. The target 'Proposal attached' is the most relevant as it suggests an update to a proposal document.",
+   "latency_s": 7.22,
+   "cost_usd": null,
+   "tokens": 272
+  },
+  {
+   "session_id": "S-005624",
+   "target": null,
+   "deal": "None",
+   "reason": "The session is about writing a pricing and implementation section for a new-logo quote, but it does not name any specific account or deal.",
+   "latency_s": 15.1,
+   "cost_usd": null,
+   "tokens": 544
+  },
+  {
+   "session_id": "S-001133",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session mentions a price list sheet change and a quote script breaking. The target 'First-touch activity (first response)' is the most relevant as it indicates an initial contact with the customer.",
+   "latency_s": 8.31,
+   "cost_usd": null,
+   "tokens": 276
+  },
+  {
+   "session_id": "S-001344",
+   "target": null,
+   "deal": "None",
+   "reason": "The session is about writing a pricing and implementation section for the new-logo quote, but it does not serve any specific deal.",
+   "latency_s": 13.85,
+   "cost_usd": null,
+   "tokens": 546
+  },
+  {
+   "session_id": "S-000410",
+   "target": null,
+   "deal": "Nexora Networks",
+   "reason": "The session does not mention any specific deal or account. It is a general team EMEA activity note for the Nexora Networks deal, which could be about consolidating notes on an opportunity, book total bookings in 2025, first-touch activities, meeting-prep briefs, and proposals. However, it doesn't specify which deal this pertains to or if there are multiple deals under that account.",
+   "latency_s": 14.64,
+   "cost_usd": null,
+   "tokens": 340
+  },
+  {
+   "session_id": "S-000358",
+   "target": null,
+   "deal": "None",
+   "reason": "The session does not mention any specific account or deal type. It is focused on building a one-page prep brief for customer meetings, which could be relevant to multiple accounts but does not specify an individual account or a particular deal type.",
+   "latency_s": 10.34,
+   "cost_usd": null,
+   "tokens": 313
+  },
+  {
+   "session_id": "S-009200",
+   "target": null,
+   "deal": "None",
+   "reason": "The session focuses on analyzing the Q3 pipeline by stage and flagging deals most likely to slip, but does not name any specific account or deal.",
+   "latency_s": 14.39,
+   "cost_usd": null,
+   "tokens": 536
+  },
+  {
+   "session_id": "S-001107",
+   "target": null,
+   "deal": "D4",
+   "reason": "The session mentions adding volume discount tiers to the quote calculator script, which is related to proposals and solutions. However, it does not mention any specific account or deal type.",
+   "latency_s": 8.39,
+   "cost_usd": null,
+   "tokens": 282
+  },
+  {
+   "session_id": "S-006420",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session is about writing a Python script to dedupe the lead export CSV and normalize phone numbers, which does not match any of the targets provided.",
+   "latency_s": 9.25,
+   "cost_usd": null,
+   "tokens": 288
+  },
+  {
+   "session_id": "S-001289",
+   "target": null,
+   "deal": "None",
+   "reason": "The session is about writing a pricing and implementation section for a new-logo quote, but it does not name any specific account or deal.",
+   "latency_s": 15.13,
+   "cost_usd": null,
+   "tokens": 551
+  },
+  {
+   "session_id": "S-006685",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session is about turning notes from a weekly sales sync into a short recap, which does not match any of the deal types provided.",
+   "latency_s": 11.95,
+   "cost_usd": null,
+   "tokens": 470
+  },
+  {
+   "session_id": "S-000819",
+   "target": null,
+   "deal": null,
+   "reason": "The session summaries fail when a note has an attachment, but it does not mention any of the specific targets provided.",
+   "latency_s": 7.29,
+   "cost_usd": null,
+   "tokens": 260
+  },
+  {
+   "session_id": "S-000088",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session is focused on finding decision makers at Quanta Holdings and their likely priorities before reaching out. The target 'D1: First-touch activity (first response)' aligns with the goal of identifying who to contact first.",
+   "latency_s": 10.44,
+   "cost_usd": null,
+   "tokens": 285
+  },
+  {
+   "session_id": "S-001285",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session is about meeting prep, which does not match any of the deal types provided.",
+   "latency_s": 11.43,
+   "cost_usd": null,
+   "tokens": 493
+  },
+  {
+   "session_id": "S-000874",
+   "target": "D6",
+   "deal": null,
+   "reason": "The session mentions that the summary bot writes the same note twice on one opportunity, which is related to D6: Deal-notes summary on the opportunity.",
+   "latency_s": 7.48,
+   "cost_usd": null,
+   "tokens": 274
+  },
+  {
+   "session_id": "S-001142",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session mentions a quote calculator script issue, but does not specify any deal type or account. It is likely related to the first touch activity (first response).",
+   "latency_s": 8.31,
+   "cost_usd": null,
+   "tokens": 287
+  },
+  {
+   "session_id": "S-002270",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session is about turning notes from a weekly sales sync into a short recap, which does not match any of the deal types provided.",
+   "latency_s": 12.11,
+   "cost_usd": null,
+   "tokens": 478
+  },
+  {
+   "session_id": "S-005094",
+   "target": null,
+   "deal": null,
+   "reason": "The session does not name any account or match an existing deal type. It focuses on building an account plan for Coastal Ports Authority, which is a specific target rather than a deal candidate.",
+   "latency_s": 13.39,
+   "cost_usd": null,
+   "tokens": 537
+  },
+  {
+   "session_id": "S-001203",
+   "target": null,
+   "deal": "None",
+   "reason": "The session asks about Port of Yarrow, but does not provide enough information to identify a specific deal or account. The session is asking for general information about the company and its competitors, which does not match any of the provided deals.",
+   "latency_s": 15.88,
+   "cost_usd": null,
+   "tokens": 547
+  },
+  {
+   "session_id": "S-004418",
+   "target": null,
+   "deal": null,
+   "reason": "The session is about writing a Salesforce report formula to calculate days in each stage, which does not match any of the targets provided.",
+   "latency_s": 7.13,
+   "cost_usd": null,
+   "tokens": 277
+  },
+  {
+   "session_id": "S-003931",
+   "target": null,
+   "deal": null,
+   "reason": "The session does not mention any specific account or deal type.",
+   "latency_s": 11.77,
+   "cost_usd": null,
+   "tokens": 487
+  },
+  {
+   "session_id": "S-003794",
+   "target": null,
+   "deal": null,
+   "reason": "The session does not name any account or deal, and the targets are for a general growth plan rather than specific deals.",
+   "latency_s": 12.85,
+   "cost_usd": null,
+   "tokens": 520
+  },
+  {
+   "session_id": "S-006674",
+   "target": null,
+   "deal": null,
+   "reason": "The session does not mention any specific account or deal type. It is focused on creating a Salesforce report formula to calculate days in each stage of the sales process.",
+   "latency_s": 8.66,
+   "cost_usd": null,
+   "tokens": 279
+  },
+  {
+   "session_id": "S-001379",
+   "target": null,
+   "deal": "None",
+   "reason": "The session does not serve any of the provided targets or deal candidates.",
+   "latency_s": 13.52,
+   "cost_usd": null,
+   "tokens": 537
+  },
+  {
+   "session_id": "S-000028",
+   "target": null,
+   "deal": null,
+   "reason": "The session does not name any account or mention a specific deal type. It is asking about the IT director and their initiatives, but it doesn't provide enough information to identify an account or a specific deal.",
+   "latency_s": 7.84,
+   "cost_usd": null,
+   "tokens": 283
+  },
+  {
+   "session_id": "S-001382",
+   "target": "KR2",
+   "deal": "deal_001764",
+   "reason": "The session outlines a territory strategy for hitting the new-logo bookings target, specifically targeting KR2: Grow new-logo bookings 25% to $10.31M.",
+   "latency_s": 13.25,
+   "cost_usd": null,
+   "tokens": 465
+  },
+  {
+   "session_id": "S-003058",
+   "target": null,
+   "deal": null,
+   "reason": "The session focuses on building an account plan for Harbor County, but does not mention any specific deals or accounts. It is unclear if the session is about a deal candidate or not.",
+   "latency_s": 13.21,
+   "cost_usd": null,
+   "tokens": 483
+  },
+  {
+   "session_id": "S-003085",
+   "target": null,
+   "deal": null,
+   "reason": "The session does not mention any specific account or deal type.",
+   "latency_s": 9.28,
+   "cost_usd": null,
+   "tokens": 394
+  },
+  {
+   "session_id": "S-004766",
+   "target": null,
+   "deal": null,
+   "reason": "The session asks about Harbor County, but does not provide any information that matches the deal candidates provided. The session seems to be asking for general information about a company rather than focusing on specific deals.",
+   "latency_s": 14.39,
+   "cost_usd": null,
+   "tokens": 532
+  },
+  {
+   "session_id": "S-004519",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session is asking for background on Harbor County's industry and recent news, which does not match any of the deal types provided.",
+   "latency_s": 12.73,
+   "cost_usd": null,
+   "tokens": 511
+  },
+  {
+   "session_id": "S-008495",
+   "target": "D4",
+   "deal": "deal_001855",
+   "reason": "The session is about proposing a new deal, and deal_001855 is the only proposal attached to an open opportunity. The target 'D4' (Proposal attached) matches this context best.",
+   "latency_s": 16.18,
+   "cost_usd": null,
+   "tokens": 548
+  },
+  {
+   "session_id": "S-002948",
+   "target": "Pinecrest Logistics",
+   "deal": null,
+   "reason": "The session focuses on building an account plan for Pinecrest Logistics, but does not name any specific deal.",
+   "latency_s": 12.9,
+   "cost_usd": null,
+   "tokens": 524
+  },
+  {
+   "session_id": "S-008671",
+   "target": null,
+   "deal": null,
+   "reason": "The session serves neither the D2, D5, D3, D1, nor D4 targets. It also does not match any of the deal candidates provided.",
+   "latency_s": 10.71,
+   "cost_usd": null,
+   "tokens": 379
+  },
+  {
+   "session_id": "S-008256",
+   "target": null,
+   "deal": null,
+   "reason": "The session serves none of the provided targets or deal candidates.",
+   "latency_s": 9.95,
+   "cost_usd": null,
+   "tokens": 423
+  },
+  {
+   "session_id": "S-000714",
+   "target": "D6",
+   "deal": null,
+   "reason": "The session is about debugging why the summarizer posts duplicate notes on the same opportunity, which does not match any of the deal types provided.",
+   "latency_s": 7.45,
+   "cost_usd": null,
+   "tokens": 269
+  },
+  {
+   "session_id": "S-002419",
+   "target": "D1",
+   "deal": "None",
+   "reason": "The session is about drafting a note for the team about quarterly offsite logistics, which does not match any of the deal types provided.",
+   "latency_s": 12.72,
+   "cost_usd": null,
+   "tokens": 508
+  },
+  {
+   "session_id": "S-000439",
+   "target": "D6",
+   "deal": null,
+   "reason": "The session summarizes the latest notes on the Millbrook Bank opportunity into a status line, which is related to D6: Deal-notes summary on the opportunity.",
+   "latency_s": 7.78,
+   "cost_usd": null,
+   "tokens": 275
+  },
+  {
+   "session_id": "S-001129",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session mentions a quote calculator script issue, but does not specify any account or deal type. It is related to the first touch activity (first response).",
+   "latency_s": 8.41,
+   "cost_usd": null,
+   "tokens": 286
+  },
+  {
+   "session_id": "S-000255",
+   "target": null,
+   "deal": "None",
+   "reason": "The session does not name any account or deal.",
+   "latency_s": 6.68,
+   "cost_usd": null,
+   "tokens": 281
+  },
+  {
+   "session_id": "S-000769",
+   "target": null,
+   "deal": null,
+   "reason": "The session summaries fail when a note has an attachment, but it does not mention any of the specific deal types or activities listed in the targets.",
+   "latency_s": 7.59,
+   "cost_usd": null,
+   "tokens": 266
+  },
+  {
+   "session_id": "S-005918",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session is about drafting a note for the team, not serving any of the deal types provided.",
+   "latency_s": 12.92,
+   "cost_usd": null,
+   "tokens": 500
+  },
+  {
+   "session_id": "S-004602",
+   "target": "D3",
+   "deal": null,
+   "reason": "The session focuses on planning priorities, but does not mention any specific deal or account.",
+   "latency_s": 12.23,
+   "cost_usd": null,
+   "tokens": 497
+  },
+  {
+   "session_id": "S-001256",
+   "target": "D1",
+   "deal": "None",
+   "reason": "The session is about background on Granite Technologies's industry and recent news, not serving any specific deal.",
+   "latency_s": 12.93,
+   "cost_usd": null,
+   "tokens": 507
+  },
+  {
+   "session_id": "S-000324",
+   "target": "D2",
+   "deal": null,
+   "reason": "The session is preparing a briefing for tomorrow's call with Forge Labs, which aligns with the target 'Meeting-prep brief attached'.",
+   "latency_s": 6.78,
+   "cost_usd": null,
+   "tokens": 272
+  },
+  {
+   "session_id": "S-001115",
+   "target": "D4",
+   "deal": "Renew at least 117 contracts",
+   "reason": "The session mentions building a customer quote, which is typically part of renewing contracts.",
+   "latency_s": 7.18,
+   "cost_usd": null,
+   "tokens": 268
+  },
+  {
+   "session_id": "S-001058",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session mentions splitting big opportunities into batches, which is related to the first-touch activity (first response).",
+   "latency_s": 6.34,
+   "cost_usd": null,
+   "tokens": 266
+  },
+  {
+   "session_id": "S-001228",
+   "target": null,
+   "deal": "None",
+   "reason": "The session is about writing a pricing and implementation section for a new-logo quote, but it does not serve any specific deal.",
+   "latency_s": 14.14,
+   "cost_usd": null,
+   "tokens": 553
+  },
+  {
+   "session_id": "S-000840",
+   "target": "D6",
+   "deal": null,
+   "reason": "The session is about fixing an API version error in the notes summarizer, which relates to D6: Deal-notes summary on the opportunity.",
+   "latency_s": 7.99,
+   "cost_usd": null,
+   "tokens": 272
+  },
+  {
+   "session_id": "S-000344",
+   "target": "D5",
+   "deal": "Customer meetings",
+   "reason": "The session mentions building a one-page prep brief for a customer meeting, which aligns with the target of D5: Customer meetings.",
+   "latency_s": 7.93,
+   "cost_usd": null,
+   "tokens": 296
+  },
+  {
+   "session_id": "S-007688",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session is about turning notes from a weekly sales sync into a short recap, which does not match any of the provided deals.",
+   "latency_s": 13.66,
+   "cost_usd": null,
+   "tokens": 513
+  },
+  {
+   "session_id": "S-008546",
+   "target": "D3",
+   "deal": null,
+   "reason": "The session focuses on planning a week around three priorities, but does not mention any specific deal or account.",
+   "latency_s": 12.67,
+   "cost_usd": null,
+   "tokens": 500
+  },
+  {
+   "session_id": "S-001974",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session is about Polishing a message for finance, which does not match any of the deal types provided.",
+   "latency_s": 10.36,
+   "cost_usd": null,
+   "tokens": 406
+  },
+  {
+   "session_id": "S-000286",
+   "target": "D5",
+   "deal": "Customer meetings",
+   "reason": "The session mentions building a one-page prep brief for customer meetings, which aligns with the target of serving customer meetings. The D5 target is directly related to this request.",
+   "latency_s": 8.52,
+   "cost_usd": null,
+   "tokens": 304
+  },
+  {
+   "session_id": "S-000633",
+   "target": "D6",
+   "deal": null,
+   "reason": "The session is about adding retries and rate limiting to the job that summarizes opportunity notes. This action pertains directly to D6: Deal-notes summary on the opportunity.",
+   "latency_s": 7.62,
+   "cost_usd": null,
+   "tokens": 273
+  },
+  {
+   "session_id": "S-000688",
+   "target": null,
+   "deal": null,
+   "reason": "The session does not mention any specific deal or account. It is about writing a Python function to summarize an opportunity's activity notes into three bullet points.",
+   "latency_s": 7.07,
+   "cost_usd": null,
+   "tokens": 275
+  },
+  {
+   "session_id": "S-000311",
+   "target": null,
+   "deal": "None",
+   "reason": "The session does not mention any specific account or deal type. It focuses on building a one-page prep brief for customer meetings, which is unrelated to the targets provided.",
+   "latency_s": 8.05,
+   "cost_usd": null,
+   "tokens": 300
+  },
+  {
+   "session_id": "S-006556",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session is about meeting-prep briefs, which does not match any of the provided deals.",
+   "latency_s": 12.27,
+   "cost_usd": null,
+   "tokens": 508
+  },
+  {
+   "session_id": "S-002321",
+   "target": null,
+   "deal": "None",
+   "reason": "The session asks about Lakeside University, which is not related to any of the provided deals.",
+   "latency_s": 12.06,
+   "cost_usd": null,
+   "tokens": 510
+  },
+  {
+   "session_id": "S-000220",
+   "target": null,
+   "deal": "None",
+   "reason": "The session does not serve any of the provided targets or deal types. It focuses on creating an outreach sequence for net-new prospects, which is unrelated to specific account names or deal metrics.",
+   "latency_s": 8.38,
+   "cost_usd": null,
+   "tokens": 305
+  },
+  {
+   "session_id": "S-001114",
+   "target": "D4",
+   "deal": null,
+   "reason": "The session is about adding currency conversion to the quote calculator for BRL and MXN currencies, which relates to a proposal attached. This does not match any of the other targets provided.",
+   "latency_s": 7.26,
+   "cost_usd": null,
+   "tokens": 274
+  },
+  {
+   "session_id": "S-008114",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session mentions writing a Python script to dedupe the lead export CSV and normalize phone numbers, which is related to first-touch activity (first response). However, it does not mention any specific deals or activities.",
+   "latency_s": 8.72,
+   "cost_usd": null,
+   "tokens": 300
+  },
+  {
+   "session_id": "S-006295",
+   "target": null,
+   "deal": null,
+   "reason": "The session serves none of the provided targets or deal candidates. It is about writing a pricing and implementation section for a renewal quote, which does not match any specific deals or target types.",
+   "latency_s": 13.23,
+   "cost_usd": null,
+   "tokens": 534
+  },
+  {
+   "session_id": "S-003941",
+   "target": "D1",
+   "deal": "None",
+   "reason": "The session is about summarizing internal team meeting notes into action items, not serving any specific deal.",
+   "latency_s": 11.31,
+   "cost_usd": null,
+   "tokens": 456
+  },
+  {
+   "session_id": "S-001135",
+   "target": "D4",
+   "deal": null,
+   "reason": "The session mentions fixing a quote PDF issue related to currency, which is not directly linked to any specific deal type or activity. However, it pertains to the Proposal attached target.",
+   "latency_s": 8.05,
+   "cost_usd": null,
+   "tokens": 274
+  },
+  {
+   "session_id": "S-000219",
+   "target": null,
+   "deal": "None",
+   "reason": "The session does not mention any specific account or deal type. It is a generic introduction message for an inbound lead from Bayline Energy requesting a demo.",
+   "latency_s": 7.35,
+   "cost_usd": null,
+   "tokens": 296
+  },
+  {
+   "session_id": "S-003082",
+   "target": null,
+   "deal": null,
+   "reason": "The session serves none of the provided targets or deal candidates. It focuses on comparing win rates and average deal size by vertical for the last two quarters, which is not a specific target or deal type.",
+   "latency_s": 12.52,
+   "cost_usd": null,
+   "tokens": 446
+  },
+  {
+   "session_id": "S-001508",
+   "target": null,
+   "deal": null,
+   "reason": "The session focuses on building an account plan for Metro Water, but does not name any specific account or deal. It also mentions stakeholders and expansion targets without naming a particular deal.",
+   "latency_s": 13.39,
+   "cost_usd": null,
+   "tokens": 531
+  },
+  {
+   "session_id": "S-007556",
+   "target": null,
+   "deal": "None",
+   "reason": "The session is about writing a pricing and implementation section for a new-logo quote, but it does not serve any specific deal.",
+   "latency_s": 13.25,
+   "cost_usd": null,
+   "tokens": 541
+  },
+  {
+   "session_id": "S-002666",
+   "target": null,
+   "deal": null,
+   "reason": "The session is about planning a week's priorities, but it does not name any account or deal.",
+   "latency_s": 11.85,
+   "cost_usd": null,
+   "tokens": 499
+  },
+  {
+   "session_id": "S-008950",
+   "target": "D3",
+   "deal": null,
+   "reason": "The session focuses on planning a week around three priorities, but does not mention any specific deal or account.",
+   "latency_s": 12.05,
+   "cost_usd": null,
+   "tokens": 510
+  },
+  {
+   "session_id": "S-006196",
+   "target": null,
+   "deal": null,
+   "reason": "The session focuses on analyzing the Q3 pipeline by stage and flagging deals most likely to slip, but does not name any specific account or deal.",
+   "latency_s": 13.14,
+   "cost_usd": null,
+   "tokens": 539
+  },
+  {
+   "session_id": "S-006242",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session is about drafting a note for the team, not serving any of the deal targets or matching any specific deal type. The session focuses on offsite logistics and customer meetings.",
+   "latency_s": 12.98,
+   "cost_usd": null,
+   "tokens": 514
+  },
+  {
+   "session_id": "S-000757",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session is about updating the summary job to skip closed opportunities. This action pertains to the first-touch activity (first response), which aligns with target D1.",
+   "latency_s": 6.8,
+   "cost_usd": null,
+   "tokens": 271
+  },
+  {
+   "session_id": "S-000528",
+   "target": "D6",
+   "deal": null,
+   "reason": "The session summarizes the latest notes on the Aurelia Networks opportunity into a status line, which is related to D6: Deal-notes summary on the opportunity.",
+   "latency_s": 7.58,
+   "cost_usd": null,
+   "tokens": 275
+  },
+  {
+   "session_id": "S-002453",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session is about background information on Summit Retail's industry and recent news, not a specific deal type or account. It does not mention any particular meeting or proposal details.",
+   "latency_s": 13.16,
+   "cost_usd": null,
+   "tokens": 516
+  },
+  {
+   "session_id": "S-000054",
+   "target": null,
+   "deal": null,
+   "reason": "The session asks about a specific initiative by the facilities manager at City of Millbrook, but does not provide any account or deal details. It is focused on identifying an individual and their recent announcements rather than a specific customer or project. Therefore, none of the targets match this session's content.",
+   "latency_s": 10.24,
+   "cost_usd": null,
+   "tokens": 300
+  },
+  {
+   "session_id": "S-001903",
+   "target": "D1",
+   "deal": "None",
+   "reason": "The session is about holiday coverage schedule, not a specific deal.",
+   "latency_s": 11.79,
+   "cost_usd": null,
+   "tokens": 511
+  },
+  {
+   "session_id": "S-000428",
+   "target": null,
+   "deal": "None",
+   "reason": "The session does not mention any specific deal or account. It is a general activity note about the Verdant Holdings opportunity and its activities leading up to it.",
+   "latency_s": 8.25,
+   "cost_usd": null,
+   "tokens": 285
+  },
+  {
+   "session_id": "S-002890",
+   "target": null,
+   "deal": null,
+   "reason": "The session discusses a formula for calculating days in each stage of the sales process, but does not mention any specific account or deal.",
+   "latency_s": 8.18,
+   "cost_usd": null,
+   "tokens": 277
+  },
+  {
+   "session_id": "S-001308",
+   "target": null,
+   "deal": "None",
+   "reason": "The session is about writing a pricing and implementation section for a new-logo quote, but it does not name any specific account or deal.",
+   "latency_s": 13.39,
+   "cost_usd": null,
+   "tokens": 549
+  },
+  {
+   "session_id": "S-000933",
+   "target": null,
+   "deal": "None",
+   "reason": "The session does not mention any specific deal or account. It is about writing tests for an opportunity summary bot, which is unrelated to deals or accounts.",
+   "latency_s": 7.32,
+   "cost_usd": null,
+   "tokens": 265
+  },
+  {
+   "session_id": "S-000960",
+   "target": "D6",
+   "deal": null,
+   "reason": "The session mentions creating an Apex trigger to push new opportunity notes to the summary API, which is related to deal-notes summary on the opportunity. This matches target D6.",
+   "latency_s": 7.56,
+   "cost_usd": null,
+   "tokens": 296
+  },
+  {
+   "session_id": "S-000379",
+   "target": "D5",
+   "deal": "None",
+   "reason": "The session is about building a one-page prep brief for customer meetings, not specifically about solutions or contracts. It does not mention any specific deal type.",
+   "latency_s": 7.63,
+   "cost_usd": null,
+   "tokens": 284
+  },
+  {
+   "session_id": "S-000356",
+   "target": "D2",
+   "deal": null,
+   "reason": "The session is preparing a briefing for tomorrow's call with Nexora Holdings, which aligns with the 'Meeting-prep brief attached' target.",
+   "latency_s": 7.73,
+   "cost_usd": null,
+   "tokens": 275
+  },
+  {
+   "session_id": "S-005524",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session is about holiday coverage schedule, which does not match any of the deal types provided.",
+   "latency_s": 13.17,
+   "cost_usd": null,
+   "tokens": 520
+  },
+  {
+   "session_id": "S-001396",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session focuses on developing a competitive strategy for the Ferro Labs tender, which is not related to any specific deal.",
+   "latency_s": 13.03,
+   "cost_usd": null,
+   "tokens": 513
+  },
+  {
+   "session_id": "S-000927",
+   "target": "D6",
+   "deal": null,
+   "reason": "The session mentions writing tests for the opportunity summary bot, which is related to D6: Deal-notes summary on the opportunity.",
+   "latency_s": 6.99,
+   "cost_usd": null,
+   "tokens": 260
+  },
+  {
+   "session_id": "S-001134",
+   "target": "D4",
+   "deal": null,
+   "reason": "The session mentions fixing a quote PDF issue related to currency, which is typically associated with the Proposal attached target.",
+   "latency_s": 6.84,
+   "cost_usd": null,
+   "tokens": 260
+  },
+  {
+   "session_id": "S-002872",
+   "target": null,
+   "deal": "None",
+   "reason": "The session does not serve any of the provided targets or deal candidates. It is about drafting an executive summary for a proposal to Northgate Transit, which is unrelated to the given list.",
+   "latency_s": 14.62,
+   "cost_usd": null,
+   "tokens": 532
+  },
+  {
+   "session_id": "S-001883",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session is about debugging an Excel macro for merging weekly forecast sheets. This likely pertains to the first touch activity (first response) in a customer engagement process.",
+   "latency_s": 7.47,
+   "cost_usd": null,
+   "tokens": 267
+  },
+  {
+   "session_id": "S-000141",
+   "target": "D1",
+   "deal": "None",
+   "reason": "The session targets a first-touch activity (first response) and an initial outreach sequence for net-new prospects, but does not specify any deal type or account. It focuses on creating a 3-step outreach sequence rather than serving a specific deal.",
+   "latency_s": 10.29,
+   "cost_usd": null,
+   "tokens": 317
+  },
+  {
+   "session_id": "S-007929",
+   "target": null,
+   "deal": null,
+   "reason": "The session outlines a territory strategy for hitting new-logo bookings targets, but does not name any specific account or deal.",
+   "latency_s": 13.69,
+   "cost_usd": null,
+   "tokens": 537
+  },
+  {
+   "session_id": "S-006458",
+   "target": null,
+   "deal": null,
+   "reason": "The session does not serve any of the provided targets or deal candidates.",
+   "latency_s": 11.07,
+   "cost_usd": null,
+   "tokens": 474
+  },
+  {
+   "session_id": "S-003593",
+   "target": null,
+   "deal": null,
+   "reason": "The session serves neither as a first-touch activity, meeting-prep brief, solutions engineer before Proposal, proposal attached, nor customer meetings. It is also not about any of the open deals provided.",
+   "latency_s": 13.93,
+   "cost_usd": null,
+   "tokens": 514
+  },
+  {
+   "session_id": "S-001116",
+   "target": "D4",
+   "deal": null,
+   "reason": "The session mentions 'Proposal attached', which is the target for D4. The deal type is not specified in this session.",
+   "latency_s": 7.63,
+   "cost_usd": null,
+   "tokens": 278
+  },
+  {
+   "session_id": "S-003745",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session mentions writing a Python script to dedupe the lead export CSV and normalize phone numbers, which is related to first-touch activity (first response). However, it does not mention any specific deals or solutions.",
+   "latency_s": 9.91,
+   "cost_usd": null,
+   "tokens": 300
+  },
+  {
+   "session_id": "S-000408",
+   "target": null,
+   "deal": "D6",
+   "reason": "The session condenses the activity notes for the Verdant Holdings deal into three bullets, which aligns with serving a Deal-notes summary on the opportunity target.",
+   "latency_s": 8.26,
+   "cost_usd": null,
+   "tokens": 286
+  },
+  {
+   "session_id": "S-001800",
+   "target": null,
+   "deal": null,
+   "reason": "The session focuses on analyzing the Q3 pipeline by stage and flagging deals most likely to slip, but does not name any specific account or deal.",
+   "latency_s": 13.74,
+   "cost_usd": null,
+   "tokens": 525
+  },
+  {
+   "session_id": "S-000951",
+   "target": "D6",
+   "deal": null,
+   "reason": "The session mentions writing tests for the opportunity summary bot, which is related to D6: Deal-notes summary on the opportunity.",
+   "latency_s": 6.55,
+   "cost_usd": null,
+   "tokens": 260
+  },
+  {
+   "session_id": "S-005629",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session mentions 'Debug this Excel macro that merges the weekly forecast sheets', which is related to first-touch activity (first response).",
+   "latency_s": 6.88,
+   "cost_usd": null,
+   "tokens": 260
+  },
+  {
+   "session_id": "S-004406",
+   "target": null,
+   "deal": null,
+   "reason": "The session is about fixing grammar in a LinkedIn post, which does not match any of the provided deal candidates.",
+   "latency_s": 12.5,
+   "cost_usd": null,
+   "tokens": 507
+  },
+  {
+   "session_id": "S-001269",
+   "target": null,
+   "deal": "None",
+   "reason": "The session serves none of the provided targets or deal candidates.",
+   "latency_s": 13.4,
+   "cost_usd": null,
+   "tokens": 532
+  },
+  {
+   "session_id": "S-001093",
+   "target": "D4",
+   "deal": "Proposal attached",
+   "reason": "The session mentions building a customer quote, which typically results in the proposal being attached.",
+   "latency_s": 6.85,
+   "cost_usd": null,
+   "tokens": 261
+  },
+  {
+   "session_id": "S-003285",
+   "target": "D1",
+   "deal": "None",
+   "reason": "The session is about turning notes from a weekly sales sync into a short recap, which does not match any of the deal types provided.",
+   "latency_s": 13.56,
+   "cost_usd": null,
+   "tokens": 484
+  },
+  {
+   "session_id": "S-001152",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session mentions a quote calculator script issue, but does not specify any account or deal type. It is focused on fixing the script rather than proposing solutions or meeting prep.",
+   "latency_s": 9.03,
+   "cost_usd": null,
+   "tokens": 289
+  },
+  {
+   "session_id": "S-001097",
+   "target": "D4",
+   "deal": "Proposal attached",
+   "reason": "The session mentions building a customer quote, which is typically part of creating a proposal. The deal type 'Proposal attached' matches this context.",
+   "latency_s": 7.82,
+   "cost_usd": null,
+   "tokens": 272
+  },
+  {
+   "session_id": "S-005823",
+   "target": null,
+   "deal": "None",
+   "reason": "The session asks about segments with the longest sales cycle and correlates it, but does not name any specific deal.",
+   "latency_s": 13.02,
+   "cost_usd": null,
+   "tokens": 523
+  },
+  {
+   "session_id": "S-000285",
+   "target": null,
+   "deal": "None",
+   "reason": "The session serves none of the provided targets or deals. It is focused on preparing for a meeting with Citadel Group and summarizing their account history, rather than serving any specific deal type.",
+   "latency_s": 9.29,
+   "cost_usd": null,
+   "tokens": 293
+  },
+  {
+   "session_id": "S-000597",
+   "target": "D6",
+   "deal": null,
+   "reason": "The session summarizes the latest notes on the City of Emberton opportunity into a status line, which is related to D6: Deal-notes summary on the opportunity.",
+   "latency_s": 8.65,
+   "cost_usd": null,
+   "tokens": 277
+  },
+  {
+   "session_id": "S-000411",
+   "target": "D6",
+   "deal": null,
+   "reason": "The session summarizes the latest notes on the Meridian Technologies opportunity into a status line, which is related to D6: Deal-notes summary on the opportunity.",
+   "latency_s": 8.53,
+   "cost_usd": null,
+   "tokens": 275
+  },
+  {
+   "session_id": "S-001167",
+   "target": "D1",
+   "deal": null,
+   "reason": "The session mentions a quote calculator script issue, but does not specify any account or deal type. It is related to the team LATAM and focuses on fixing an error in the script.",
+   "latency_s": 9.17,
+   "cost_usd": null,
+   "tokens": 292
+  }
+ ]
+}
