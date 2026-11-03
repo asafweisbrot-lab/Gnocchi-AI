@@ -1,10 +1,10 @@
 {
   "crm_history": {
     "sdr_start": {
-      "EMEA": "2024-04-01",
-      "NA East": "2024-07-01"
+      "EMEA": "2025-04-01",
+      "NA East": "2025-07-01"
     },
-    "prep_start": "2024-07-01",
+    "prep_start": "2025-07-01",
     "prep_rate": {
       "EMEA": 0.7,
       "NA East": 0.55,

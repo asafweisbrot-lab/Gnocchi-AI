@@ -1,0 +1,169 @@
+investment_id,team,month,licences_assigned,active_users,sessions
+inv_ai_sdr,EMEA,2025-01,1,0,0
+inv_ai_sdr,EMEA,2025-02,1,0,0
+inv_ai_sdr,EMEA,2025-03,1,1,6
+inv_ai_sdr,EMEA,2025-04,1,1,20
+inv_ai_sdr,EMEA,2025-05,1,1,16
+inv_ai_sdr,EMEA,2025-06,1,1,22
+inv_ai_sdr,EMEA,2025-07,1,1,34
+inv_ai_sdr,EMEA,2025-08,1,1,40
+inv_ai_sdr,EMEA,2025-09,1,1,34
+inv_ai_sdr,EMEA,2025-10,1,1,21
+inv_ai_sdr,EMEA,2025-11,1,1,10
+inv_ai_sdr,EMEA,2025-12,1,1,11
+inv_ai_sdr,NA East,2025-01,1,0,0
+inv_ai_sdr,NA East,2025-02,1,0,0
+inv_ai_sdr,NA East,2025-03,1,0,0
+inv_ai_sdr,NA East,2025-04,1,0,0
+inv_ai_sdr,NA East,2025-05,1,0,0
+inv_ai_sdr,NA East,2025-06,1,1,4
+inv_ai_sdr,NA East,2025-07,1,1,6
+inv_ai_sdr,NA East,2025-08,1,1,12
+inv_ai_sdr,NA East,2025-09,1,1,6
+inv_ai_sdr,NA East,2025-10,1,1,12
+inv_ai_sdr,NA East,2025-11,1,1,10
+inv_ai_sdr,NA East,2025-12,1,1,9
+inv_meeting_prep,EMEA,2025-01,12,0,0
+inv_meeting_prep,EMEA,2025-02,12,0,0
+inv_meeting_prep,EMEA,2025-03,12,0,0
+inv_meeting_prep,EMEA,2025-04,12,0,0
+inv_meeting_prep,EMEA,2025-05,12,1,4
+inv_meeting_prep,EMEA,2025-06,12,1,7
+inv_meeting_prep,EMEA,2025-07,12,1,7
+inv_meeting_prep,EMEA,2025-08,12,2,21
+inv_meeting_prep,EMEA,2025-09,12,1,12
+inv_meeting_prep,EMEA,2025-10,12,1,10
+inv_meeting_prep,EMEA,2025-11,12,1,1
+inv_meeting_prep,EMEA,2025-12,12,0,0
+inv_meeting_prep,NA East,2025-01,12,0,0
+inv_meeting_prep,NA East,2025-02,12,0,0
+inv_meeting_prep,NA East,2025-03,12,0,0
+inv_meeting_prep,NA East,2025-04,12,0,0
+inv_meeting_prep,NA East,2025-05,12,0,0
+inv_meeting_prep,NA East,2025-06,12,1,5
+inv_meeting_prep,NA East,2025-07,12,1,4
+inv_meeting_prep,NA East,2025-08,12,1,5
+inv_meeting_prep,NA East,2025-09,12,1,6
+inv_meeting_prep,NA East,2025-10,12,1,4
+inv_meeting_prep,NA East,2025-11,12,1,9
+inv_meeting_prep,NA East,2025-12,12,1,1
+inv_meeting_prep,NA West,2025-01,10,0,0
+inv_meeting_prep,NA West,2025-02,10,0,0
+inv_meeting_prep,NA West,2025-03,10,0,0
+inv_meeting_prep,NA West,2025-04,10,0,0
+inv_meeting_prep,NA West,2025-05,10,0,0
+inv_meeting_prep,NA West,2025-06,10,1,1
+inv_meeting_prep,NA West,2025-07,10,1,1
+inv_meeting_prep,NA West,2025-08,10,1,2
+inv_meeting_prep,NA West,2025-09,10,0,0
+inv_meeting_prep,NA West,2025-10,10,1,1
+inv_meeting_prep,NA West,2025-11,10,0,0
+inv_meeting_prep,NA West,2025-12,10,0,0
+inv_meeting_prep,LATAM,2025-01,9,0,0
+inv_meeting_prep,LATAM,2025-02,9,0,0
+inv_meeting_prep,LATAM,2025-03,9,0,0
+inv_meeting_prep,LATAM,2025-04,9,0,0
+inv_meeting_prep,LATAM,2025-05,9,0,0
+inv_meeting_prep,LATAM,2025-06,9,1,2
+inv_meeting_prep,LATAM,2025-07,9,0,0
+inv_meeting_prep,LATAM,2025-08,9,0,0
+inv_meeting_prep,LATAM,2025-09,9,0,0
+inv_meeting_prep,LATAM,2025-10,9,1,2
+inv_meeting_prep,LATAM,2025-11,9,1,1
+inv_meeting_prep,LATAM,2025-12,9,0,0
+inv_meeting_prep,APAC,2025-01,4,0,0
+inv_meeting_prep,APAC,2025-02,4,0,0
+inv_meeting_prep,APAC,2025-03,4,0,0
+inv_meeting_prep,APAC,2025-04,4,0,0
+inv_meeting_prep,APAC,2025-05,4,0,0
+inv_meeting_prep,APAC,2025-06,4,0,0
+inv_meeting_prep,APAC,2025-07,4,0,0
+inv_meeting_prep,APAC,2025-08,4,0,0
+inv_meeting_prep,APAC,2025-09,4,0,0
+inv_meeting_prep,APAC,2025-10,4,0,0
+inv_meeting_prep,APAC,2025-11,4,0,0
+inv_meeting_prep,APAC,2025-12,4,0,0
+inv_chatgpt_ent,EMEA,2025-01,12,12,336
+inv_chatgpt_ent,EMEA,2025-02,12,12,331
+inv_chatgpt_ent,EMEA,2025-03,12,12,243
+inv_chatgpt_ent,EMEA,2025-04,12,12,230
+inv_chatgpt_ent,EMEA,2025-05,12,11,220
+inv_chatgpt_ent,EMEA,2025-06,12,10,195
+inv_chatgpt_ent,EMEA,2025-07,12,9,180
+inv_chatgpt_ent,EMEA,2025-08,12,9,169
+inv_chatgpt_ent,EMEA,2025-09,12,8,152
+inv_chatgpt_ent,EMEA,2025-10,12,7,136
+inv_chatgpt_ent,EMEA,2025-11,12,6,107
+inv_chatgpt_ent,EMEA,2025-12,12,5,91
+inv_chatgpt_ent,NA East,2025-01,12,12,277
+inv_chatgpt_ent,NA East,2025-02,12,12,260
+inv_chatgpt_ent,NA East,2025-03,12,12,292
+inv_chatgpt_ent,NA East,2025-04,12,12,293
+inv_chatgpt_ent,NA East,2025-05,12,11,209
+inv_chatgpt_ent,NA East,2025-06,12,10,196
+inv_chatgpt_ent,NA East,2025-07,12,9,175
+inv_chatgpt_ent,NA East,2025-08,12,8,153
+inv_chatgpt_ent,NA East,2025-09,12,8,142
+inv_chatgpt_ent,NA East,2025-10,12,7,123
+inv_chatgpt_ent,NA East,2025-11,12,6,103
+inv_chatgpt_ent,NA East,2025-12,12,5,86
+inv_chatgpt_ent,NA West,2025-01,10,10,229
+inv_chatgpt_ent,NA West,2025-02,10,10,211
+inv_chatgpt_ent,NA West,2025-03,10,10,195
+inv_chatgpt_ent,NA West,2025-04,10,10,182
+inv_chatgpt_ent,NA West,2025-05,10,9,166
+inv_chatgpt_ent,NA West,2025-06,10,8,149
+inv_chatgpt_ent,NA West,2025-07,10,7,135
+inv_chatgpt_ent,NA West,2025-08,10,7,121
+inv_chatgpt_ent,NA West,2025-09,10,6,103
+inv_chatgpt_ent,NA West,2025-10,10,5,91
+inv_chatgpt_ent,NA West,2025-11,10,4,74
+inv_chatgpt_ent,NA West,2025-12,10,3,58
+inv_chatgpt_ent,LATAM,2025-01,9,9,203
+inv_chatgpt_ent,LATAM,2025-02,9,9,213
+inv_chatgpt_ent,LATAM,2025-03,9,9,195
+inv_chatgpt_ent,LATAM,2025-04,9,9,170
+inv_chatgpt_ent,LATAM,2025-05,9,8,156
+inv_chatgpt_ent,LATAM,2025-06,9,8,144
+inv_chatgpt_ent,LATAM,2025-07,9,7,124
+inv_chatgpt_ent,LATAM,2025-08,9,6,113
+inv_chatgpt_ent,LATAM,2025-09,9,6,101
+inv_chatgpt_ent,LATAM,2025-10,9,5,90
+inv_chatgpt_ent,LATAM,2025-11,9,4,80
+inv_chatgpt_ent,LATAM,2025-12,9,4,64
+inv_chatgpt_ent,APAC,2025-01,4,4,91
+inv_chatgpt_ent,APAC,2025-02,4,4,95
+inv_chatgpt_ent,APAC,2025-03,4,4,82
+inv_chatgpt_ent,APAC,2025-04,4,4,72
+inv_chatgpt_ent,APAC,2025-05,4,4,67
+inv_chatgpt_ent,APAC,2025-06,4,3,59
+inv_chatgpt_ent,APAC,2025-07,4,3,55
+inv_chatgpt_ent,APAC,2025-08,4,3,47
+inv_chatgpt_ent,APAC,2025-09,4,3,41
+inv_chatgpt_ent,APAC,2025-10,4,2,37
+inv_chatgpt_ent,APAC,2025-11,4,2,29
+inv_chatgpt_ent,APAC,2025-12,4,2,25
+inv_dealsum_emea,EMEA,2025-01,1,0,0
+inv_dealsum_emea,EMEA,2025-02,1,1,8
+inv_dealsum_emea,EMEA,2025-03,1,1,16
+inv_dealsum_emea,EMEA,2025-04,1,1,10
+inv_dealsum_emea,EMEA,2025-05,1,1,17
+inv_dealsum_emea,EMEA,2025-06,1,1,24
+inv_dealsum_emea,EMEA,2025-07,1,1,8
+inv_dealsum_emea,EMEA,2025-08,1,1,6
+inv_dealsum_emea,EMEA,2025-09,1,1,16
+inv_dealsum_emea,EMEA,2025-10,1,1,18
+inv_dealsum_emea,EMEA,2025-11,1,1,17
+inv_dealsum_emea,EMEA,2025-12,1,1,7
+inv_dealsum_nae,NA East,2025-01,1,0,0
+inv_dealsum_nae,NA East,2025-02,1,0,0
+inv_dealsum_nae,NA East,2025-03,1,0,0
+inv_dealsum_nae,NA East,2025-04,1,1,2
+inv_dealsum_nae,NA East,2025-05,1,1,12
+inv_dealsum_nae,NA East,2025-06,1,1,13
+inv_dealsum_nae,NA East,2025-07,1,1,11
+inv_dealsum_nae,NA East,2025-08,1,1,12
+inv_dealsum_nae,NA East,2025-09,1,1,15
+inv_dealsum_nae,NA East,2025-10,1,1,14
+inv_dealsum_nae,NA East,2025-11,1,1,9
+inv_dealsum_nae,NA East,2025-12,1,1,11

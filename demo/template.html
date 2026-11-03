@@ -177,7 +177,7 @@ footer{padding-block:8px 0}
 
 <header class="appbar">
   <span class="logo"><i></i>gnocchi</span>
-  <span class="crumb">Reports / AI impact / Sales org · FY2024</span>
+  <span class="crumb">Reports / AI impact / Sales org · FY2025</span>
   <span class="sp"></span>
   <span class="st">Demo tenant</span>
   <span class="st ok">● Run complete</span>
@@ -186,7 +186,7 @@ footer{padding-block:8px 0}
 <aside class="side" id="rail" aria-label="Report steps"></aside>
 <main>
 <section class="overview step" id="overview">
-  <span class="eyebrow">AI impact report · Sales · Jan–Dec 2024</span>
+  <span class="eyebrow">AI impact report · Sales · Jan–Dec 2025</span>
   <h1>What did each AI investment move?</h1>
   <p class="lead">Gnocchi read the CRM, the team OKRs and every AI source the sales org runs, then worked step by step from what the AI is used for to what it changed. It ends with a decision per investment and the open-weights potential.</p>
   <div class="summary" id="summary"></div>
@@ -194,9 +194,9 @@ footer{padding-block:8px 0}
 </section>
 
 <section class="card step" id="live">
-  <div class="card-head"><span class="num">LIVE</span><h2>Live map: every source and AI session Gnocchi watches</h2><p>The work in this report runs every day: new rows come in overnight, new sessions are classified, linked and matched, the parallel-build watch and the comparisons re-run weekly, and the report updates monthly. Replay 2024 day by day.</p></div>
-  <div class="ctrl"><button id="lplay" type="button">▶ Play 2024</button><input type="range" id="lday" min="0" max="365" value="365" aria-label="Day of 2024"><span class="date" id="ldate"></span></div>
-  <div class="panel"><svg id="lstrip" role="img" aria-label="AI sessions per day in 2024"></svg></div>
+  <div class="card-head"><span class="num">LIVE</span><h2>Live map: every source and AI session Gnocchi watches</h2><p>The work in this report runs every day: new rows come in overnight, new sessions are classified, linked and matched, the parallel-build watch and the comparisons re-run weekly, and the report updates monthly. Replay 2025 day by day.</p></div>
+  <div class="ctrl"><button id="lplay" type="button">▶ Play 2025</button><input type="range" id="lday" min="0" max="365" value="365" aria-label="Day of 2025"><span class="date" id="ldate"></span></div>
+  <div class="panel"><svg id="lstrip" role="img" aria-label="AI sessions per day in 2025"></svg></div>
   <div class="lmap">
     <div class="lcol"><span>Sources · last sync</span><div id="lsrc" style="display:grid;gap:6px"></div></div>
     <div class="lcol"><span>Daily run</span><div id="ljobs" style="display:grid;gap:6px"></div></div>
@@ -279,7 +279,7 @@ footer{padding-block:8px 0}
   </div>
   <div class="panel" style="display:grid;gap:12px">
     <div style="display:grid;gap:6px;max-width:78ch"><h3>Edge 2b · AI → records, by similarity, through the OKR lens</h3>
-    <p class="muted" style="font-size:14px">ChatGPT writes nothing to the CRM, so its sessions are matched to the records the key results count. Each key result says which records to embed: for bookings and the new-deal cycle, the 2024 New, Expansion and Upsell deals (account, deal type, vertical). A session can only match a deal of its own team that was open when it ran. This is more direct than matching to a driver: it names the deal.</p></div>
+    <p class="muted" style="font-size:14px">ChatGPT writes nothing to the CRM, so its sessions are matched to the records the key results count. Each key result says which records to embed: for bookings and the new-deal cycle, the 2025 New, Expansion and Upsell deals (account, deal type, vertical). A session can only match a deal of its own team that was open when it ran. This is more direct than matching to a driver: it names the deal.</p></div>
     <div class="grid2">
       <div class="tbl"><table id="rlscope" style="min-width:0"></table></div>
       <div class="result"><span class="eyebrow">Matched</span><span class="big" id="rl-big"></span><p id="rl-text"></p></div>
@@ -306,7 +306,7 @@ footer{padding-block:8px 0}
 
   <div class="panel" id="sparks"></div>
   <div class="panel grid2">
-    <div style="display:grid;gap:8px"><h3>First response on new deals, 2024</h3><p class="muted" style="font-size:14px">Median hours per month. EMEA's drop starts when the AI SDR goes live in April and works deals closing from June.</p>
+    <div style="display:grid;gap:8px"><h3>First response on new deals, 2025</h3><p class="muted" style="font-size:14px">Median hours per month. EMEA's drop starts when the AI SDR goes live in April and works deals closing from June.</p>
       <div class="legend"><span><i style="background:var(--accent)"></i>EMEA</span><span><i style="background:var(--cmp)"></i>NA West, LATAM, APAC</span></div></div>
     <svg id="resp" role="img" aria-label="Median first response hours per month, EMEA vs teams without the AI SDR"></svg>
   </div>
@@ -321,7 +321,7 @@ footer{padding-block:8px 0}
   <div class="panel grid2">
     <div class="result"><span class="eyebrow">AI SDR agent · difference-in-differences</span>
       <span class="big" id="sdr-big"></span><p id="sdr-text"></p></div>
-    <div style="display:grid;gap:8px"><h3>Median new-deal cycle by quarter, 2024</h3>
+    <div style="display:grid;gap:8px"><h3>Median new-deal cycle by quarter, 2025</h3>
       <div class="legend" id="sdr-legend"></div><svg id="sdrchart" role="img" aria-label="Median new-deal cycle by quarter for EMEA, NA East and teams without the AI SDR"></svg></div>
   </div>
   <div class="panel grid2">
@@ -346,7 +346,7 @@ footer{padding-block:8px 0}
 
   <div class="panel" style="display:grid;gap:10px">
     <div style="display:grid;gap:6px;max-width:78ch"><h3>Driver coverage: which AI works each driver, and which teams lag</h3>
-    <p class="muted" style="font-size:14px">Each driver from step 4, the AI that works it today, and each team’s 2024 level. A shaded cell is a team that lags the best team by at least one day of cycle per new deal (the underline marks the best team).</p></div>
+    <p class="muted" style="font-size:14px">Each driver from step 4, the AI that works it today, and each team’s 2025 level. A shaded cell is a team that lags the best team by at least one day of cycle per new deal (the underline marks the best team).</p></div>
     <div class="tbl"><table id="covtbl"></table></div>
   </div>
   <div style="display:grid;gap:8px"><h3>Plan for the teams that lag, largest gap first</h3><div class="plans" id="plans"></div>
@@ -357,7 +357,7 @@ footer{padding-block:8px 0}
     <div style="display:grid;gap:6px;max-width:78ch"><h3>Parallel development, caught while it happens</h3>
     <p class="muted" style="font-size:14px">Every week Gnocchi compares new coding sessions with earlier coding work in other teams, against a baseline of unrelated work. When a team starts building something another team already built or is building, it is flagged, and the work is saved to the build register as one shared asset so the next team finds it before it starts.</p></div>
     <div class="grid2">
-      <div class="result"><span class="eyebrow">Replayed on 2024: NA East’s summary bot</span><span class="big" id="par-big"></span><p id="par-text"></p></div>
+      <div class="result"><span class="eyebrow">Replayed on 2025: NA East’s summary bot</span><span class="big" id="par-big"></span><p id="par-text"></p></div>
       <div style="display:grid;gap:8px"><h3 style="font-size:15px">Similarity to EMEA’s build ÷ baseline, by week of NA East’s build</h3>
         <div class="legend"><span><i style="background:var(--accent)"></i>NA East vs EMEA’s build</span><span><i style="background:var(--good)"></i>alert threshold</span></div>
         <svg id="parchart" role="img" aria-label="Weekly similarity ratio of NA East's coding sessions to EMEA's build"></svg></div>
@@ -387,7 +387,7 @@ footer{padding-block:8px 0}
   <div class="tbl"><table id="checktbl"></table></div>
 </section>
 <footer>
-  <p><b>About the data.</b> Deals are real and anonymized (owner, account and partner names replaced). CRM history, OKRs, AI logs and usage are synthetic, generated with a fixed seed. Only closed-won deals exist, so win rate isn’t studied. NA West and APAC are small teams, which widens their ranges.</p>
+  <p><b>About the data.</b> Deals are real and anonymized (owner, account and partner names replaced); they are the full years 2023 and 2024 with every date moved one year later, so the baseline reads 2024 and the AI year 2025. CRM history, OKRs, AI logs and usage are synthetic, generated with a fixed seed. Only closed-won deals exist, so win rate isn’t studied. NA West and APAC are small teams, which widens their ranges.</p>
   <p>Everything is reported at team level. No person is a unit of analysis.</p>
 </footer>
 </main>
@@ -405,8 +405,8 @@ function txt(parent, x, y, s, attrs={}){ const t = el("text", {x, y, ...attrs}, 
 const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
 
 const SRC = {
-  discover: [["real","CRM closed-won 2023–24"],["syn","CRM change log"],["syn","AI telemetry"],["syn","AI admin usage"],["syn","AI investment register"],["syn","Code repos and CI deploy log"]],
-  map: [["syn","Team OKRs 2024"],["real","Targets (summed to team)"],["real","CRM field map"],["real","KPI definitions"]],
+  discover: [["real","CRM closed-won 2024–25"],["syn","CRM change log"],["syn","AI telemetry"],["syn","AI admin usage"],["syn","AI investment register"],["syn","Code repos and CI deploy log"]],
+  map: [["syn","Team OKRs 2025"],["real","Targets (summed to team)"],["real","CRM field map"],["real","KPI definitions"]],
   learn: [["real","CRM closed-won"],["syn","CRM change log"]],
   trace: [["syn","AI telemetry (session text)"],["syn","CRM change log (identities, materials)"],["syn","Team OKRs"],["real","KPI definitions (keywords)"],["syn","Driver model (step 3)"]],
   momentum: [["syn","AI admin usage"],["syn","AI telemetry"],["syn","CRM change log"]],
@@ -510,7 +510,7 @@ $("tracetbl").innerHTML = `<tr><th>AI investment</th><th>Evidence level</th><th 
       <td class="num">${delta(r.kpi.resp[0], r.kpi.resp[1], "", true)}</td>
       <td class="num">${delta(r.kpi.cycle[0], r.kpi.cycle[1], "", true)}</td></tr>`; }).join("");
   const top = F.slice().sort((a,b)=>b.aimed_spend/b.spend - a.aimed_spend/a.spend);
-  $("teamfit-note").innerHTML = `Years are 2023 → 2024. ${esc(top[0].team)} aims ${Math.round(top[0].aimed_spend/top[0].spend*100)}% of its AI spend at drivers and key results and its cycle fell ${top[0].kpi.cycle[0]-top[0].kpi.cycle[1]} days; teams aiming about a fifth saw little or none. Meeting prep is aimed everywhere but used in few deals outside EMEA and NA East (step 6); ChatGPT is mostly aimed at nothing. This is a pattern to explain, not proof: step 6 isolates each tool’s effect.`;
+  $("teamfit-note").innerHTML = `Years are 2024 → 2025. ${esc(top[0].team)} aims ${Math.round(top[0].aimed_spend/top[0].spend*100)}% of its AI spend at drivers and key results and its cycle fell ${top[0].kpi.cycle[0]-top[0].kpi.cycle[1]} days; teams aiming about a fifth saw little or none. Meeting prep is aimed everywhere but used in few deals outside EMEA and NA East (step 6); ChatGPT is mostly aimed at nothing. This is a pattern to explain, not proof: step 6 isolates each tool’s effect.`;
 })();
 
 // 5 sparks
@@ -558,7 +558,7 @@ lines("resp", [{values:D.driver_trend.resp_emea,color:css("--accent")},{values:D
 
 // 6 prove
 $("sdr-big").textContent = `${sgn(P.sdr.cycle)} days`;
-$("sdr-text").innerHTML = `on the new-deal cycle, 90% range ${sgn(P.sdr.lo)} to ${sgn(P.sdr.hi)} days, across ${P.sdr.deals} deals the agent worked. First response fell ${Math.abs(P.sdr.resp).toFixed(1)} hours. EMEA’s median cycle moved from ${P.kr3[0].y2023} to ${P.kr3[0].y2024} days against a 60-day key result. Method: EMEA from April and NA East from July, against teams without the agent, with team and close-month fixed effects.`;
+$("sdr-text").innerHTML = `on the new-deal cycle, 90% range ${sgn(P.sdr.lo)} to ${sgn(P.sdr.hi)} days, across ${P.sdr.deals} deals the agent worked. First response fell ${Math.abs(P.sdr.resp).toFixed(1)} hours. EMEA’s median cycle moved from ${P.kr3[0].y2024} to ${P.kr3[0].y2025} days against a 60-day key result. Method: EMEA from April and NA East from July, against teams without the agent, with team and close-month fixed effects.`;
 const sc = [css("--accent"), css("--ink"), css("--cmp")];
 $("sdr-legend").innerHTML = P.sdr.series.map((s,i)=>`<span><i style="background:${sc[i]}"></i>${esc(s.group)}</span>`).join("");
 lines("sdrchart", P.sdr.series.map((s,i)=>({values:s.values,color:sc[i]})), {lo:50, hi:90, step:10, xlabels:["Q1","Q2","Q3","Q4"], target:60, targetLabel:"key result: 60 days"});
@@ -678,9 +678,9 @@ $("total-text").innerHTML = `Of ${fmt$(D.totals.ai_spend)} in AI spend, two inve
   slider.addEventListener("input", () => draw(+slider.value));
   let timer = null;
   $("lplay").addEventListener("click", () => {
-    if (timer){ clearInterval(timer); timer = null; $("lplay").textContent = "▶ Play 2024"; return; }
+    if (timer){ clearInterval(timer); timer = null; $("lplay").textContent = "▶ Play 2025"; return; }
     let i = +slider.value >= N-1 ? 0 : +slider.value; $("lplay").textContent = "❚❚ Pause";
-    timer = setInterval(() => { i = Math.min(N-1, i+2); slider.value = i; draw(i); if (i >= N-1){ clearInterval(timer); timer = null; $("lplay").textContent = "▶ Play 2024"; } }, 60);
+    timer = setInterval(() => { i = Math.min(N-1, i+2); slider.value = i; draw(i); if (i >= N-1){ clearInterval(timer); timer = null; $("lplay").textContent = "▶ Play 2025"; } }, 60);
   });
 })();
 
@@ -698,7 +698,7 @@ $("total-text").innerHTML = `Of ${fmt$(D.totals.ai_spend)} in AI spend, two inve
 (function(){
   const Tl = D.tools;
   const bars = (v) => { const m = Math.max(1,...v); return `<svg viewBox="0 0 120 26" style="width:120px;height:26px" role="img" aria-label="maintenance sessions per month">${v.map((x,i)=>`<rect x="${i*10}" y="${24-(x/m)*22}" width="8" height="${(x/m)*22}" rx="1" fill="var(--accent)"></rect>`).join("")}<line x1="0" x2="120" y1="24.5" y2="24.5" stroke="var(--line)"></line></svg>`; };
-  $("tooltbl").innerHTML = `<tr><th>Tool</th><th class="num">Build sessions</th><th class="num">Maintenance sessions</th><th>Maintenance per month, 2024</th><th class="num">Build</th><th class="num">Maintain</th><th class="num">Run / yr</th><th class="num">Total, 2024</th></tr>` +
+  $("tooltbl").innerHTML = `<tr><th>Tool</th><th class="num">Build sessions</th><th class="num">Maintenance sessions</th><th>Maintenance per month, 2025</th><th class="num">Build</th><th class="num">Maintain</th><th class="num">Run / yr</th><th class="num">Total, 2025</th></tr>` +
     Tl.tools.map(t => `<tr><td><b>${esc(t.name)}</b><br><span class="muted" style="font-size:12px">${esc(t.team)} · ${t.registered?"repo + CI + register":'<span style="color:var(--warn)">no repo, no register entry</span>'}</span></td>
       <td class="num">${t.build_sessions}</td><td class="num">${t.maint_sessions} <span class="muted">(${Math.round(t.maint_share*100)}%)</span></td><td>${bars(t.maint_by_month)}</td>
       <td class="num">${fmt$(t.build_cost)}</td><td class="num">${fmt$(t.maint_cost)}</td><td class="num">${t.run_cost?fmt$(t.run_cost):"·"}</td><td class="num"><b>${fmt$(t.build_cost+t.maint_cost+t.run_cost)}</b></td></tr>`).join("");
@@ -761,12 +761,12 @@ const truth = [
   ["Deal-summary bots", "no effect, overlap", `${sgn(P.dealsum.cycle)} (${sgn(P.dealsum.lo)} to ${sgn(P.dealsum.hi)})`],
   ["ChatGPT Enterprise", "usage fades ~7% a month", `${Math.round(cm[0].active_share*100)}% → ${Math.round(cm[11].active_share*100)}% active`],
   ["Onboarding-satisfaction key result", "no CRM record", "flagged as blind spot"],
-  ["Build lineage (ChatGPT → repo)", "291 build sessions, 70% followed by a commit", `${D.classify.split.link.linked} linked, precision ${Math.round(D.classify.split.link.precision*100)}%, recall ${Math.round(D.classify.split.link.recall*100)}%`],
-  ["ChatGPT on live deals", "−3 days on ~30% of 2024 deals", `${sgn(P.chatgpt.cycle)} (${sgn(P.chatgpt.lo)} to ${sgn(P.chatgpt.hi)}) on ${P.chatgpt.deals} matched deals`],
+  ["Build lineage (ChatGPT → repo)", `${D.classify.split.link.true_build_sessions} tool sessions, 70% followed by a commit`, `${D.classify.split.link.linked} linked, precision ${Math.round(D.classify.split.link.precision*100)}%, recall ${Math.round(D.classify.split.link.recall*100)}%`],
+  ["ChatGPT on live deals", "−3 days on ~30% of 2025 deals", `${sgn(P.chatgpt.cycle)} (${sgn(P.chatgpt.lo)} to ${sgn(P.chatgpt.hi)}) on ${P.chatgpt.deals} matched deals`],
   ["Session → deal matching", `${D.rec_link.check.true_sessions} true links`, `precision ${Math.round(D.rec_link.check.precision*100)}%, recall ${Math.round(D.rec_link.check.recall*100)}%`],
   ["Unregistered tool", "LATAM quote calculator", D.tools.unregistered.length?`found: ${esc(D.tools.unregistered[0].name.toLowerCase())}, ${D.tools.unregistered[0].team}`:"missed"],
   ["Deal-notes element (D6)", "no effect planted", `${sgn(D.drivers[4].days)} ± ${D.drivers[4].ci} days`],
-  ["Parallel build, caught early", "NA East starts 2024-03-11", `flagged week ${D.parallel.alert.week} (${D.parallel.alert.end})`],
+  ["Parallel build, caught early", "NA East starts 2025-03-11", `flagged week ${D.parallel.alert.week} (${D.parallel.alert.end})`],
   ["Duplicate build", "NA East rebuilt EMEA’s bot", `flagged: ${Math.round(D.duplicate.mean_best/Math.max(D.duplicate.mean_baseline,0.01))}× closer than other coding work`],
   ["Session work category", "7 planted categories", `${Math.round(D.classify.agreement*100)}% of sessions classified correctly`],
   ["Session purpose (similarity to drivers and key results)", "12 planted purposes", `${Math.round(D.similarity.overall_agreement*100)}% of sessions matched correctly`],

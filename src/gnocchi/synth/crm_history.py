@@ -7,14 +7,14 @@ identity) wrote each change. This generator adds that history to every real deal
 
 Planted effects (also written to _ground_truth.json):
   * AI SDR agent (acting AI, identity svc_ai_sdr) writes the first-touch activity on New
-    deals closing 2+ months after rollout: EMEA from 2024-04, NA East from 2024-07 (staggered rollout; other teams never).
+    deals closing 2+ months after rollout: EMEA from 2025-04, NA East from 2025-07 (staggered rollout; other teams never).
     First response drops from ~6 h to ~1 h; each hour of response adds ~1.6 days, so the
     New-deal cycle shortens by ~8 days through that driver.
-  * Meeting-prep assistant (assisting AI): from 2024-07 a prep brief is attached to the
+  * Meeting-prep assistant (assisting AI): from 2025-07 a prep brief is attached to the
     opportunity at a team-specific rate (dose); each attached brief shortens the cycle ~3 days.
   * Solutions engineer added before Proposal (a human action, no AI): ~10 days shorter
     cycle; APAC and LATAM rarely do it -> an AI opportunity, not an AI effect.
-  * ChatGPT on live deals (standalone AI, no record trace): in 2024 ~30% of New, Expansion
+  * ChatGPT on live deals (standalone AI, no record trace): in 2025 ~30% of New, Expansion
     and Upsell deals get proposal and account work in ChatGPT; those deals close ~3 days
     faster. The CRM never sees it: only the session text (account name, timing) links it.
 Cycle lengths also depend on deal type and size, plus noise and a Q4 push.
@@ -26,8 +26,8 @@ import pandas as pd
 
 from .common import OUT, YEARS, load_crm, rng, update_ground_truth
 
-SDR_START = {"EMEA": pd.Timestamp("2024-04-01"), "NA East": pd.Timestamp("2024-07-01")}
-PREP_START = pd.Timestamp("2024-07-01")
+SDR_START = {"EMEA": pd.Timestamp("2025-04-01"), "NA East": pd.Timestamp("2025-07-01")}
+PREP_START = pd.Timestamp("2025-07-01")
 PREP_RATE = {"EMEA": 0.70, "NA East": 0.55, "NA West": 0.30, "LATAM": 0.20, "APAC": 0.10}
 SE_RATE = {"EMEA": 0.55, "NA East": 0.50, "NA West": 0.45, "LATAM": 0.20, "APAC": 0.15}
 BASE_CYCLE = {"New": 78, "Expansion": 48, "Upsell": 40, "Renewal": 30, "Partner Showroom": 30}
@@ -61,7 +61,7 @@ def enrich(year: int, teams: pd.DataFrame, g: np.random.Generator) -> tuple[pd.D
                 and bool(g.random() < PREP_RATE.get(team, 0.2)))
         if prep:
             cycle += EFFECT["prep_cycle_days"]
-        gpt = year == 2024 and typ in ("New", "Expansion", "Upsell") and bool(g.random() < GPT_RATE)
+        gpt = year == 2025 and typ in ("New", "Expansion", "Upsell") and bool(g.random() < GPT_RATE)
         if gpt:
             cycle += EFFECT["chatgpt_deal_cycle_days"]
         cycle = max(10, int(round(cycle)))
@@ -116,7 +116,7 @@ def main() -> None:
     g = rng(1)
     for y in YEARS:
         opps, ev = enrich(y, teams, g)
-        if y == 2024:
+        if y == 2025:
             opps[opps._gpt][["opportunity_id"]].to_csv(OUT / "_ground_truth_chatgpt_deals.csv", index=False)
         opps.drop(columns=["_gpt"]).to_csv(OUT / f"crm_opportunity_history_{y}.csv", index=False)
         ev.to_csv(OUT / f"crm_change_log_{y}.csv", index=False)

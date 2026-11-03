@@ -1,12 +1,12 @@
 [
   {
     "team": "APAC",
-    "year": 2024,
+    "year": 2025,
     "objective": "Grow the business with faster new-logo wins and strong renewals",
     "key_results": [
       {
         "kr_id": "APAC-KR1",
-        "text": "Book $2.3M in total bookings in 2024",
+        "text": "Book $2.3M in total bookings in 2025",
         "target": 2340000.0,
         "unit": "USD"
       },
@@ -38,12 +38,12 @@
   },
   {
     "team": "EMEA",
-    "year": 2024,
+    "year": 2025,
     "objective": "Grow the business with faster new-logo wins and strong renewals",
     "key_results": [
       {
         "kr_id": "EMEA-KR1",
-        "text": "Book $12.2M in total bookings in 2024",
+        "text": "Book $12.2M in total bookings in 2025",
         "target": 12180000.0,
         "unit": "USD"
       },
@@ -75,12 +75,12 @@
   },
   {
     "team": "LATAM",
-    "year": 2024,
+    "year": 2025,
     "objective": "Grow the business with faster new-logo wins and strong renewals",
     "key_results": [
       {
         "kr_id": "LATAM-KR1",
-        "text": "Book $4.2M in total bookings in 2024",
+        "text": "Book $4.2M in total bookings in 2025",
         "target": 4200000.0,
         "unit": "USD"
       },
@@ -112,12 +112,12 @@
   },
   {
     "team": "NA East",
-    "year": 2024,
+    "year": 2025,
     "objective": "Grow the business with faster new-logo wins and strong renewals",
     "key_results": [
       {
         "kr_id": "NA East-KR1",
-        "text": "Book $15.0M in total bookings in 2024",
+        "text": "Book $15.0M in total bookings in 2025",
         "target": 15020000.0,
         "unit": "USD"
       },
@@ -149,12 +149,12 @@
   },
   {
     "team": "NA West",
-    "year": 2024,
+    "year": 2025,
     "objective": "Grow the business with faster new-logo wins and strong renewals",
     "key_results": [
       {
         "kr_id": "NA West-KR1",
-        "text": "Book $4.4M in total bookings in 2024",
+        "text": "Book $4.4M in total bookings in 2025",
         "target": 4390000.0,
         "unit": "USD"
       },

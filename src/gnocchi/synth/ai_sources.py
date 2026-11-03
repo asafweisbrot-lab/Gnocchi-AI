@@ -1,6 +1,6 @@
 """Synthetic AI sources: the investment register, telemetry sessions, admin usage and cost.
 
-AI investments in 2024 (one per tool, team-level):
+AI investments in 2025 (one per tool, team-level):
   * inv_ai_sdr        bought, acting   identity svc_ai_sdr      EMEA from Apr, NA East from Jul
   * inv_meeting_prep  bought, assisting via SSO               all teams from Jul, usage varies
   * inv_chatgpt_ent   bought, standalone via SSO              all teams all year, fading use
@@ -35,9 +35,9 @@ INVESTMENTS = [
 # builds: coding sessions -> repo -> CI deploy of the bot identity (the Git/CI source)
 BUILDS = [
     {"repo": "revops-emea/deal-notes-summarizer", "team": "EMEA", "builds": "inv_dealsum_emea",
-     "deploys_identity": "svc_dealsum_emea", "start": "2024-01-08", "deployed_at": "2024-03-01", "engineer_days": 34},
+     "deploys_identity": "svc_dealsum_emea", "start": "2025-01-08", "deployed_at": "2025-03-01", "engineer_days": 34},
     {"repo": "salesops-nae/opp-summary-bot", "team": "NA East", "builds": "inv_dealsum_nae",
-     "deploys_identity": "svc_dealsum_nae", "start": "2024-03-11", "deployed_at": "2024-05-01", "engineer_days": 29},
+     "deploys_identity": "svc_dealsum_nae", "start": "2025-03-11", "deployed_at": "2025-05-01", "engineer_days": 29},
 ]
 DAY_RATE = 700  # loaded engineer cost per day (assumption)
 COMMIT_MSGS_MAINT = {
@@ -91,7 +91,7 @@ def sessions(opps: pd.DataFrame, ev: pd.DataFrame, g: np.random.Generator) -> pd
     for team, start in starts.items():
         for month in range(max(start, 10), 13):
             for k in range(int(g.integers(8, 14))):
-                ts = pd.Timestamp(2024, month, int(g.integers(1, 28)), int(g.integers(8, 18)))
+                ts = pd.Timestamp(2025, month, int(g.integers(1, 28)), int(g.integers(8, 18)))
                 oid = f"open_{team.replace(' ', '').lower()}_{month:02d}_{k:02d}"
                 add(ts.strftime("%Y-%m-%dT%H:%M"), "inv_ai_sdr", "svc_ai_sdr", team, "Outreach: first touch",
                     oid, "Activity (Task)", g.normal(1800, 300))
@@ -101,8 +101,8 @@ def sessions(opps: pd.DataFrame, ev: pd.DataFrame, g: np.random.Generator) -> pd
         add(e.ts, "inv_meeting_prep", "sso_user", team, "Research: meeting prep brief", e.record_id,
             "Doc linked to opportunity", g.normal(6200, 900))
     # Deal-summary bots (overlapping builds): summarize notes on open deals in their team
-    for inv, ident, team, start in [("inv_dealsum_emea", "svc_dealsum_emea", "EMEA", "2024-03-01"),
-                                    ("inv_dealsum_nae", "svc_dealsum_nae", "NA East", "2024-05-01")]:
+    for inv, ident, team, start in [("inv_dealsum_emea", "svc_dealsum_emea", "EMEA", "2025-03-01"),
+                                    ("inv_dealsum_nae", "svc_dealsum_nae", "NA East", "2025-05-01")]:
         pool = opps[(opps.team == team) & (pd.to_datetime(opps.close_date) >= start)]
         for oid, o in pool.sample(frac=0.6, random_state=int(g.integers(1e6))).iterrows():
             ts = pd.Timestamp(o.close_date) - pd.Timedelta(days=int(g.integers(3, 20)))
@@ -121,20 +121,20 @@ def sessions(opps: pd.DataFrame, ev: pd.DataFrame, g: np.random.Generator) -> pd
         # maintenance grows as the bot ages (API releases, edge cases, timeouts)
         for month in range(live.month, 13):
             for _ in range(int(g.integers(6, 10)) + (month - live.month)):
-                ts = pd.Timestamp(2024, month, int(g.integers(1, 28)), int(g.integers(8, 18)))
+                ts = pd.Timestamp(2025, month, int(g.integers(1, 28)), int(g.integers(8, 18)))
                 add(ts.strftime("%Y-%m-%dT%H:%M"), "inv_chatgpt_ent", "sso_user", b["team"], "Tool maintenance: deal-summary bot",
                     None, "none", g.normal(3000, 600))
                 rows[-1]["_repo"] = b["repo"]
     # An unregistered tool: a LATAM seller vibe-codes a quote calculator (Apps Script on a
     # sheet). No repo, no CI, no register entry: only the session text shows it.
-    qs, ql = pd.Timestamp("2024-02-05"), pd.Timestamp("2024-03-25")
+    qs, ql = pd.Timestamp("2025-02-05"), pd.Timestamp("2025-03-25")
     for _ in range(int(g.integers(40, 50))):
         ts = qs + pd.Timedelta(days=int(g.integers(0, (ql - qs).days)), hours=int(g.integers(8, 19)))
         add(ts.strftime("%Y-%m-%dT%H:%M"), "inv_chatgpt_ent", "sso_user", "LATAM", "Tool building: quote calculator",
             None, "none", g.normal(3200, 600))
     for month in range(4, 13):
         for _ in range(int(g.integers(3, 7)) + (month - 4) // 2):
-            ts = pd.Timestamp(2024, month, int(g.integers(1, 28)), int(g.integers(8, 18)))
+            ts = pd.Timestamp(2025, month, int(g.integers(1, 28)), int(g.integers(8, 18)))
             add(ts.strftime("%Y-%m-%dT%H:%M"), "inv_chatgpt_ent", "sso_user", "LATAM", "Tool maintenance: quote calculator",
                 None, "none", g.normal(2600, 500))
     # ChatGPT on live deals: proposal and account work for the deals planted in crm_history
@@ -157,7 +157,7 @@ def sessions(opps: pd.DataFrame, ev: pd.DataFrame, g: np.random.Generator) -> pd
             for _ in range(monthly):
                 p = g.choice(len(PURPOSES_CHATGPT), p=[w for _, w in PURPOSES_CHATGPT])
                 purpose = PURPOSES_CHATGPT[p][0]
-                ts = pd.Timestamp(2024, month, int(g.integers(1, 28)), int(g.integers(8, 18)))
+                ts = pd.Timestamp(2025, month, int(g.integers(1, 28)), int(g.integers(8, 18)))
                 add(ts.strftime("%Y-%m-%dT%H:%M"), "inv_chatgpt_ent", "sso_user", team, purpose, None,
                     "none", g.normal(900, 250))
     return pd.DataFrame(rows).sort_values("ts")
@@ -305,18 +305,18 @@ def admin_usage(sess: pd.DataFrame) -> pd.DataFrame:
                 s = sess[(sess.investment_id == inv["investment_id"]) & (sess.team == team) & (sess.month == m)]
                 seats = SEATS[team] if inv["identity"] == "sso_user" else 1
                 active = min(seats, int(np.ceil(len(s) / 20))) if inv["identity"] == "sso_user" else int(len(s) > 0)
-                rows.append({"investment_id": inv["investment_id"], "team": team, "month": f"2024-{m:02d}",
+                rows.append({"investment_id": inv["investment_id"], "team": team, "month": f"2025-{m:02d}",
                              "licences_assigned": seats, "active_users": active, "sessions": len(s)})
     return pd.DataFrame(rows)
 
 
 def main() -> None:
     g = rng(2)
-    opps = pd.read_csv(OUT / "crm_opportunity_history_2024.csv").set_index("opportunity_id")
-    ev = pd.read_csv(OUT / "crm_change_log_2024.csv")
+    opps = pd.read_csv(OUT / "crm_opportunity_history_2025.csv").set_index("opportunity_id")
+    ev = pd.read_csv(OUT / "crm_change_log_2025.csv")
     pd.DataFrame(INVESTMENTS).assign(teams=lambda d: d.teams.str.join(";")).to_csv(OUT / "ai_investments.csv", index=False)
     raw = sessions(opps, ev, g)
-    crm = load_crm(2024).set_index("opportunity id")
+    crm = load_crm(2025).set_index("opportunity id")
     tie = raw["_opp"].where(raw["_opp"].notna(), raw.record_ids) if "_opp" in raw else raw.record_ids
     raw["_acct"] = tie.map(crm["account name"])
     raw["_kind"] = tie.map(crm["type"])
@@ -333,8 +333,8 @@ def main() -> None:
                             "message": (COMMIT_MSGS if r.purpose.startswith("Tool building") else COMMIT_MSGS_MAINT)[r.team][r["_tpl"]]})
     commits = pd.DataFrame(commits).sort_values("ts")
     commits.to_csv(OUT / "code_commits.csv", index=False)
-    sess.drop(columns=["purpose", "category", "_repo", "_tpl", "_opp", "_acct", "_kind"]).to_json(OUT / "ai_telemetry_2024.jsonl", orient="records", lines=True)
-    admin_usage(sess).to_csv(OUT / "ai_admin_usage_2024.csv", index=False)
+    sess.drop(columns=["purpose", "category", "_repo", "_tpl", "_opp", "_acct", "_kind"]).to_json(OUT / "ai_telemetry_2025.jsonl", orient="records", lines=True)
+    admin_usage(sess).to_csv(OUT / "ai_admin_usage_2025.csv", index=False)
     # Git/CI source: one row per build repo
     build_log = pd.DataFrame([{**{k: v for k, v in b.items() if k != "builds"},
                                "commits": int((commits.repo == b["repo"]).sum()),

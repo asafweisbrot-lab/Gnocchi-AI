@@ -13,19 +13,19 @@ import pandas as pd
 
 from gnocchi.analysis.purpose import CATEGORIES, classify
 from gnocchi.analysis.similarity import DRIVERS, kr_targets, match
-from gnocchi.synth.common import OUT, ROOT, SRC
+from gnocchi.synth.common import OUT, ROOT, SRC, load_crm
 
 DEMO = ROOT / "data" / "demo"
 TEAMS = ["EMEA", "NA East", "NA West", "LATAM", "APAC"]
 
 
 def load():
-    opps = pd.concat([pd.read_csv(OUT / f"crm_opportunity_history_{y}.csv") for y in (2023, 2024)])
-    ev = pd.concat([pd.read_csv(OUT / f"crm_change_log_{y}.csv") for y in (2023, 2024)])
-    sess = pd.read_json(OUT / "ai_telemetry_2024.jsonl", lines=True)
-    usage = pd.read_csv(OUT / "ai_admin_usage_2024.csv")
+    opps = pd.concat([pd.read_csv(OUT / f"crm_opportunity_history_{y}.csv") for y in (2024, 2025)])
+    ev = pd.concat([pd.read_csv(OUT / f"crm_change_log_{y}.csv") for y in (2024, 2025)])
+    sess = pd.read_json(OUT / "ai_telemetry_2025.jsonl", lines=True)
+    usage = pd.read_csv(OUT / "ai_admin_usage_2025.csv")
     inv = pd.read_csv(OUT / "ai_investments.csv")
-    okrs = json.loads((OUT / "okrs_2024.json").read_text())
+    okrs = json.loads((OUT / "okrs_2025.json").read_text())
     gold = json.loads((OUT / "_gold_okr_crm_mapping.json").read_text())
     opps["amount"] = opps.amount.fillna(0).clip(lower=0)
     opps = opps.dropna(subset=["team"])
@@ -77,7 +77,7 @@ def main() -> None:
 
     # ---- 1 Discover
     discover = {
-        "deals": {str(y): int((opps.created_date.dt.year.eq(y) | opps.close_date.dt.year.eq(y)).sum()) for y in (2023, 2024)},
+        "deals": {str(y): int((opps.created_date.dt.year.eq(y) | opps.close_date.dt.year.eq(y)).sum()) for y in (2024, 2025)},
         "deals_by_year": opps.groupby(opps.close_date.dt.year).size().astype(int).to_dict(),
         "events": int(len(ev)), "sessions": int(len(sess)), "investments": int(len(inv)),
         "teams": TEAMS,
@@ -245,11 +245,11 @@ def main() -> None:
     tools_out = {"tools": built_tools, "unregistered": unregistered, "hours_per_session": HOURS_PER_SESSION,
                  "check": tool_check, "ready_days": READY_DAYS}
     # ---- Edge 2b: link sessions to the CRM records the OKRs point at, by similarity.
-    # KR1-KR3 (bookings, new-logo bookings, cycle) are measured on 2024 New, Expansion and
+    # KR1-KR3 (bookings, new-logo bookings, cycle) are measured on 2025 New, Expansion and
     # Upsell deals, so those are the records embedded: account name, deal type, vertical.
     # A session can only link to a deal of its own team that was open when the session ran.
-    crm_real = pd.read_excel(SRC / "crm_2024.xlsx").set_index("opportunity id")
-    scope = opps[(opps.close_date.dt.year == 2024) & opps.type.isin(["New", "Expansion", "Upsell"])].copy()
+    crm_real = load_crm(2025).set_index("opportunity id")
+    scope = opps[(opps.close_date.dt.year == 2025) & opps.type.isin(["New", "Expansion", "Upsell"])].copy()
     KIND = {"New": "new-logo new", "Expansion": "expansion", "Upsell": "upsell"}
     scope["text"] = [f"{crm_real.loc[o, 'account name']} {KIND[t]} {crm_real.loc[o, 'verticals']}"
                      if o in crm_real.index else "" for o, t in zip(scope.opportunity_id, scope.type)]
@@ -283,9 +283,9 @@ def main() -> None:
     exo = (pd.Timestamp(ex.ts) >= rt_.created_date) & (pd.Timestamp(ex.ts) <= rt_.close_date)
     top3 = np.argsort(-row)[:3]
     rec_link = {"check": rec_check, "scope": [
-        {"kr": "KR1 Total bookings", "records": "2024 New, Expansion and Upsell deals", "n": int(len(scope))},
-        {"kr": "KR2 New-logo bookings", "records": "2024 New deals", "n": int((scope.type == "New").sum())},
-        {"kr": "KR3 New-deal cycle", "records": "2024 New deals (cycle days)", "n": int((scope.type == "New").sum())}],
+        {"kr": "KR1 Total bookings", "records": "2025 New, Expansion and Upsell deals", "n": int(len(scope))},
+        {"kr": "KR2 New-logo bookings", "records": "2025 New deals", "n": int((scope.type == "New").sum())},
+        {"kr": "KR3 New-deal cycle", "records": "2025 New deals (cycle days)", "n": int((scope.type == "New").sum())}],
         "by_team": [{"team": t, "sessions": int((s.deal.notna() & (s.team == t)).sum()), "deals": int(s[s.team == t].deal.nunique()),
                      "scope": int((scope.team == t).sum())} for t in TEAMS],
         "example": {"prompt": ex.prompt, "ts": ex.ts[:10], "team": ex.team,
@@ -462,7 +462,7 @@ def main() -> None:
                 "saved_build": saved_build, "saved_run": saved_run, "threshold": 3,
                 "clusters": clusters, "min_per_session": MIN_PER_SESSION}
 
-    # ---- 5 Momentum (monthly, 2024)
+    # ---- 5 Momentum (monthly, 2025)
     s["m"] = pd.to_datetime(s.ts).dt.month
     mom = {}
     for i in inv.investment_id:
@@ -475,7 +475,7 @@ def main() -> None:
         mom[i] = [{"m": int(m), "sessions": int(ns.get(m, 0)),
                    "active_share": round(float(uu.loc[m, "active"] / uu.loc[m, "assigned"]), 2) if m in uu.index and uu.loc[m, "assigned"] else 0,
                    "records": int(recs.get(m, 0)), "aimed": round(float(aimed.get(m, 0)), 2)} for m in range(1, 13)]
-    n24 = new[new.close_date.dt.year == 2024].copy()
+    n24 = new[new.close_date.dt.year == 2025].copy()
     n24["m"] = n24.close_date.dt.month
     driver_trend = {
         "resp_emea": [round(float(n24[(n24.team == "EMEA") & (n24.m == m)].first_response_hours.median()), 1) for m in range(1, 13)],
@@ -492,7 +492,7 @@ def main() -> None:
         return ols(df, "first_response_hours", ["sdr"], ["team", "cmonth"])["sdr"][0]
     resp_est = resp_eff(new)
     # Meeting-prep: raw record-level vs adjusted for team, month, SDR, SE
-    ne = opps[opps.type.isin(["New", "Expansion"]) & (opps.close_date >= "2024-07-01")].copy()
+    ne = opps[opps.type.isin(["New", "Expansion"]) & (opps.close_date >= "2025-07-01")].copy()
     ne["log_amt"] = np.log1p(ne.amount)
     raw_prep = float(ne[ne.prep == 1].cycle_days.mean() - ne[ne.prep == 0].cycle_days.mean())
     def prep_eff(df):
@@ -504,7 +504,7 @@ def main() -> None:
         h2 = ne[ne.team == t]
         dose.append({"team": t, "prep_share": round(100 * float(h2.prep.mean()), 0) if len(h2) else 0})
     # Deal-summary bots: any cycle effect on the deals they touched?
-    ds = opps[opps.type.isin(["New", "Expansion", "Renewal"]) & (opps.close_date >= "2024-03-01") & opps.team.isin(["EMEA", "NA East"])].copy()
+    ds = opps[opps.type.isin(["New", "Expansion", "Renewal"]) & (opps.close_date >= "2025-03-01") & opps.team.isin(["EMEA", "NA East"])].copy()
     ds["log_amt"] = np.log1p(ds.amount)
     def ds_eff(df):
         return ols(df, "cycle_days", ["dealsum", "sdr", "prep", "se", "log_amt"], ["team", "month", "type"])["dealsum"][0]
@@ -531,7 +531,7 @@ def main() -> None:
                         "with": round(float(sub[sub.dealsum == 1][y if unit != "%" else "amount"].median()), 1),
                         "without": round(float(sub[sub.dealsum == 0][y if unit != "%" else "amount"].median()), 1)})
     # ChatGPT, record level: deals its sessions link to vs other deals, same controls
-    g24 = opps[(opps.close_date.dt.year == 2024) & opps.type.isin(["New", "Expansion", "Upsell"])].copy()
+    g24 = opps[(opps.close_date.dt.year == 2025) & opps.type.isin(["New", "Expansion", "Upsell"])].copy()
     g24["log_amt"] = np.log1p(g24.amount)
     g24["gpt"] = g24.opportunity_id.isin(set(s.deal.dropna())).astype(int)
     def gpt_eff(df, y="cycle_days"):
@@ -548,11 +548,11 @@ def main() -> None:
                  "amount_hi": round(100 * (np.exp(g_ahi) - 1), 1)}
     # KR3 view: median New-deal cycle by team and year
     kr3 = (new.assign(y=new.close_date.dt.year).groupby(["team", "y"]).cycle_days.median().unstack()).round(0)
-    kr3_rows = [{"team": t, "y2023": int(kr3.loc[t, 2023]), "y2024": int(kr3.loc[t, 2024])} for t in TEAMS]
+    kr3_rows = [{"team": t, "y2024": int(kr3.loc[t, 2024]), "y2025": int(kr3.loc[t, 2025])} for t in TEAMS]
     # monthly cycle, treated vs comparison teams
     m_series = []
     for grp, teams in [("EMEA (AI SDR from Apr)", ["EMEA"]), ("NA East (from Jul)", ["NA East"]), ("Teams without AI SDR", ["NA West", "LATAM", "APAC"])]:
-        x = new[new.team.isin(teams) & (new.close_date.dt.year == 2024)]
+        x = new[new.team.isin(teams) & (new.close_date.dt.year == 2025)]
         q = x.close_date.dt.quarter
         m_series.append({"group": grp, "values": [round(float(x[q == k].cycle_days.median()), 1) for k in range(1, 5)]})
     # Team fit: which share of each team's AI sessions (and spend) is aimed at a driver or KR,
@@ -582,9 +582,9 @@ def main() -> None:
             "team": t, "sessions": int(len(xt)), "aimed": round(float(xt.aligned.mean()), 3),
             "on_driver": round(float(xt.match.isin(sig_ids).mean()), 3),
             "spend": round(spend), "aimed_spend": round(aimed_spend), "tools": tools,
-            "kpi": {"cycle": [int(kr3.loc[t, 2023]), int(kr3.loc[t, 2024])],
-                    "resp": [round(float(resp_y.loc[t, 2023]), 1), round(float(resp_y.loc[t, 2024]), 1)],
-                    "new_biz": [round(float(nb.loc[t, 2023])), round(float(nb.loc[t, 2024]))]}})
+            "kpi": {"cycle": [int(kr3.loc[t, 2024]), int(kr3.loc[t, 2025])],
+                    "resp": [round(float(resp_y.loc[t, 2024]), 1), round(float(resp_y.loc[t, 2025]), 1)],
+                    "new_biz": [round(float(nb.loc[t, 2024])), round(float(nb.loc[t, 2025]))]}})
     prove = {
         "team_fit": team_fit,
         "chatgpt": gpt_prove,
@@ -605,7 +605,7 @@ def main() -> None:
              "days_at_stake": round(se_w * (best - float(se_share[t])), 1)} for t in TEAMS]
 
     # Driver coverage: for each driver, which AI works it, each team's baseline, who lags and the fix
-    y24 = new[new.close_date.dt.year == 2024]
+    y24 = new[new.close_date.dt.year == 2025]
     deals_t = y24.groupby("team").size()
     SDR_TEAMS = {"EMEA", "NA East"}
     specs = [
@@ -639,29 +639,29 @@ def main() -> None:
                      "per": drivers[4]["per"], "unit": None, "ai": "Deal-summary bots (EMEA, NA East)", "teams": [],
                      "note": "Doesn't move the cycle: no team needs more of it"})
     team_plans = [{"team": t, "items": sorted(plans[t], key=lambda x: -x["days_per_deal"]),
-                   "days": round(sum(x["days_per_deal"] for x in plans[t]), 1), "cycle": int(kr3.loc[t, 2024])}
+                   "days": round(sum(x["days_per_deal"] for x in plans[t]), 1), "cycle": int(kr3.loc[t, 2025])}
                   for t in TEAMS if plans[t]]
     team_plans.sort(key=lambda x: -x["days"])
 
-    # Live map: what Gnocchi watches every day (replayed over 2024)
-    days = pd.date_range("2024-01-01", "2024-12-31").strftime("%Y-%m-%d")
+    # Live map: what Gnocchi watches every day (replayed over 2025)
+    days = pd.date_range("2025-01-01", "2025-12-31").strftime("%Y-%m-%d")
     s["d"] = s.ts.str[:10]
     daily = s.groupby(["d", "investment_id"]).size().unstack(fill_value=0).reindex(days, fill_value=0)
-    ev24 = ev[ev.ts.str[:4] == "2024"]
+    ev24 = ev[ev.ts.str[:4] == "2025"]
     chat_half = next((m for m in mom["inv_chatgpt_other"] if m["active_share"] < 0.5), None)
     sdr_first_close = str(new[new.sdr == 1].close_date.min().date())
     events = sorted([
-        ("2024-01-08", "build", "EMEA builders start a deal-summary bot (ChatGPT sessions linked to repo commits)"),
-        ("2024-03-01", "live", "EMEA deal-summary bot goes live (svc_dealsum_emea)"),
-        ("2024-03-12", "build", "NA East builders start a second deal-summary bot"),
+        ("2025-01-08", "build", "EMEA builders start a deal-summary bot (ChatGPT sessions linked to repo commits)"),
+        ("2025-03-01", "live", "EMEA deal-summary bot goes live (svc_dealsum_emea)"),
+        ("2025-03-12", "build", "NA East builders start a second deal-summary bot"),
         *[(u["first_seen"], "build", f"Unregistered tool appears: {u['name'].lower()} ({u['team']}), no repo or register entry") for u in unregistered],
         (parallel["alert"]["end"], "alert", f"Parallel build flagged: NA East's sessions match EMEA's bot {parallel['alert']['ratio']}× baseline"),
-        ("2024-04-01", "live", "AI SDR agent live in EMEA (svc_ai_sdr)"),
-        ("2024-05-01", "live", "NA East deal-summary bot goes live (svc_dealsum_nae)"),
+        ("2025-04-01", "live", "AI SDR agent live in EMEA (svc_ai_sdr)"),
+        ("2025-05-01", "live", "NA East deal-summary bot goes live (svc_dealsum_nae)"),
         (sdr_first_close, "signal", "First deals worked by the AI SDR close"),
-        ("2024-07-01", "live", "AI SDR live in NA East; meeting-prep assistant live in all teams"),
-        (f"2024-{chat_half['m']:02d}-28" if chat_half else "2024-12-28", "alert", "ChatGPT active seats fall below 50%"),
-        ("2024-12-31", "report", "Year-end report: decisions per investment"),
+        ("2025-07-01", "live", "AI SDR live in NA East; meeting-prep assistant live in all teams"),
+        (f"2025-{chat_half['m']:02d}-28" if chat_half else "2025-12-28", "alert", "ChatGPT active seats fall below 50%"),
+        ("2025-12-31", "report", "Year-end report: decisions per investment"),
     ])
     live_map = {
         "days": list(days), "tools": list(daily.columns), "counts": [daily[c].astype(int).tolist() for c in daily.columns],
@@ -762,11 +762,11 @@ def main() -> None:
     def rows_xlsx(f):
         return int(len(pd.read_excel(SRC / f)))
     processed = [
-        {"source": "CRM closed-won deals, 2023–2024", "kind": "real", "rows": int(len(opps)), "unit": "deals"},
+        {"source": "CRM closed-won deals, 2024–2025 (real 2023–24, dates +1 year)", "kind": "real", "rows": int(len(opps)), "unit": "deals"},
         {"source": "Sales targets by owner", "kind": "real", "rows": rows_xlsx("personal_targets.xlsx"), "unit": "rows"},
         {"source": "KPI definitions and CRM field map", "kind": "real",
          "rows": len(json.loads((SRC / "kpi_definitions.json").read_text())["targets"]), "unit": "KPIs"},
-        {"source": "Team OKRs 2024", "kind": "syn", "rows": sum(len(o["key_results"]) for o in okrs), "unit": "key results"},
+        {"source": "Team OKRs 2025", "kind": "syn", "rows": sum(len(o["key_results"]) for o in okrs), "unit": "key results"},
         {"source": "CRM change history", "kind": "syn", "rows": int(len(ev)), "unit": "events"},
         {"source": "AI telemetry (session text)", "kind": "syn", "rows": int(len(sess)), "unit": "sessions"},
         {"source": "AI admin and usage reports", "kind": "syn", "rows": int(len(usage)), "unit": "rows"},
