@@ -40,11 +40,10 @@
       "inv_dealsum_nae"
     ],
     "assisting": [
-      "inv_meeting_prep",
-      "inv_coding_asst"
+      "inv_meeting_prep"
     ],
     "standalone": [
-      "inv_chatgpt_ent"
+      "inv_chatgpt_ent (incl. the bot builders' coding)"
     ],
     "build_lineage": {
       "revops-emea/deal-notes-summarizer": "inv_dealsum_emea",

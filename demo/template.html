@@ -130,6 +130,34 @@ section.card.step{padding:22px}
 .cl i{width:18px;height:18px;border-radius:50%;margin-top:2px;font-style:normal;display:grid;place-items:center;font-size:11px;font-family:var(--mono)}
 .cl i.done{background:var(--good);color:var(--surface)} .cl i.partial{background:var(--warn);color:var(--surface)} .cl i.open{border:1.5px dashed var(--muted)}
 .overview{display:grid;gap:14px;margin-bottom:20px}
+.lmap{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) minmax(0,.8fr);gap:28px;position:relative}
+.lcol{display:grid;gap:6px;align-content:start}
+.lcol > span{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.node{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 10px;display:grid;grid-template-columns:10px minmax(0,1fr) auto;gap:8px;align-items:center;font-size:13px;position:relative}
+.lcol + .lcol .node::before{content:"";position:absolute;left:-22px;top:50%;width:16px;border-top:1px dashed var(--line)}
+.node i{width:8px;height:8px;border-radius:50%;background:var(--good)}
+.node i.pulse{box-shadow:0 0 0 0 var(--good);animation:pulse 1.6s ease-out 1}
+@keyframes pulse{0%{box-shadow:0 0 0 0 color-mix(in srgb, var(--good) 70%, transparent)}100%{box-shadow:0 0 0 8px transparent}}
+.node small{font-family:var(--mono);font-size:11px;color:var(--muted);display:block}
+.node b{font-weight:600}
+.node .ct{font-family:var(--mono);font-size:12px;color:var(--ink);text-align:right;font-variant-numeric:tabular-nums}
+.ctrl{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.ctrl button{font-family:var(--mono);font-size:12px;background:var(--ink);color:var(--bg);border:none;border-radius:6px;padding:6px 12px;cursor:pointer}
+.ctrl button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.ctrl input[type=range]{flex:1;min-width:180px;accent-color:var(--accent)}
+.ctrl .date{font-family:var(--mono);font-size:14px;font-weight:500;min-width:96px}
+.evlog{display:grid;gap:6px;font-size:13px}
+.evlog div{display:grid;grid-template-columns:90px 64px minmax(0,1fr);gap:8px;align-items:start}
+.evlog .k{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.06em;padding:1px 6px;border-radius:4px;background:var(--chip);color:var(--soft);text-align:center}
+.evlog .k.alert{background:var(--warn);color:var(--surface)} .evlog .k.live{background:var(--good);color:var(--surface)}
+.evlog .future{opacity:.35}
+td.lag{background:color-mix(in srgb, var(--accent) 18%, transparent);font-weight:600}
+td.bestc{box-shadow:inset 0 -2px 0 var(--good)}
+.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.plans > div{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px;display:grid;gap:8px;align-content:start}
+.plans ol{margin:0;padding-left:18px;display:grid;gap:6px;font-size:13px}
+@media (max-width:900px){.lmap{grid-template-columns:minmax(0,1fr);gap:14px}.lcol + .lcol .node::before{display:none}}
+@media (prefers-reduced-motion:reduce){.node i.pulse{animation:none}}
 .chain{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:22px}
 .chain > div{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;display:grid;gap:3px;align-content:start;position:relative;font-size:13px}
 .chain > div + div::before{content:"→";position:absolute;left:-18px;top:50%;transform:translateY(-50%);color:var(--accent);font-family:var(--mono)}
@@ -164,6 +192,18 @@ footer{padding-block:8px 0}
   <div class="callout"><span class="eyebrow">Bottom line</span><p id="bottom" style="font-size:18px"></p></div>
 </section>
 
+<section class="card step" id="live">
+  <div class="card-head"><span class="num">LIVE</span><h2>Live map: every source and AI session Gnocchi watches</h2><p>The work in this report runs every day: new rows come in overnight, new sessions are classified, linked and matched, the parallel-build watch and the comparisons re-run weekly, and the report updates monthly. Replay 2024 day by day.</p></div>
+  <div class="ctrl"><button id="lplay" type="button">▶ Play 2024</button><input type="range" id="lday" min="0" max="365" value="365" aria-label="Day of 2024"><span class="date" id="ldate"></span></div>
+  <div class="panel"><svg id="lstrip" role="img" aria-label="AI sessions per day in 2024"></svg></div>
+  <div class="lmap">
+    <div class="lcol"><span>Sources · last sync</span><div id="lsrc" style="display:grid;gap:6px"></div></div>
+    <div class="lcol"><span>Daily run</span><div id="ljobs" style="display:grid;gap:6px"></div></div>
+    <div class="lcol"><span>AI sessions monitored · that day / to date</span><div id="ltools" style="display:grid;gap:6px"></div></div>
+  </div>
+  <div class="panel" style="display:grid;gap:8px"><h3>What the daily run saw</h3><div class="evlog" id="levents"></div></div>
+</section>
+
 <section class="card step" id="processed">
   <div class="card-head"><span class="num">00</span><h2>What this run processed</h2><p>Read-only connections. Deals are real and anonymized; history, OKRs and AI logs are synthetic, with known effects planted so the result can be checked (appendix).</p></div>
   <div class="tbl"><table id="proctbl"></table></div>
@@ -176,7 +216,7 @@ footer{padding-block:8px 0}
   <div class="panel tbl"><table id="inventory"></table></div>
   <div class="panel" style="display:grid;gap:14px">
     <div style="display:grid;gap:6px;max-width:78ch"><h3>Build lineage: the coding sessions behind the built bots</h3>
-    <p class="muted" style="font-size:14px">A built bot has two costs: running it, and the work that built it. Gnocchi follows coding-assistant sessions to the repo they commit to, the CI deploy that turns that repo into a bot identity, and the CRM records the bot then writes. The bot’s effect from step 7 closes the chain.</p></div>
+    <p class="muted" style="font-size:14px">A built bot has two costs: running it, and the work that built it. There is no coding assistant: the builders used ChatGPT. Its sessions carry no repo id, so Gnocchi links them to repo commits by team, timing (a commit within 36 hours) and text, then follows the CI deploy that turns that repo into a bot identity, and the CRM records the bot then writes. The bot’s effect from step 7 closes the chain.</p></div>
     <div id="lineage" style="display:grid;gap:16px"></div>
     <div class="result" style="border-color:var(--warn)"><span class="eyebrow" style="color:var(--warn)">Same bot, built twice</span><p id="dup-text"></p></div>
   </div>
@@ -187,8 +227,12 @@ footer{padding-block:8px 0}
 </section>
 <section class="card step" id="classify">
   <div class="card-head"><span class="num">02</span><h2>Classify: what each session is for</h2><p>Every session’s text is sorted into a work category: research, writing, analysis, strategy, development, summarization or admin. Each is also tagged direct (an agent acts), indirect and traced (a person’s AI output lands on a record), or indirect and untraced.</p></div>
-  <div class="io">In <b>8,595 sessions</b> → Out <b>category × activity type</b></div>
+  <div class="io">In <b>every AI session’s text and metadata</b> → Out <b>category × activity type; ChatGPT coding vs other</b></div>
   <div class="tbl"><table id="clsinv"></table></div>
+  <div class="grid2">
+    <div class="result"><span class="eyebrow">ChatGPT Enterprise, split</span><span class="big" id="split-big"></span><p id="split-text"></p></div>
+    <div class="panel"><table id="splittbl"></table></div>
+  </div>
   <div class="panel" style="display:grid;gap:8px"><h3>Direct and indirect activity, by category</h3><p class="muted" style="font-size:14px">Sessions per category. Direct: an agent acts under its own identity. Indirect, traced: a person used AI and the output landed on a record. Indirect, untraced: no record to follow.</p><div class="tbl"><table id="clsmode"></table></div></div>
   <div class="panel" style="display:grid;gap:8px"><h3>One session per category</h3><div id="clsex" style="display:grid;gap:8px;font-size:14px"></div></div>
   <div class="finding"><span class="eyebrow">Finding</span><p id="f-classify"></p></div>
@@ -280,16 +324,17 @@ footer{padding-block:8px 0}
   <div class="sources" id="src-prove"></div>
 </section>
 <section class="card step" id="find">
-  <div class="card-head"><span class="num">08</span><h2>Find: the AI the company needs next</h2><p>The driver model run in reverse: a driver with a high weight, a weak baseline and no AI on it is an AI opportunity. Adding a solutions engineer before the proposal saves about <b id="se-w"></b> days, and two teams rarely do it.</p></div>
-  <div class="io">In <b>drivers, team baselines</b> → Out <b>opportunities and blind spots</b></div>
+  <div class="card-head"><span class="num">08</span><h2>Find: which drivers are not covered, and how the lagging teams catch up</h2><p>The driver model run in reverse. For every driver: the AI on it today, each team’s level, and the gap to the best team in days of cycle per new deal. A driver with weight and no AI is an AI opportunity; a driver whose AI some teams don’t use is an adoption gap.</p></div>
+  <div class="io">In <b>drivers, team baselines</b> → Out <b>coverage gaps, team plans, parallel work</b></div>
 
-  <div class="panel grid2">
-    <svg id="sechart" role="img" aria-label="Share of new deals with a solutions engineer before the proposal, by team"></svg>
-    <div style="display:grid;gap:12px;align-content:start">
-      <div class="result"><span class="eyebrow">AI opportunity</span><p id="opp-text"></p></div>
-      <div class="result" style="border-color:var(--warn)"><span class="eyebrow" style="color:var(--warn)">Blind spot</span><p>“Raise customer satisfaction with onboarding” maps to no CRM record, so its progress can’t be seen. Suggested fix: one onboarding-score field on the account.</p></div>
-    </div>
+  <div class="panel" style="display:grid;gap:10px">
+    <div style="display:grid;gap:6px;max-width:78ch"><h3>Driver coverage: which AI works each driver, and which teams lag</h3>
+    <p class="muted" style="font-size:14px">Each driver from step 4, the AI that works it today, and each team’s 2024 level. A shaded cell is a team that lags the best team by at least one day of cycle per new deal (the underline marks the best team).</p></div>
+    <div class="tbl"><table id="covtbl"></table></div>
   </div>
+  <div style="display:grid;gap:8px"><h3>Plan for the teams that lag, largest gap first</h3><div class="plans" id="plans"></div>
+  <p class="muted" style="font-size:13px">Days per new deal are each driver’s weight times the team’s gap to the best team; adding them assumes the drivers act independently. A target to test with the step 7 comparisons, not a forecast.</p></div>
+  <div class="result" style="border-color:var(--warn)"><span class="eyebrow" style="color:var(--warn)">Blind spot</span><p>“Raise customer satisfaction with onboarding” maps to no CRM record, so its progress can’t be seen. Suggested fix: one onboarding-score field on the account.</p></div>
 
   <div class="panel" style="display:grid;gap:14px">
     <div style="display:grid;gap:6px;max-width:78ch"><h3>Parallel development, caught while it happens</h3>
@@ -365,11 +410,11 @@ $("summary").innerHTML = [
 
 // rail
 const PL = Object.fromEntries(D.pipeline.map(p => [p[0], p]));
-const steps = [["overview","·","Summary",""],["processed","0","Processed",`${D.processed.length} sources`],
+const steps = [["overview","·","Summary",""],["live","●","Live map","daily run"],["processed","0","Processed",`${D.processed.length} sources`],
   ["discover","1","Discover",PL.Discover[2]],["classify","2","Classify",PL.Classify[2]],["map","3","Map",PL.Map[2]],
   ["learn","4","Learn",PL.Learn[2]],["trace","5","Trace",PL.Trace[2]],["momentum","6","Momentum",PL.Momentum[2]],
   ["prove","7","Prove",PL.Prove[2]],["find","8","Find",PL.Find[2]],["conclude","9","Conclude",PL.Conclude[2]],["check","A","Appendix","planted vs found"]];
-$("rail").innerHTML = `<span class="lab">Report steps</span>` + steps.map(([id,n,l,o]) => `<a href="#${id}" data-id="${id}" class="${/^\d$/.test(n)?"done":""}"><span class="n">${/^\d$/.test(n)?"✓":n}</span><span><b>${n!=="·"&&n!=="A"?n+" · ":""}${l}</b>${o?`<small>${esc(o)}</small>`:""}</span></a>`).join("");
+$("rail").innerHTML = `<span class="lab">Report steps</span>` + steps.map(([id,n,l,o]) => `<a href="#${id}" data-id="${id}" class="${/^\d$/.test(n)?"done":""}"><span class="n">${/^\d$/.test(n)?"✓":n}</span><span><b>${/^\d$/.test(n)?n+" · ":""}${l}</b>${o?`<small>${esc(o)}</small>`:""}</span></a>`).join("");
 const io = new IntersectionObserver((es) => es.forEach(e => { if (e.isIntersecting) document.querySelectorAll("#rail a").forEach(a => a.classList.toggle("on", a.dataset.id === e.target.id)); }), {rootMargin: "-30% 0px -60% 0px"});
 document.querySelectorAll(".step").forEach(s => io.observe(s));
 
@@ -382,7 +427,7 @@ $("flow").innerHTML = D.pipeline.map((p,i) => `<a href="#${flowIds[p[0]]}"><span
 // 1 inventory
 const typeTag = (t) => `<span class="tag ${t==="acting"?"acting":""}">${t==="acting"?"Direct · acts":"Indirect · assists"}</span>`;
 $("inventory").innerHTML = `<tr><th>AI investment</th><th>Bought or built</th><th>Type</th><th>Seen through</th><th>Teams</th><th class="num">Cost / yr</th></tr>` +
-  D.discover.inventory.map(r => `<tr><td><b>${esc(r.name)}</b></td><td>${r.kind}</td><td>${typeTag(r.ai_type)}</td><td class="mono" style="font-size:12px">${r.identity==="sso_user"?(r.id==="inv_coding_asst"?"SSO + Git/CI":"SSO + admin usage"):esc(r.identity)}</td><td>${r.teams.join(", ")}</td><td class="num">${fmt$(r.cost)}</td></tr>`).join("");
+  D.discover.inventory.map(r => `<tr><td><b>${esc(r.name)}</b></td><td>${r.kind}</td><td>${typeTag(r.ai_type)}</td><td class="mono" style="font-size:12px">${r.identity==="sso_user"?(r.id==="inv_chatgpt_ent"?"SSO + compliance log":"SSO + admin usage"):esc(r.identity)}</td><td>${r.teams.join(", ")}</td><td class="num">${fmt$(r.cost)}</td></tr>`).join("");
 const log = D.discover.sample_change_log.map(e => `${e.ts}  ${e.record_id}  ${(e.object+"."+e.field).padEnd(32)} ${String(e.new_value).padEnd(20)} by ${e.changed_by}${e.created_with?" (made with "+e.created_with+")":""}`).join("\n");
 const ses = D.discover.sample_sessions.map(s => JSON.stringify({ts:s.ts, investment:s.investment_id, identity:s.identity, team:s.team, purpose:s.purpose, records:s.record_ids||null, writes:s.writes, tokens:s.tokens})).join("\n");
 $("logs").textContent = "# CRM change history (synthetic) for one real deal\n" + log + "\n\n# AI telemetry (synthetic), one session per tool\n" + ses;
@@ -412,7 +457,7 @@ $("mapping").innerHTML = `<tr><th>Key result</th><th>Record</th><th>Fields that 
 
 // 4 trace
 const lvlTag = (l) => `<span class="tag ${l.startsWith("1")?"l1":l.startsWith("2")?"l2":"l3"}">${esc(l)}</span>`;
-const nameOf = Object.fromEntries(D.discover.inventory.map(r => [r.id, r.name]));
+const nameOf = Object.assign(Object.fromEntries(D.discover.inventory.map(r => [r.id, r.name])), D.split_names);
 $("tracetbl").innerHTML = `<tr><th>AI investment</th><th>Evidence level</th><th class="num">Sessions aimed at a driver or KR</th><th>Why</th></tr>` +
   D.trace.map(t => `<tr><td><b>${esc(nameOf[t.id])}</b></td><td>${lvlTag(t.level)}</td><td class="num">${Math.round(t.aligned*100)}%</td><td>${esc(t.why)}</td></tr>`).join("");
 
@@ -438,7 +483,7 @@ $("tracetbl").innerHTML = `<tr><th>AI investment</th><th>Evidence level</th><th 
 
 // 4b team fit
 (function(){
-  const F = D.prove.team_fit, short = {inv_ai_sdr:"AI SDR",inv_meeting_prep:"Meeting prep",inv_chatgpt_ent:"ChatGPT",inv_dealsum_emea:"Deal summary",inv_dealsum_nae:"Deal summary"};
+  const F = D.prove.team_fit, short = {inv_ai_sdr:"AI SDR",inv_meeting_prep:"Meeting prep",inv_chatgpt_code:"ChatGPT coding",inv_chatgpt_other:"ChatGPT other",inv_dealsum_emea:"Deal summary",inv_dealsum_nae:"Deal summary"};
   const delta = (a,b,u,good) => { const d=b-a, col = d===0?"var(--muted)":((d<0)===good?"var(--accent)":"var(--muted)"); return `${a}${u} → <b>${b}${u}</b> <span style="color:${col}">(${d>0?"+":d<0?"−":"±"}${Math.abs(Math.round(d*10)/10)})</span>`; };
   $("teamfit").innerHTML = `<tr><th>Team</th><th>Share of each tool’s sessions aimed at a driver or KR</th><th>AI spend aimed</th><th class="num">First response, h (driver)</th><th class="num">Median New-deal cycle, days (KR3)</th></tr>` +
     F.map(r => { const pct = r.spend ? r.aimed_spend/r.spend : 0;
@@ -463,7 +508,7 @@ function spark(values, color, max, label){
   txt(svg, 6, H-2, "Jan"); txt(svg, W-6, H-2, "Dec", {"text-anchor":"end"});
   return svg;
 }
-const flags = {inv_coding_asst:"Bursts before each bot launch", inv_ai_sdr:"Ramping with rollouts", inv_meeting_prep:"Low use: few seats active", inv_chatgpt_ent:"Fading", inv_dealsum_emea:"Steady, overlaps NA East build", inv_dealsum_nae:"Steady, overlaps EMEA build"};
+const flags = {inv_chatgpt_code:"Bursts with each bot build", inv_chatgpt_other:"Fading", inv_ai_sdr:"Ramping with rollouts", inv_meeting_prep:"Low use: few seats active", inv_chatgpt_ent:"Fading", inv_dealsum_emea:"Steady, overlaps NA East build", inv_dealsum_nae:"Steady, overlaps EMEA build"};
 const sp = $("sparks");
 sp.insertAdjacentHTML("beforeend", `<div class="spark" style="padding-top:0"><span class="eyebrow" style="color:var(--muted)">Investment</span><span class="eyebrow" style="color:var(--muted)">Active seats or agent on</span><span class="eyebrow" style="color:var(--muted)">Records touched per month</span></div>`);
 for (const id in D.momentum){
@@ -472,8 +517,8 @@ for (const id in D.momentum){
   const a = document.createElement("div"), b = document.createElement("div");
   a.appendChild(spark(m.map(x=>x.active_share), css("--cmp"), 1, `${nameOf[id]} active share per month`));
   b.appendChild(spark(m.map(x=>x.records), css("--accent"), null, `${nameOf[id]} records touched per month`));
-  if (id === "inv_chatgpt_ent") b.innerHTML = `<p class="muted" style="font-size:13px">Touches no records</p>`;
-  if (id === "inv_coding_asst") b.innerHTML = `<p class="muted" style="font-size:13px">Commits to two repos, not CRM records (step 1)</p>`;
+  if (id === "inv_chatgpt_other") b.innerHTML = `<p class="muted" style="font-size:13px">Touches no records</p>`;
+  if (id === "inv_chatgpt_code") b.innerHTML = `<p class="muted" style="font-size:13px">Linked to commits in two repos, not CRM records (step 1)</p>`;
   row.append(a,b); sp.appendChild(row);
 }
 function lines(svgId, series, opts){
@@ -512,23 +557,23 @@ $("prep-text").innerHTML = `per deal with a prep brief, 90% range ${sgn(P.prep.l
 })();
 $("ds-big").textContent = `${sgn(P.dealsum.cycle)} days`;
 $("ds-text").innerHTML = `on the cycle, 90% range ${sgn(P.dealsum.lo)} to ${sgn(P.dealsum.hi)}, across ${P.dealsum.deals} deals summarized. Two teams built the same bot separately; neither moves a driver.`;
-const cm = D.momentum.inv_chatgpt_ent;
+const cm = D.momentum.inv_chatgpt_other;
 $("chat-big").textContent = `${Math.round(cm[0].active_share*100)}% → ${Math.round(cm[11].active_share*100)}%`;
-$("chat-text").innerHTML = `active seats, January to December. It writes nothing to the CRM, so there’s no record to compare; only ${Math.round(D.trace.find(t=>t.id==="inv_chatgpt_ent").aligned*100)}% of its sessions match a driver or key result. Evidence is usage and purpose only.`;
+$("chat-text").innerHTML = `active seats, January to December. It writes nothing to the CRM, so there’s no record to compare; only ${Math.round(D.trace.find(t=>t.id==="inv_chatgpt_other").aligned*100)}% of its other-task sessions match a driver or key result. Evidence is usage and purpose only.`;
 
-// 7 find
-$("se-w").textContent = Math.abs(D.drivers[1].days).toFixed(0);
+// 8 find: coverage and plans
 (function(){
-  const svg = $("sechart"), W = 520, H = 230, L = 80, T = 10, rh = 40; svg.setAttribute("viewBox",`0 0 ${W} ${H}`); svg.style.width="100%";
-  const sx = v => L + v/100*(W-L-60), best = Math.max(...D.find.map(f=>f.se_share));
-  D.find.forEach((f,i)=>{ const y = T + i*rh; txt(svg, 0, y+20, f.team, {class:"lbl"});
-    el("rect",{x:L,y:y+8,width:Math.max(2,sx(f.se_share)-L),height:18,rx:3,fill:f.gap_pp>30?css("--accent"):css("--muted")},svg);
-    txt(svg, sx(f.se_share)+6, y+21, `${f.se_share}%`, {class:"lbl"}); });
-  el("line",{x1:sx(best),x2:sx(best),y1:T,y2:T+5*rh,stroke:css("--good"),"stroke-dasharray":"4 4"},svg);
-  txt(svg, sx(best), H-6, "best team", {"text-anchor":"middle"});
+  const T = D.discover.teams;
+  const fmtv = (c, v) => c.unit === "h" ? `${v} h` : `${Math.round(v)}%`;
+  $("covtbl").innerHTML = `<tr><th>Driver</th><th class="num">Weight</th><th>AI on it today</th>` + T.map(t=>`<th class="num">${esc(t)}</th>`).join("") + `</tr>` +
+    D.coverage.map(c => `<tr><td><b>${c.id} · ${esc(c.driver)}</b><br><span class="muted" style="font-size:12px">${c.unit==="h"?"median first response, new deals":c.unit?"share of new deals":"no measurable effect"}</span></td>
+      <td class="num">${sgn(c.weight)} d<br><span class="muted" style="font-size:12px">${esc(c.per)}</span></td>
+      <td style="font-size:13px">${c.ai?esc(c.ai):'<span class="tag blind">None: AI opportunity</span>'}</td>` +
+      (c.teams.length ? T.map(t => { const r = c.teams.find(x=>x.team===t); return `<td class="num ${r.lag?"lag":""} ${t===c.best_team?"bestc":""}">${fmtv(c, r.value)}${r.lag?`<br><span style="font-size:11px;font-weight:500">${sgn(-r.days_per_deal)} d/deal</span>`:""}</td>`; }).join("")
+        : `<td colspan="${T.length}" class="muted" style="font-size:13px">${esc(c.note)}</td>`) + `</tr>`).join("");
+  $("plans").innerHTML = D.team_plans.map(p => `<div><div style="display:flex;justify-content:space-between;gap:8px;align-items:baseline"><b style="font-size:16px">${esc(p.team)}</b><span class="mono" style="font-size:12px">up to ${p.days} d/deal · cycle ${p.cycle} d</span></div>
+    <ol>${p.items.map(i=>`<li><b>${i.driver} ${esc(i.name)}</b> (${i.days_per_deal} d/deal): ${esc(i.fix)}</li>`).join("")}</ol></div>`).join("");
 })();
-const weak = D.find.filter(f=>f.gap_pp>30);
-$("opp-text").innerHTML = weak.map(f=>`<b>${f.team}</b>: ${f.se_share}% of new deals, ${f.gap_pp} points behind the best team, about ${f.days_at_stake} days of average cycle at stake.`).join("<br>") + `<br>No AI touches this driver today. Requirement: an agent that flags deals needing a solutions engineer before the proposal. Next: qualify, forecast, then build or buy and pilot.`;
 
 // 8 report
 const minus = (t) => String(t).replace(/(^|[\s(])-(\d)/g, "$1−$2");
@@ -555,7 +600,7 @@ $("total-text").innerHTML = `Of ${fmt$(D.totals.ai_spend)} in AI spend, two inve
 (function(){
   const L = D.lineage, Dp = D.duplicate, eff = `${sgn(P.dealsum.cycle)} days (${sgn(P.dealsum.lo)} to ${sgn(P.dealsum.hi)})`;
   $("lineage").innerHTML = L.map(l => `<div style="display:grid;gap:8px"><b style="font-size:15px">${esc(l.bot)}</b><div class="chain">
-    <div><span>Coding sessions</span><b>${l.sessions}</b>${l.build_sessions} before launch · ${esc(l.team)} builders</div>
+    <div><span>ChatGPT sessions, linked</span><b>${l.sessions}</b>${l.build_sessions} before launch · ${esc(l.team)} builders</div>
     <div><span>Repo</span><b class="mono" style="font-size:12px">${esc(l.repo)}</b>${l.commits} commits · ${l.engineer_days} engineer-days ≈ ${fmt$(l.build_cost)}</div>
     <div><span>CI deploy → identity</span><b class="mono" style="font-size:12px">${esc(l.identity)}</b>live ${esc(l.deployed_at)} · ${fmt$(l.run_cost)}/yr to run</div>
     <div><span>CRM records written</span><b>${l.records}</b>notes on opportunities</div>
@@ -578,6 +623,55 @@ $("total-text").innerHTML = `Of ${fmt$(D.totals.ai_spend)} in AI spend, two inve
   $("par-note").innerHTML = `Clusters: development sessions grouped by text similarity, kept when two or more teams appear. Hours assume ${Pa.min_per_session} minutes per repeat once a shared version exists; that is an assumption, not a measurement. Session text and team only; no person is named.`;
 })();
 
+// LIVE map
+(function(){
+  const L = D.live, N = L.days.length, tools = L.tools;
+  const tot = L.days.map((_,i) => tools.reduce((a,_,k)=>a+L.counts[k][i],0));
+  const cum = (arr) => { let c=0; return arr.map(v=>c+=v); };
+  const cumTool = L.counts.map(cum), cumCrm = cum(L.crm), cumCom = cum(L.commits), cumTot = cum(tot);
+  const agentIdx = tools.map((t,k)=>["inv_ai_sdr","inv_dealsum_emea","inv_dealsum_nae"].includes(t)?k:-1).filter(k=>k>=0);
+  const chatIdx = tools.map((t,k)=>t.startsWith("inv_chatgpt")?k:-1).filter(k=>k>=0);
+  const ser = (key, i) => key==="crm" ? [L.crm[i], cumCrm[i], "events"] : key==="commits" ? [L.commits[i], cumCom[i], "commits"]
+    : key==="chat" ? [chatIdx.reduce((a,k)=>a+L.counts[k][i],0), chatIdx.reduce((a,k)=>a+cumTool[k][i],0), "sessions"]
+    : key==="agents" ? [agentIdx.reduce((a,k)=>a+L.counts[k][i],0), agentIdx.reduce((a,k)=>a+cumTool[k][i],0), "agent actions"]
+    : key ? (k => [L.counts[k][i], cumTool[k][i], "sessions"])(tools.indexOf(key)) : null;
+  // strip chart
+  const svg = $("lstrip"), W = 1000, H = 90; svg.setAttribute("viewBox", `0 0 ${W} ${H}`); svg.style.width = "100%";
+  const mx = Math.max(...tot), bw = W / N;
+  tot.forEach((v,i) => el("rect", {x: i*bw, y: H-16-(v/mx)*(H-26), width: Math.max(1,bw-.6), height: (v/mx)*(H-26), fill: css("--cmp"), opacity: .75}, svg));
+  ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"].forEach((m,k)=>txt(svg, (k*30.5+2)*bw, H-2, m));
+  L.events.forEach(e => { const i = L.days.indexOf(e.d); if (i>=0) el("line",{x1:i*bw,x2:i*bw,y1:4,y2:H-16,stroke:e.kind==="alert"?css("--warn"):css("--muted"),"stroke-dasharray":"2 3"},svg); });
+  const cur = el("line", {x1:0,x2:0,y1:0,y2:H-14,stroke:css("--accent"),"stroke-width":2}, svg);
+  $("ljobs").innerHTML = L.jobs.map(([j,c]) => `<div class="node"><i></i><span><b>${esc(j)}</b><small>${esc(c)}</small></span><span></span></div>`).join("");
+  function draw(i){
+    const d = L.days[Math.min(i, N-1)];
+    $("ldate").textContent = d; cur.setAttribute("x1", (i+.5)*bw); cur.setAttribute("x2", (i+.5)*bw);
+    $("lsrc").innerHTML = L.sources.map(sr => { const v = ser(sr.series, i); const fresh = v && v[0] > 0;
+      return `<div class="node"><i class="${fresh?"pulse":""}" style="${v&&!fresh?"background:var(--muted)":""}"></i><span><b>${esc(sr.name)}</b><small>${esc(sr.cadence)} · ${sr.kind==="syn"?"synthetic":"real + synthetic"}</small></span><span class="ct">${v?`+${v[0].toLocaleString()}<br><span class="muted">${v[1].toLocaleString()}</span>`:""}</span></div>`; }).join("");
+    $("ltools").innerHTML = tools.map((t,k) => `<div class="node"><i class="${L.counts[k][i]?"pulse":""}" style="${L.counts[k][i]?"":"background:var(--muted)"}"></i><span><b>${esc(nameOf[t]||t)}</b></span><span class="ct">${L.counts[k][i]} / ${cumTool[k][i].toLocaleString()}</span></div>`).join("") +
+      `<div class="node" style="background:var(--bg)"><i style="background:var(--accent)"></i><span><b>All AI sessions to date</b></span><span class="ct">${cumTot[i].toLocaleString()}</span></div>`;
+    $("levents").innerHTML = L.events.slice().reverse().map(e => `<div class="${e.d>d?"future":""}"><span class="mono" style="font-size:12px">${e.d}</span><span class="k ${e.kind}">${e.kind}</span><span>${esc(e.text)}</span></div>`).join("");
+  }
+  const slider = $("lday"); slider.max = N-1; slider.value = N-1; draw(N-1);
+  slider.addEventListener("input", () => draw(+slider.value));
+  let timer = null;
+  $("lplay").addEventListener("click", () => {
+    if (timer){ clearInterval(timer); timer = null; $("lplay").textContent = "▶ Play 2024"; return; }
+    let i = +slider.value >= N-1 ? 0 : +slider.value; $("lplay").textContent = "❚❚ Pause";
+    timer = setInterval(() => { i = Math.min(N-1, i+2); slider.value = i; draw(i); if (i >= N-1){ clearInterval(timer); timer = null; $("lplay").textContent = "▶ Play 2024"; } }, 60);
+  });
+})();
+
+// 2b ChatGPT split
+(function(){
+  const Sp = D.classify.split, code = Sp.rows.find(r=>r.id==="inv_chatgpt_code"), oth = Sp.rows.find(r=>r.id==="inv_chatgpt_other"), lk = Sp.link;
+  $("split-big").textContent = `${Math.round(100*code.sessions/(code.sessions+oth.sessions))}% coding`;
+  $("split-text").innerHTML = `${code.sessions.toLocaleString()} of ${(code.sessions+oth.sessions).toLocaleString()} ChatGPT sessions are coding work (${fmt$(code.cost)} of the seat cost); the rest are other tasks (${fmt$(oth.cost)}). From here on the two are treated as separate investments. Linking sessions to repo commits found ${lk.linked} build sessions: all correct, ${Math.round(lk.recall*100)}% of the true ones (sessions with no commit after them stay unlinked).`;
+  $("splittbl").innerHTML = `<tr><th>ChatGPT coding work</th><th class="num">Sessions</th></tr>` +
+    Object.entries(Sp.coding_parts).map(([k,v])=>`<tr><td>${esc(k)}</td><td class="num">${v.toLocaleString()}</td></tr>`).join("") +
+    `<tr><td class="muted">Other tasks: writing, research, analysis, strategy, summarization, admin</td><td class="num">${oth.sessions.toLocaleString()}</td></tr>`;
+})();
+
 // findings: each step moves one step closer to the conclusion
 (function(){
   const inv = D.discover.inventory, C = D.classify, tot = (o) => Object.values(o).reduce((a,b)=>a+b,0);
@@ -585,14 +679,14 @@ $("total-text").innerHTML = `Of ${fmt$(D.totals.ai_spend)} in AI spend, two inve
   const dir = inv.filter(r=>r.ai_type==="acting"), ind = inv.filter(r=>r.ai_type!=="acting");
   const sum = (a) => a.reduce((x,r)=>x+r.cost,0);
   const F = {
-    discover: `${inv.length} AI investments, ${fmt$(sum(inv))} a year. ${dir.length} are direct (${fmt$(sum(dir))}): agents with their own CRM identity. ${ind.length} are indirect (${fmt$(sum(ind))}): tools people use. Two of them, the deal-summary bots, were built in house: ${D.lineage.reduce((a,l)=>a+l.sessions,0)} coding-assistant sessions committed to two repos that deploy them, about ${fmt$(D.lineage.reduce((a,l)=>a+l.build_cost,0))} of engineering time for the same bot, built twice.`,
-    classify: `${Math.round(100*nUn/N)}% of sessions are indirect and leave no record; only ${Math.round(100*(nDirect+nTr)/N)}% can be tied to a deal. Writing and admin are the biggest categories. Analysis and strategy sessions exist, but only in ChatGPT. Text alone classified ${(C.agreement_text_only*100).toFixed(1)}% of sessions correctly; it mistook coding work on the summary bot for summarizing. Adding the session’s metadata (it commits to a repo) brings it to ${Math.round(C.agreement*100)}%. Synthetic templates make this easy; real prompts will score lower.`,
+    discover: `${inv.length} AI investments, ${fmt$(sum(inv))} a year. ${dir.length} are direct (${fmt$(sum(dir))}): agents with their own CRM identity. ${ind.length} are indirect (${fmt$(sum(ind))}): tools people use. Two of them, the deal-summary bots, were built in house: ${D.lineage.reduce((a,l)=>a+l.sessions,0)} ChatGPT sessions link to the commits of the two repos that deploy them, about ${fmt$(D.lineage.reduce((a,l)=>a+l.build_cost,0))} of engineering time for the same bot, built twice.`,
+    classify: `${Math.round(100*nUn/N)}% of sessions are indirect and leave no record; only ${Math.round(100*(nDirect+nTr)/N)}% can be tied to a deal. Writing and admin are the biggest categories. Analysis and strategy sessions exist, but only in ChatGPT. ChatGPT splits into coding (${Math.round(100*C.split.rows[0].sessions/(C.split.rows[0].sessions+C.split.rows[1].sessions))}%: the two bot builds plus scripts and formulas) and other tasks. Text alone classified ${(C.agreement_text_only*100).toFixed(1)}% of sessions correctly; it mistook bot-building for summarizing. The commit link brings it to ${(C.agreement*100).toFixed(1)}%. Synthetic templates make this easy; real prompts will score lower.`,
     map: `Four of EMEA’s five key results map to CRM records. Onboarding satisfaction has no record, so its progress can’t be seen in any team.`,
-    learn: `Three drivers move the new-deal cycle: first response (${sgn(D.drivers[0].days)} days per hour slower), a solutions engineer before Proposal (${sgn(D.drivers[1].days)} days) and a prep brief (${sgn(D.drivers[2].days)} days). Extra meetings don’t.`,
-    trace: `The AI SDR and meeting prep close the triangle: their sessions are aimed at a driver and their output lands on that driver’s records. The deal-summary bots write records no driver depends on. ChatGPT reaches no record and ${100-Math.round(D.trace.find(t=>t.id==="inv_chatgpt_ent").aligned*100)}% of its sessions are aimed at nothing. Teams aiming more of their AI spend at drivers moved KR3 more.`,
+    learn: `Three drivers move the new-deal cycle: first response (${sgn(D.drivers[0].days)} days per hour slower), a solutions engineer before Proposal (${sgn(D.drivers[1].days)} days) and a prep brief (${sgn(D.drivers[2].days)} days). Extra meetings don’t, and neither do deal-note summaries (${sgn(D.drivers[4].days)} ± ${D.drivers[4].ci} days), the element the summary bots write.`,
+    trace: `The AI SDR and meeting prep close the triangle: their sessions are aimed at a driver and their output lands on that driver’s records. The deal-summary bots are aimed squarely at deal notes (D6) and write them, but step 4 found deal notes don’t move the cycle, so the triangle doesn’t close. ChatGPT coding reaches records only through the bots it built; ChatGPT other tasks reach none, and ${100-Math.round(D.trace.find(t=>t.id==="inv_chatgpt_other").aligned*100)}% of them are aimed at nothing. Teams aiming more of their AI spend at drivers moved KR3 more.`,
     momentum: `The AI SDR ramps with each rollout and EMEA’s first response drops from April. Meeting prep is live everywhere but used in few deals outside EMEA and NA East. ChatGPT’s active seats fall all year.`,
     prove: `Two effects survive comparison: the AI SDR (${sgn(P.sdr.cycle)} days, ${sgn(P.sdr.lo)} to ${sgn(P.sdr.hi)}) and meeting prep (${sgn(P.prep.adjusted)} days per brief). The deal-summary bots show none (${sgn(P.dealsum.cycle)}), so neither does the coding work that built them. ChatGPT can’t be tested against records.`,
-    find: `No AI works the solutions-engineer driver. LATAM and APAC rarely add one before the proposal, worth days on every new deal. That is the next AI requirement. Parallel development: NA East’s rebuild of EMEA’s bot is flagged in week ${D.parallel.alert.week}, worth about ${fmt$(D.parallel.saved_build + D.parallel.saved_run)} in the first year, and ${D.parallel.clusters.length} scripts are being rewritten in all five teams.`,
+    find: `D3, a solutions engineer before the proposal, has no AI on it: APAC and LATAM lag by about ${D.coverage[2].teams.find(t=>t.team==="APAC").days_per_deal} and ${D.coverage[2].teams.find(t=>t.team==="LATAM").days_per_deal} days per new deal; that is the next AI requirement. D1 lags wherever the AI SDR isn’t live yet (extend it), and D2 lags in NA West, LATAM and APAC, where the prep assistant is bought but rarely used (adoption, not a new tool). Parallel development: NA East’s rebuild of EMEA’s bot is flagged in week ${D.parallel.alert.week}, worth about ${fmt$(D.parallel.saved_build + D.parallel.saved_run)} in the first year, and ${D.parallel.clusters.length} scripts are being rewritten in all five teams.`,
   };
   for (const k in F) $("f-"+k).innerHTML = F[k];
   $("bottom").innerHTML = `Of ${fmt$(D.totals.ai_spend)} in AI spend, <b>${fmt$(96000+38000)}</b> is proven to shorten the new-deal cycle and should grow; <b>${fmt$(D.totals.avoided)}</b> a year can be saved by consolidating duplicate bots and right-sizing seats; and <b>${fmt$(D.open_weights.in_scope)}</b> of run cost is in scope for open-weights models once the organization is ready.`;
@@ -620,7 +714,8 @@ const truth = [
   ["Deal-summary bots", "no effect, overlap", `${sgn(P.dealsum.cycle)} (${sgn(P.dealsum.lo)} to ${sgn(P.dealsum.hi)})`],
   ["ChatGPT Enterprise", "usage fades ~7% a month", `${Math.round(cm[0].active_share*100)}% → ${Math.round(cm[11].active_share*100)}% active`],
   ["Onboarding-satisfaction key result", "no CRM record", "flagged as blind spot"],
-  ["Build lineage", "2 repos deploy the 2 bot identities", `${D.lineage.length} builds traced, session → repo → identity → records`],
+  ["Build lineage (ChatGPT → repo)", "291 build sessions, 70% followed by a commit", `${D.classify.split.link.linked} linked, precision ${Math.round(D.classify.split.link.precision*100)}%, recall ${Math.round(D.classify.split.link.recall*100)}%`],
+  ["Deal-notes element (D6)", "no effect planted", `${sgn(D.drivers[4].days)} ± ${D.drivers[4].ci} days`],
   ["Parallel build, caught early", "NA East starts 2024-03-11", `flagged week ${D.parallel.alert.week} (${D.parallel.alert.end})`],
   ["Duplicate build", "NA East rebuilt EMEA’s bot", `flagged: ${Math.round(D.duplicate.mean_best/Math.max(D.duplicate.mean_baseline,0.01))}× closer than other coding work`],
   ["Session work category", "7 planted categories", `${Math.round(D.classify.agreement*100)}% of sessions classified correctly`],

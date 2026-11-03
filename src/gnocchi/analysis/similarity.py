@@ -31,6 +31,8 @@ DRIVERS = [
      "text": "proposal quote pricing options executive summary implementation rollout plan"},
     {"id": "D5", "name": "Customer meetings", "record": "Event: customer meeting",
      "text": "schedule customer meeting book a call follow up meeting calendar invite"},
+    {"id": "D6", "name": "Deal-notes summary on the opportunity", "record": "Note: deal summary",
+     "text": "summarize latest notes opportunity deal status line condense activity notes bullets deal notes summary"},
 ]
 
 

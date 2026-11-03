@@ -1,0 +1,198 @@
+ts,repo,team,message
+2024-01-08T17:31,revops-emea/deal-notes-summarizer,EMEA,Fix duplicate summary notes on the same opportunity
+2024-01-09T23:48,revops-emea/deal-notes-summarizer,EMEA,Fix duplicate summary notes on the same opportunity
+2024-01-10T15:04,revops-emea/deal-notes-summarizer,EMEA,Connected app config: write summary note to opportunity
+2024-01-11T01:22,revops-emea/deal-notes-summarizer,EMEA,Connected app config: write summary note to opportunity
+2024-01-11T18:43,revops-emea/deal-notes-summarizer,EMEA,Summarize opportunity notes into 3-bullet status
+2024-01-12T05:13,revops-emea/deal-notes-summarizer,EMEA,Fix duplicate summary notes on the same opportunity
+2024-01-12T07:55,revops-emea/deal-notes-summarizer,EMEA,Summarize opportunity notes into 3-bullet status
+2024-01-12T10:48,revops-emea/deal-notes-summarizer,EMEA,Summarize opportunity notes into 3-bullet status
+2024-01-12T13:44,revops-emea/deal-notes-summarizer,EMEA,Connected app config: write summary note to opportunity
+2024-01-12T14:13,revops-emea/deal-notes-summarizer,EMEA,Add trigger: send new opp notes to summarizer
+2024-01-13T18:47,revops-emea/deal-notes-summarizer,EMEA,Summarize opportunity notes into 3-bullet status
+2024-01-14T02:36,revops-emea/deal-notes-summarizer,EMEA,Summarize opportunity notes into 3-bullet status
+2024-01-16T06:03,revops-emea/deal-notes-summarizer,EMEA,Summarize opportunity notes into 3-bullet status
+2024-01-17T09:01,revops-emea/deal-notes-summarizer,EMEA,Add trigger: send new opp notes to summarizer
+2024-01-17T12:54,revops-emea/deal-notes-summarizer,EMEA,Fix duplicate summary notes on the same opportunity
+2024-01-18T15:04,revops-emea/deal-notes-summarizer,EMEA,Fix duplicate summary notes on the same opportunity
+2024-01-18T22:05,revops-emea/deal-notes-summarizer,EMEA,Fix duplicate summary notes on the same opportunity
+2024-01-19T13:32,revops-emea/deal-notes-summarizer,EMEA,Tests for opportunity notes summarizer
+2024-01-20T03:53,revops-emea/deal-notes-summarizer,EMEA,Retry and rate limit for notes summary job
+2024-01-20T05:43,revops-emea/deal-notes-summarizer,EMEA,Retry and rate limit for notes summary job
+2024-01-21T06:57,revops-emea/deal-notes-summarizer,EMEA,Tests for opportunity notes summarizer
+2024-01-22T04:54,revops-emea/deal-notes-summarizer,EMEA,Summarize opportunity notes into 3-bullet status
+2024-01-22T19:50,revops-emea/deal-notes-summarizer,EMEA,Summarize opportunity notes into 3-bullet status
+2024-01-23T12:01,revops-emea/deal-notes-summarizer,EMEA,Connected app config: write summary note to opportunity
+2024-01-23T19:46,revops-emea/deal-notes-summarizer,EMEA,Connected app config: write summary note to opportunity
+2024-01-24T04:19,revops-emea/deal-notes-summarizer,EMEA,Retry and rate limit for notes summary job
+2024-01-24T17:49,revops-emea/deal-notes-summarizer,EMEA,Connected app config: write summary note to opportunity
+2024-01-25T09:12,revops-emea/deal-notes-summarizer,EMEA,Connected app config: write summary note to opportunity
+2024-01-25T11:17,revops-emea/deal-notes-summarizer,EMEA,Connected app config: write summary note to opportunity
+2024-01-25T13:44,revops-emea/deal-notes-summarizer,EMEA,Retry and rate limit for notes summary job
+2024-01-26T22:33,revops-emea/deal-notes-summarizer,EMEA,Retry and rate limit for notes summary job
+2024-01-27T21:32,revops-emea/deal-notes-summarizer,EMEA,Tests for opportunity notes summarizer
+2024-01-28T00:32,revops-emea/deal-notes-summarizer,EMEA,Tests for opportunity notes summarizer
+2024-01-28T19:22,revops-emea/deal-notes-summarizer,EMEA,Retry and rate limit for notes summary job
+2024-01-31T10:56,revops-emea/deal-notes-summarizer,EMEA,Fix duplicate summary notes on the same opportunity
+2024-01-31T18:55,revops-emea/deal-notes-summarizer,EMEA,Fix duplicate summary notes on the same opportunity
+2024-01-31T19:16,revops-emea/deal-notes-summarizer,EMEA,Retry and rate limit for notes summary job
+2024-02-01T07:11,revops-emea/deal-notes-summarizer,EMEA,Fix duplicate summary notes on the same opportunity
+2024-02-03T10:30,revops-emea/deal-notes-summarizer,EMEA,Fix duplicate summary notes on the same opportunity
+2024-02-04T16:36,revops-emea/deal-notes-summarizer,EMEA,Retry and rate limit for notes summary job
+2024-02-06T01:58,revops-emea/deal-notes-summarizer,EMEA,Connected app config: write summary note to opportunity
+2024-02-06T07:05,revops-emea/deal-notes-summarizer,EMEA,Fix duplicate summary notes on the same opportunity
+2024-02-06T16:26,revops-emea/deal-notes-summarizer,EMEA,Connected app config: write summary note to opportunity
+2024-02-07T11:35,revops-emea/deal-notes-summarizer,EMEA,Connected app config: write summary note to opportunity
+2024-02-07T13:23,revops-emea/deal-notes-summarizer,EMEA,Connected app config: write summary note to opportunity
+2024-02-08T11:06,revops-emea/deal-notes-summarizer,EMEA,Tests for opportunity notes summarizer
+2024-02-09T04:45,revops-emea/deal-notes-summarizer,EMEA,Retry and rate limit for notes summary job
+2024-02-09T05:06,revops-emea/deal-notes-summarizer,EMEA,Connected app config: write summary note to opportunity
+2024-02-11T00:03,revops-emea/deal-notes-summarizer,EMEA,Summarize opportunity notes into 3-bullet status
+2024-02-11T18:50,revops-emea/deal-notes-summarizer,EMEA,Tests for opportunity notes summarizer
+2024-02-11T19:37,revops-emea/deal-notes-summarizer,EMEA,Retry and rate limit for notes summary job
+2024-02-12T07:05,revops-emea/deal-notes-summarizer,EMEA,Fix duplicate summary notes on the same opportunity
+2024-02-13T08:30,revops-emea/deal-notes-summarizer,EMEA,Connected app config: write summary note to opportunity
+2024-02-14T17:26,revops-emea/deal-notes-summarizer,EMEA,Retry and rate limit for notes summary job
+2024-02-15T18:53,revops-emea/deal-notes-summarizer,EMEA,Retry and rate limit for notes summary job
+2024-02-15T21:28,revops-emea/deal-notes-summarizer,EMEA,Retry and rate limit for notes summary job
+2024-02-16T07:50,revops-emea/deal-notes-summarizer,EMEA,Summarize opportunity notes into 3-bullet status
+2024-02-16T15:49,revops-emea/deal-notes-summarizer,EMEA,Connected app config: write summary note to opportunity
+2024-02-16T22:27,revops-emea/deal-notes-summarizer,EMEA,Summarize opportunity notes into 3-bullet status
+2024-02-17T18:34,revops-emea/deal-notes-summarizer,EMEA,Retry and rate limit for notes summary job
+2024-02-17T20:05,revops-emea/deal-notes-summarizer,EMEA,Tests for opportunity notes summarizer
+2024-02-18T02:51,revops-emea/deal-notes-summarizer,EMEA,Retry and rate limit for notes summary job
+2024-02-18T12:33,revops-emea/deal-notes-summarizer,EMEA,Tests for opportunity notes summarizer
+2024-02-23T04:18,revops-emea/deal-notes-summarizer,EMEA,Connected app config: write summary note to opportunity
+2024-02-23T21:01,revops-emea/deal-notes-summarizer,EMEA,Connected app config: write summary note to opportunity
+2024-02-24T01:51,revops-emea/deal-notes-summarizer,EMEA,Retry and rate limit for notes summary job
+2024-02-24T09:50,revops-emea/deal-notes-summarizer,EMEA,Fix duplicate summary notes on the same opportunity
+2024-02-25T09:07,revops-emea/deal-notes-summarizer,EMEA,Tests for opportunity notes summarizer
+2024-02-25T21:45,revops-emea/deal-notes-summarizer,EMEA,Fix duplicate summary notes on the same opportunity
+2024-02-28T07:50,revops-emea/deal-notes-summarizer,EMEA,Connected app config: write summary note to opportunity
+2024-02-29T17:18,revops-emea/deal-notes-summarizer,EMEA,Fix duplicate summary notes on the same opportunity
+2024-03-01T09:48,revops-emea/deal-notes-summarizer,EMEA,Connected app config: write summary note to opportunity
+2024-03-01T13:07,revops-emea/deal-notes-summarizer,EMEA,Tests for opportunity notes summarizer
+2024-03-12T23:25,salesops-nae/opp-summary-bot,NA East,Apex trigger pushes opportunity notes to summary API
+2024-03-13T02:32,salesops-nae/opp-summary-bot,NA East,Fix bot writing the same note twice
+2024-03-13T11:50,salesops-nae/opp-summary-bot,NA East,Apex trigger pushes opportunity notes to summary API
+2024-03-14T13:18,salesops-nae/opp-summary-bot,NA East,Opportunity summary bot tests
+2024-03-15T06:36,salesops-nae/opp-summary-bot,NA East,Retry logic and throttling for opportunity summary job
+2024-03-16T04:35,salesops-nae/opp-summary-bot,NA East,Connected app so the bot can post summary notes
+2024-03-16T21:40,salesops-nae/opp-summary-bot,NA East,Apex trigger pushes opportunity notes to summary API
+2024-03-17T09:38,salesops-nae/opp-summary-bot,NA East,Fix bot writing the same note twice
+2024-03-17T16:55,revops-emea/deal-notes-summarizer,EMEA,Fix duplicate summary notes on the same opportunity
+2024-03-18T05:33,salesops-nae/opp-summary-bot,NA East,Python summary of opportunity activity notes (3 bullets)
+2024-03-18T06:46,salesops-nae/opp-summary-bot,NA East,Apex trigger pushes opportunity notes to summary API
+2024-03-18T21:02,salesops-nae/opp-summary-bot,NA East,Connected app so the bot can post summary notes
+2024-03-20T19:05,salesops-nae/opp-summary-bot,NA East,Apex trigger pushes opportunity notes to summary API
+2024-03-22T11:03,salesops-nae/opp-summary-bot,NA East,Opportunity summary bot tests
+2024-03-23T09:19,salesops-nae/opp-summary-bot,NA East,Python summary of opportunity activity notes (3 bullets)
+2024-03-23T13:15,salesops-nae/opp-summary-bot,NA East,Python summary of opportunity activity notes (3 bullets)
+2024-03-24T08:22,salesops-nae/opp-summary-bot,NA East,Opportunity summary bot tests
+2024-03-24T17:54,salesops-nae/opp-summary-bot,NA East,Retry logic and throttling for opportunity summary job
+2024-03-25T01:00,salesops-nae/opp-summary-bot,NA East,Opportunity summary bot tests
+2024-03-25T11:26,salesops-nae/opp-summary-bot,NA East,Fix bot writing the same note twice
+2024-03-26T03:19,salesops-nae/opp-summary-bot,NA East,Connected app so the bot can post summary notes
+2024-03-26T13:54,salesops-nae/opp-summary-bot,NA East,Apex trigger pushes opportunity notes to summary API
+2024-03-27T04:20,revops-emea/deal-notes-summarizer,EMEA,Add trigger: send new opp notes to summarizer
+2024-03-27T12:53,salesops-nae/opp-summary-bot,NA East,Fix bot writing the same note twice
+2024-03-28T12:36,salesops-nae/opp-summary-bot,NA East,Opportunity summary bot tests
+2024-03-28T18:58,salesops-nae/opp-summary-bot,NA East,Connected app so the bot can post summary notes
+2024-03-29T05:16,salesops-nae/opp-summary-bot,NA East,Opportunity summary bot tests
+2024-03-30T09:17,salesops-nae/opp-summary-bot,NA East,Apex trigger pushes opportunity notes to summary API
+2024-03-30T11:46,salesops-nae/opp-summary-bot,NA East,Opportunity summary bot tests
+2024-03-31T15:48,salesops-nae/opp-summary-bot,NA East,Opportunity summary bot tests
+2024-04-01T13:01,salesops-nae/opp-summary-bot,NA East,Python summary of opportunity activity notes (3 bullets)
+2024-04-01T17:14,salesops-nae/opp-summary-bot,NA East,Fix bot writing the same note twice
+2024-04-02T13:35,salesops-nae/opp-summary-bot,NA East,Opportunity summary bot tests
+2024-04-02T15:35,salesops-nae/opp-summary-bot,NA East,Connected app so the bot can post summary notes
+2024-04-03T13:05,salesops-nae/opp-summary-bot,NA East,Apex trigger pushes opportunity notes to summary API
+2024-04-03T15:21,salesops-nae/opp-summary-bot,NA East,Fix bot writing the same note twice
+2024-04-04T00:20,salesops-nae/opp-summary-bot,NA East,Connected app so the bot can post summary notes
+2024-04-04T05:16,salesops-nae/opp-summary-bot,NA East,Retry logic and throttling for opportunity summary job
+2024-04-04T11:53,salesops-nae/opp-summary-bot,NA East,Apex trigger pushes opportunity notes to summary API
+2024-04-04T15:05,salesops-nae/opp-summary-bot,NA East,Opportunity summary bot tests
+2024-04-04T18:34,salesops-nae/opp-summary-bot,NA East,Opportunity summary bot tests
+2024-04-07T10:42,salesops-nae/opp-summary-bot,NA East,Retry logic and throttling for opportunity summary job
+2024-04-07T11:47,salesops-nae/opp-summary-bot,NA East,Fix bot writing the same note twice
+2024-04-08T13:28,salesops-nae/opp-summary-bot,NA East,Python summary of opportunity activity notes (3 bullets)
+2024-04-08T17:24,salesops-nae/opp-summary-bot,NA East,Opportunity summary bot tests
+2024-04-09T10:23,salesops-nae/opp-summary-bot,NA East,Fix bot writing the same note twice
+2024-04-09T14:24,salesops-nae/opp-summary-bot,NA East,Fix bot writing the same note twice
+2024-04-09T19:54,salesops-nae/opp-summary-bot,NA East,Opportunity summary bot tests
+2024-04-09T21:11,salesops-nae/opp-summary-bot,NA East,Fix bot writing the same note twice
+2024-04-10T18:25,salesops-nae/opp-summary-bot,NA East,Retry logic and throttling for opportunity summary job
+2024-04-11T23:27,salesops-nae/opp-summary-bot,NA East,Opportunity summary bot tests
+2024-04-13T18:00,salesops-nae/opp-summary-bot,NA East,Apex trigger pushes opportunity notes to summary API
+2024-04-13T18:02,salesops-nae/opp-summary-bot,NA East,Apex trigger pushes opportunity notes to summary API
+2024-04-14T21:33,salesops-nae/opp-summary-bot,NA East,Retry logic and throttling for opportunity summary job
+2024-04-15T05:15,salesops-nae/opp-summary-bot,NA East,Connected app so the bot can post summary notes
+2024-04-15T16:31,salesops-nae/opp-summary-bot,NA East,Opportunity summary bot tests
+2024-04-15T17:55,salesops-nae/opp-summary-bot,NA East,Connected app so the bot can post summary notes
+2024-04-15T19:17,salesops-nae/opp-summary-bot,NA East,Apex trigger pushes opportunity notes to summary API
+2024-04-16T05:50,salesops-nae/opp-summary-bot,NA East,Connected app so the bot can post summary notes
+2024-04-16T11:47,salesops-nae/opp-summary-bot,NA East,Connected app so the bot can post summary notes
+2024-04-17T06:03,salesops-nae/opp-summary-bot,NA East,Python summary of opportunity activity notes (3 bullets)
+2024-04-17T09:17,salesops-nae/opp-summary-bot,NA East,Opportunity summary bot tests
+2024-04-17T10:35,salesops-nae/opp-summary-bot,NA East,Python summary of opportunity activity notes (3 bullets)
+2024-04-18T04:10,salesops-nae/opp-summary-bot,NA East,Connected app so the bot can post summary notes
+2024-04-19T14:34,revops-emea/deal-notes-summarizer,EMEA,Add trigger: send new opp notes to summarizer
+2024-04-19T15:56,salesops-nae/opp-summary-bot,NA East,Fix bot writing the same note twice
+2024-04-20T20:25,salesops-nae/opp-summary-bot,NA East,Retry logic and throttling for opportunity summary job
+2024-04-20T20:47,salesops-nae/opp-summary-bot,NA East,Apex trigger pushes opportunity notes to summary API
+2024-04-21T11:32,revops-emea/deal-notes-summarizer,EMEA,Add trigger: send new opp notes to summarizer
+2024-04-21T18:22,salesops-nae/opp-summary-bot,NA East,Apex trigger pushes opportunity notes to summary API
+2024-04-21T19:42,salesops-nae/opp-summary-bot,NA East,Connected app so the bot can post summary notes
+2024-04-22T08:44,salesops-nae/opp-summary-bot,NA East,Connected app so the bot can post summary notes
+2024-04-23T12:51,salesops-nae/opp-summary-bot,NA East,Opportunity summary bot tests
+2024-04-23T17:45,salesops-nae/opp-summary-bot,NA East,Connected app so the bot can post summary notes
+2024-04-24T01:26,salesops-nae/opp-summary-bot,NA East,Fix bot writing the same note twice
+2024-04-24T17:46,salesops-nae/opp-summary-bot,NA East,Retry logic and throttling for opportunity summary job
+2024-04-24T18:14,salesops-nae/opp-summary-bot,NA East,Connected app so the bot can post summary notes
+2024-04-25T02:56,salesops-nae/opp-summary-bot,NA East,Python summary of opportunity activity notes (3 bullets)
+2024-04-25T19:11,salesops-nae/opp-summary-bot,NA East,Opportunity summary bot tests
+2024-04-25T19:39,salesops-nae/opp-summary-bot,NA East,Connected app so the bot can post summary notes
+2024-04-26T09:02,salesops-nae/opp-summary-bot,NA East,Opportunity summary bot tests
+2024-04-26T20:31,salesops-nae/opp-summary-bot,NA East,Opportunity summary bot tests
+2024-04-27T11:20,salesops-nae/opp-summary-bot,NA East,Retry logic and throttling for opportunity summary job
+2024-04-28T00:11,salesops-nae/opp-summary-bot,NA East,Python summary of opportunity activity notes (3 bullets)
+2024-04-28T04:52,salesops-nae/opp-summary-bot,NA East,Fix bot writing the same note twice
+2024-04-28T05:40,salesops-nae/opp-summary-bot,NA East,Fix bot writing the same note twice
+2024-04-29T11:07,salesops-nae/opp-summary-bot,NA East,Retry logic and throttling for opportunity summary job
+2024-04-29T20:10,salesops-nae/opp-summary-bot,NA East,Python summary of opportunity activity notes (3 bullets)
+2024-05-13T14:31,salesops-nae/opp-summary-bot,NA East,Python summary of opportunity activity notes (3 bullets)
+2024-05-13T16:33,revops-emea/deal-notes-summarizer,EMEA,Summarize opportunity notes into 3-bullet status
+2024-05-14T20:43,revops-emea/deal-notes-summarizer,EMEA,Connected app config: write summary note to opportunity
+2024-05-16T13:44,salesops-nae/opp-summary-bot,NA East,Opportunity summary bot tests
+2024-05-19T11:50,revops-emea/deal-notes-summarizer,EMEA,Add trigger: send new opp notes to summarizer
+2024-05-25T00:56,salesops-nae/opp-summary-bot,NA East,Python summary of opportunity activity notes (3 bullets)
+2024-05-26T05:31,revops-emea/deal-notes-summarizer,EMEA,Fix duplicate summary notes on the same opportunity
+2024-05-27T13:39,revops-emea/deal-notes-summarizer,EMEA,Add trigger: send new opp notes to summarizer
+2024-06-04T11:33,revops-emea/deal-notes-summarizer,EMEA,Summarize opportunity notes into 3-bullet status
+2024-06-21T08:44,revops-emea/deal-notes-summarizer,EMEA,Add trigger: send new opp notes to summarizer
+2024-06-24T10:29,revops-emea/deal-notes-summarizer,EMEA,Connected app config: write summary note to opportunity
+2024-07-04T17:54,revops-emea/deal-notes-summarizer,EMEA,Add trigger: send new opp notes to summarizer
+2024-07-08T09:50,salesops-nae/opp-summary-bot,NA East,Apex trigger pushes opportunity notes to summary API
+2024-07-10T11:38,revops-emea/deal-notes-summarizer,EMEA,Connected app config: write summary note to opportunity
+2024-07-21T12:47,revops-emea/deal-notes-summarizer,EMEA,Add trigger: send new opp notes to summarizer
+2024-07-27T20:00,salesops-nae/opp-summary-bot,NA East,Apex trigger pushes opportunity notes to summary API
+2024-08-09T19:17,salesops-nae/opp-summary-bot,NA East,Connected app so the bot can post summary notes
+2024-08-19T12:57,revops-emea/deal-notes-summarizer,EMEA,Tests for opportunity notes summarizer
+2024-09-04T22:41,revops-emea/deal-notes-summarizer,EMEA,Summarize opportunity notes into 3-bullet status
+2024-09-04T23:58,revops-emea/deal-notes-summarizer,EMEA,Tests for opportunity notes summarizer
+2024-09-11T17:28,salesops-nae/opp-summary-bot,NA East,Python summary of opportunity activity notes (3 bullets)
+2024-09-21T12:23,salesops-nae/opp-summary-bot,NA East,Python summary of opportunity activity notes (3 bullets)
+2024-09-27T05:41,salesops-nae/opp-summary-bot,NA East,Retry logic and throttling for opportunity summary job
+2024-10-09T21:46,revops-emea/deal-notes-summarizer,EMEA,Summarize opportunity notes into 3-bullet status
+2024-10-16T03:59,salesops-nae/opp-summary-bot,NA East,Apex trigger pushes opportunity notes to summary API
+2024-10-16T14:29,salesops-nae/opp-summary-bot,NA East,Apex trigger pushes opportunity notes to summary API
+2024-11-11T08:09,revops-emea/deal-notes-summarizer,EMEA,Retry and rate limit for notes summary job
+2024-11-11T09:42,salesops-nae/opp-summary-bot,NA East,Connected app so the bot can post summary notes
+2024-11-11T20:57,salesops-nae/opp-summary-bot,NA East,Retry logic and throttling for opportunity summary job
+2024-11-17T17:18,revops-emea/deal-notes-summarizer,EMEA,Add trigger: send new opp notes to summarizer
+2024-11-17T22:13,revops-emea/deal-notes-summarizer,EMEA,Retry and rate limit for notes summary job
+2024-11-27T12:54,salesops-nae/opp-summary-bot,NA East,Python summary of opportunity activity notes (3 bullets)
+2024-12-03T01:32,revops-emea/deal-notes-summarizer,EMEA,Add trigger: send new opp notes to summarizer
+2024-12-08T21:23,revops-emea/deal-notes-summarizer,EMEA,Summarize opportunity notes into 3-bullet status
+2024-12-12T12:42,revops-emea/deal-notes-summarizer,EMEA,Tests for opportunity notes summarizer
+2024-12-14T04:15,salesops-nae/opp-summary-bot,NA East,Apex trigger pushes opportunity notes to summary API

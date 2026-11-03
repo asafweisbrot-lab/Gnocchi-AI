@@ -83,30 +83,30 @@ inv_meeting_prep,APAC,2024-09,4,0,0
 inv_meeting_prep,APAC,2024-10,4,0,0
 inv_meeting_prep,APAC,2024-11,4,0,0
 inv_meeting_prep,APAC,2024-12,4,0,0
-inv_chatgpt_ent,EMEA,2024-01,12,12,271
-inv_chatgpt_ent,EMEA,2024-02,12,12,253
-inv_chatgpt_ent,EMEA,2024-03,12,12,234
-inv_chatgpt_ent,EMEA,2024-04,12,11,216
-inv_chatgpt_ent,EMEA,2024-05,12,10,198
-inv_chatgpt_ent,EMEA,2024-06,12,9,179
-inv_chatgpt_ent,EMEA,2024-07,12,9,161
-inv_chatgpt_ent,EMEA,2024-08,12,8,142
-inv_chatgpt_ent,EMEA,2024-09,12,7,124
-inv_chatgpt_ent,EMEA,2024-10,12,6,105
-inv_chatgpt_ent,EMEA,2024-11,12,5,87
-inv_chatgpt_ent,EMEA,2024-12,12,4,68
+inv_chatgpt_ent,EMEA,2024-01,12,12,328
+inv_chatgpt_ent,EMEA,2024-02,12,12,308
+inv_chatgpt_ent,EMEA,2024-03,12,12,237
+inv_chatgpt_ent,EMEA,2024-04,12,12,221
+inv_chatgpt_ent,EMEA,2024-05,12,11,203
+inv_chatgpt_ent,EMEA,2024-06,12,10,183
+inv_chatgpt_ent,EMEA,2024-07,12,9,165
+inv_chatgpt_ent,EMEA,2024-08,12,8,145
+inv_chatgpt_ent,EMEA,2024-09,12,7,126
+inv_chatgpt_ent,EMEA,2024-10,12,6,108
+inv_chatgpt_ent,EMEA,2024-11,12,5,91
+inv_chatgpt_ent,EMEA,2024-12,12,4,72
 inv_chatgpt_ent,NA East,2024-01,12,12,271
 inv_chatgpt_ent,NA East,2024-02,12,12,253
-inv_chatgpt_ent,NA East,2024-03,12,12,234
-inv_chatgpt_ent,NA East,2024-04,12,11,216
-inv_chatgpt_ent,NA East,2024-05,12,10,198
-inv_chatgpt_ent,NA East,2024-06,12,9,179
-inv_chatgpt_ent,NA East,2024-07,12,9,161
-inv_chatgpt_ent,NA East,2024-08,12,8,142
-inv_chatgpt_ent,NA East,2024-09,12,7,124
-inv_chatgpt_ent,NA East,2024-10,12,6,105
-inv_chatgpt_ent,NA East,2024-11,12,5,87
-inv_chatgpt_ent,NA East,2024-12,12,4,68
+inv_chatgpt_ent,NA East,2024-03,12,12,274
+inv_chatgpt_ent,NA East,2024-04,12,12,287
+inv_chatgpt_ent,NA East,2024-05,12,11,203
+inv_chatgpt_ent,NA East,2024-06,12,10,181
+inv_chatgpt_ent,NA East,2024-07,12,9,164
+inv_chatgpt_ent,NA East,2024-08,12,8,145
+inv_chatgpt_ent,NA East,2024-09,12,7,129
+inv_chatgpt_ent,NA East,2024-10,12,6,108
+inv_chatgpt_ent,NA East,2024-11,12,5,92
+inv_chatgpt_ent,NA East,2024-12,12,4,73
 inv_chatgpt_ent,NA West,2024-01,10,10,226
 inv_chatgpt_ent,NA West,2024-02,10,10,211
 inv_chatgpt_ent,NA West,2024-03,10,10,195
@@ -167,27 +167,3 @@ inv_dealsum_nae,NA East,2024-09,1,1,12
 inv_dealsum_nae,NA East,2024-10,1,1,11
 inv_dealsum_nae,NA East,2024-11,1,1,14
 inv_dealsum_nae,NA East,2024-12,1,1,8
-inv_coding_asst,EMEA,2024-01,2,2,57
-inv_coding_asst,EMEA,2024-02,2,2,55
-inv_coding_asst,EMEA,2024-03,2,1,3
-inv_coding_asst,EMEA,2024-04,2,1,5
-inv_coding_asst,EMEA,2024-05,2,1,5
-inv_coding_asst,EMEA,2024-06,2,1,4
-inv_coding_asst,EMEA,2024-07,2,1,4
-inv_coding_asst,EMEA,2024-08,2,1,3
-inv_coding_asst,EMEA,2024-09,2,1,2
-inv_coding_asst,EMEA,2024-10,2,1,3
-inv_coding_asst,EMEA,2024-11,2,1,4
-inv_coding_asst,EMEA,2024-12,2,1,4
-inv_coding_asst,NA East,2024-01,2,0,0
-inv_coding_asst,NA East,2024-02,2,0,0
-inv_coding_asst,NA East,2024-03,2,2,40
-inv_coding_asst,NA East,2024-04,2,2,71
-inv_coding_asst,NA East,2024-05,2,1,5
-inv_coding_asst,NA East,2024-06,2,1,2
-inv_coding_asst,NA East,2024-07,2,1,3
-inv_coding_asst,NA East,2024-08,2,1,3
-inv_coding_asst,NA East,2024-09,2,1,5
-inv_coding_asst,NA East,2024-10,2,1,3
-inv_coding_asst,NA East,2024-11,2,1,5
-inv_coding_asst,NA East,2024-12,2,1,5

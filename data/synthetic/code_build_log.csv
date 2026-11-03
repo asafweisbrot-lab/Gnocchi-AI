@@ -1,3 +1,3 @@
 repo,team,deploys_identity,start,deployed_at,engineer_days,commits,first_commit
-revops-emea/deal-notes-summarizer,EMEA,svc_dealsum_emea,2024-01-08,2024-03-01,34,104,2024-01-08
+revops-emea/deal-notes-summarizer,EMEA,svc_dealsum_emea,2024-01-08,2024-03-01,34,98,2024-01-08
 salesops-nae/opp-summary-bot,NA East,svc_dealsum_nae,2024-03-11,2024-05-01,29,99,2024-03-12
