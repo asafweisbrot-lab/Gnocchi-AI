@@ -4,3 +4,4 @@ inv_meeting_prep,Meeting-prep assistant,bought,assisting,sso_user,38000,EMEA;NA 
 inv_chatgpt_ent,ChatGPT Enterprise (sales seats),bought,standalone,sso_user,54000,EMEA;NA East;NA West;LATAM;APAC
 inv_dealsum_emea,Deal-summary bot (EMEA build),built,acting,svc_dealsum_emea,18000,EMEA
 inv_dealsum_nae,Deal-summary bot (NA East build),built,acting,svc_dealsum_nae,22000,NA East
+inv_coding_asst,Coding assistant (RevOps builders),bought,assisting,sso_user,9600,EMEA;NA East

@@ -40,10 +40,17 @@
       "inv_dealsum_nae"
     ],
     "assisting": [
-      "inv_meeting_prep"
+      "inv_meeting_prep",
+      "inv_coding_asst"
     ],
     "standalone": [
       "inv_chatgpt_ent"
-    ]
+    ],
+    "build_lineage": {
+      "revops-emea/deal-notes-summarizer": "inv_dealsum_emea",
+      "salesops-nae/opp-summary-bot": "inv_dealsum_nae"
+    },
+    "duplicate_build": "same templates in both repos",
+    "day_rate": 700
   }
 }

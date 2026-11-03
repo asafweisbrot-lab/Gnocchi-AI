@@ -1,4 +1,46 @@
 {
+ "lineage": [
+  {
+   "repo": "revops-emea/deal-notes-summarizer",
+   "team": "EMEA",
+   "bot_id": "inv_dealsum_emea",
+   "bot": "Deal-summary bot (EMEA build)",
+   "identity": "svc_dealsum_emea",
+   "sessions": 149,
+   "build_sessions": 112,
+   "first_commit": "2024-01-08",
+   "deployed_at": "2024-03-01",
+   "commits": 104,
+   "engineer_days": 34,
+   "build_cost": 23800,
+   "records": 147,
+   "run_cost": 18000
+  },
+  {
+   "repo": "salesops-nae/opp-summary-bot",
+   "team": "NA East",
+   "bot_id": "inv_dealsum_nae",
+   "bot": "Deal-summary bot (NA East build)",
+   "identity": "svc_dealsum_nae",
+   "sessions": 142,
+   "build_sessions": 111,
+   "first_commit": "2024-03-12",
+   "deployed_at": "2024-05-01",
+   "commits": 99,
+   "engineer_days": 29,
+   "build_cost": 20300,
+   "records": 99,
+   "run_cost": 22000
+  }
+ ],
+ "duplicate": {
+  "later": "salesops-nae/opp-summary-bot",
+  "earlier": "revops-emea/deal-notes-summarizer",
+  "share_near_identical": 0.415,
+  "mean_best": 0.34,
+  "mean_baseline": 0.07,
+  "wasted_cost": 20300
+ },
  "processed": [
   {
    "source": "CRM closed-won deals, 2023\u20132024",
@@ -33,31 +75,37 @@
   {
    "source": "AI telemetry (session text)",
    "kind": "syn",
-   "rows": 8595,
+   "rows": 8886,
    "unit": "sessions"
   },
   {
    "source": "AI admin and usage reports",
    "kind": "syn",
-   "rows": 168,
+   "rows": 192,
    "unit": "rows"
   },
   {
    "source": "AI investment register",
    "kind": "syn",
-   "rows": 5,
+   "rows": 6,
    "unit": "investments"
+  },
+  {
+   "source": "Code repos and CI deploy log",
+   "kind": "syn",
+   "rows": 203,
+   "unit": "commits"
   }
  ],
  "pipeline": [
   [
    "Discover",
-   "5 AI investments",
-   "3 direct, 2 indirect"
+   "6 AI investments",
+   "3 direct, 3 indirect, 2 builds"
   ],
   [
    "Classify",
-   "8,595 sessions",
+   "8,886 sessions",
    "7 work categories"
   ],
   [
@@ -92,8 +140,8 @@
   ],
   [
    "Conclude",
-   "$228K AI spend",
-   "4 decisions"
+   "$238K AI spend",
+   "5 decisions"
   ]
  ],
  "classify": {
@@ -141,12 +189,12 @@
     "mode": "indirect_untraced",
     "shares": {
      "Research": 0.135,
-     "Writing": 0.333,
-     "Analysis": 0.099,
-     "Strategy": 0.082,
-     "Development": 0.071,
-     "Summarization": 0.118,
-     "Admin": 0.161
+     "Writing": 0.334,
+     "Analysis": 0.1,
+     "Strategy": 0.081,
+     "Development": 0.072,
+     "Summarization": 0.117,
+     "Admin": 0.162
     }
    },
    {
@@ -176,6 +224,20 @@
      "Summarization": 1.0,
      "Admin": 0.0
     }
+   },
+   {
+    "id": "inv_coding_asst",
+    "n": 291,
+    "mode": "indirect_traced",
+    "shares": {
+     "Research": 0.0,
+     "Writing": 0.0,
+     "Analysis": 0.0,
+     "Strategy": 0.0,
+     "Development": 1.0,
+     "Summarization": 0.0,
+     "Admin": 0.0
+    }
    }
   ],
   "by_mode": {
@@ -193,47 +255,48 @@
     "Writing": 0,
     "Analysis": 0,
     "Strategy": 0,
-    "Development": 0,
+    "Development": 291,
     "Summarization": 0,
     "Admin": 0
    },
    "indirect_untraced": {
-    "Research": 1080,
-    "Writing": 2658,
-    "Analysis": 793,
-    "Strategy": 651,
-    "Development": 569,
-    "Summarization": 941,
-    "Admin": 1285
+    "Research": 1075,
+    "Writing": 2661,
+    "Analysis": 796,
+    "Strategy": 646,
+    "Development": 573,
+    "Summarization": 930,
+    "Admin": 1296
    }
   },
   "tokens": {
-   "Research": 1870947,
-   "Writing": 2689685,
-   "Analysis": 718623,
-   "Strategy": 588461,
-   "Development": 515770,
-   "Summarization": 1380659,
-   "Admin": 1154544
+   "Research": 1868035,
+   "Writing": 2686296,
+   "Analysis": 722164,
+   "Strategy": 585052,
+   "Development": 1515550,
+   "Summarization": 1369352,
+   "Admin": 1166967
   },
   "aimed": {
-   "Research": 0.595,
-   "Writing": 0.242,
-   "Analysis": 0.322,
-   "Strategy": 0.352,
+   "Research": 0.588,
+   "Writing": 0.244,
+   "Analysis": 0.329,
+   "Strategy": 0.364,
    "Development": 0.0,
    "Summarization": 0.0,
    "Admin": 0.0
   },
   "agreement": 1.0,
+  "agreement_text_only": 0.992,
   "examples": {
-   "Research": "Give me background on Coastal Ports Authority's industry and recent news before the meeting.",
-   "Writing": "Polish my message to finance about an expense report correction.",
+   "Research": "What does Metro Water do, how big are they, and who are their main competitors?",
+   "Writing": "Draft a short note to the team about the quarterly offsite logistics.",
    "Analysis": "Which segments have the longest sales cycle in this export of closed deals, and what correlates with it?",
-   "Strategy": "Outline a territory strategy for hitting our new-logo bookings target with fewer reps.",
-   "Development": "Write a Python script to dedupe the lead export CSV and normalize phone numbers.",
+   "Strategy": "Develop a competitive strategy to win the Pinecrest Logistics tender against two incumbents.",
+   "Development": "Debug this Excel macro that merges the weekly forecast sheets.",
    "Summarization": "Turn the notes from our weekly sales sync into a short recap.",
-   "Admin": "Convert this table into bullet points."
+   "Admin": "Explain the difference between a pivot table and a lookup."
   }
  },
  "open_weights": {
@@ -291,72 +354,82 @@
    {
     "id": "inv_chatgpt_ent",
     "category": "Writing",
-    "sessions": 2658,
-    "tokens": 2389136,
+    "sessions": 2661,
+    "tokens": 2385747,
     "mode": "indirect_untraced",
-    "spend": 17993,
+    "spend": 18014,
     "verdict": "Not ready",
     "why": "Routine, but no record outcome to check a swap against"
    },
    {
     "id": "inv_chatgpt_ent",
     "category": "Admin",
-    "sessions": 1285,
-    "tokens": 1154544,
+    "sessions": 1296,
+    "tokens": 1166967,
     "mode": "indirect_untraced",
-    "spend": 8699,
+    "spend": 8773,
     "verdict": "Not ready",
     "why": "Routine, but no record outcome to check a swap against"
    },
    {
     "id": "inv_chatgpt_ent",
     "category": "Research",
-    "sessions": 1080,
-    "tokens": 973407,
+    "sessions": 1075,
+    "tokens": 970495,
     "mode": "indirect_untraced",
-    "spend": 7311,
+    "spend": 7277,
     "verdict": "Not ready",
     "why": "Routine, but no record outcome to check a swap against"
    },
    {
     "id": "inv_chatgpt_ent",
     "category": "Summarization",
-    "sessions": 941,
-    "tokens": 840177,
+    "sessions": 930,
+    "tokens": 828870,
     "mode": "indirect_untraced",
-    "spend": 6370,
+    "spend": 6296,
     "verdict": "Not ready",
     "why": "Routine, but no record outcome to check a swap against"
    },
    {
-    "id": "inv_chatgpt_ent",
+    "id": "inv_coding_asst",
     "category": "Development",
-    "sessions": 569,
-    "tokens": 515770,
-    "mode": "indirect_untraced",
-    "spend": 3852,
-    "verdict": "Not ready",
-    "why": "Routine, but no record outcome to check a swap against"
+    "sessions": 291,
+    "tokens": 999473,
+    "mode": "indirect_traced",
+    "spend": 9600,
+    "verdict": "Keep on frontier model",
+    "why": "Open-ended reasoning or code; low volume"
    },
    {
     "id": "inv_chatgpt_ent",
     "category": "Analysis",
-    "sessions": 793,
-    "tokens": 718623,
+    "sessions": 796,
+    "tokens": 722164,
     "mode": "indirect_untraced",
-    "spend": 5368,
+    "spend": 5388,
     "verdict": "Keep on frontier model",
-    "why": "Open-ended reasoning; low volume"
+    "why": "Open-ended reasoning or code; low volume"
    },
    {
     "id": "inv_chatgpt_ent",
     "category": "Strategy",
-    "sessions": 651,
-    "tokens": 588461,
+    "sessions": 646,
+    "tokens": 585052,
     "mode": "indirect_untraced",
-    "spend": 4407,
+    "spend": 4373,
     "verdict": "Keep on frontier model",
-    "why": "Open-ended reasoning; low volume"
+    "why": "Open-ended reasoning or code; low volume"
+   },
+   {
+    "id": "inv_chatgpt_ent",
+    "category": "Development",
+    "sessions": 573,
+    "tokens": 516077,
+    "mode": "indirect_untraced",
+    "spend": 3879,
+    "verdict": "Keep on frontier model",
+    "why": "Open-ended reasoning or code; low volume"
    }
   ],
   "in_scope": 156000,
@@ -372,17 +445,17 @@
    {
     "item": "Workloads classified by purpose",
     "status": "done",
-    "detail": "8,595 sessions in 7 categories"
+    "detail": "8,886 sessions in 7 categories"
    },
    {
     "item": "Outcome baseline to re-test a swap",
     "status": "partial",
-    "detail": "$134K of $228K spend has a proven effect"
+    "detail": "$134K of $238K spend has a proven effect"
    },
    {
     "item": "Record-linked sessions (evaluation set)",
     "status": "partial",
-    "detail": "618 sessions (7%) are tied to CRM records"
+    "detail": "909 sessions (10%) are tied to CRM records"
    },
    {
     "item": "Hosting and data policy for an open model",
@@ -401,8 +474,8 @@
    "2024": 695
   },
   "events": 12148,
-  "sessions": 8595,
-  "investments": 5,
+  "sessions": 8886,
+  "investments": 6,
   "teams": [
    "EMEA",
    "NA East",
@@ -472,6 +545,18 @@
     "identity": "svc_dealsum_nae",
     "cost": 22000,
     "teams": [
+     "NA East"
+    ]
+   },
+   {
+    "id": "inv_coding_asst",
+    "name": "Coding assistant (RevOps builders)",
+    "kind": "bought",
+    "ai_type": "assisting",
+    "identity": "sso_user",
+    "cost": 9600,
+    "teams": [
+     "EMEA",
      "NA East"
     ]
    }
@@ -598,7 +683,7 @@
     "record_ids": "deal_001545",
     "writes": "Activity (Task)",
     "tokens": 2052,
-    "prompt": "Draft a short intro message for a new inbound lead from Coastal Ports Authority who requested a demo yesterday."
+    "prompt": "Write a first-touch email to the head of security operations at Pinecrest Logistics about a coming tender. Keep it under 120 words with one clear ask."
    },
    {
     "session_id": "S-000274",
@@ -609,18 +694,18 @@
     "record_ids": "deal_001931",
     "writes": "Doc linked to opportunity",
     "tokens": 5831,
-    "prompt": "Build a one-page prep brief for my customer meeting with the CIO at Lakeside University, including what they care about."
+    "prompt": "Build a one-page prep brief for my customer meeting with the IT director at Northgate Transit, including what they care about."
    },
    {
-    "session_id": "S-001604",
+    "session_id": "S-001152",
     "ts": "2024-01-01T08:00",
     "investment_id": "inv_chatgpt_ent",
     "identity": "sso_user",
-    "team": "APAC",
+    "team": "EMEA",
     "record_ids": "",
     "writes": "none",
-    "tokens": 1303,
-    "prompt": "Convert this table into bullet points."
+    "tokens": 1226,
+    "prompt": "Turn the notes from our weekly sales sync into a short recap."
    },
    {
     "session_id": "S-000405",
@@ -631,7 +716,7 @@
     "record_ids": "deal_001743",
     "writes": "Note on opportunity",
     "tokens": 2727,
-    "prompt": "Condense the activity notes for the Bayline Energy deal into three bullets."
+    "prompt": "Summarize the latest notes on the Lakeside University opportunity into a status line."
    },
    {
     "session_id": "S-000581",
@@ -642,7 +727,18 @@
     "record_ids": "deal_001081",
     "writes": "Note on opportunity",
     "tokens": 2289,
-    "prompt": "Condense the activity notes for the Summit Retail deal into three bullets."
+    "prompt": "Condense the activity notes for the Bayline Energy deal into three bullets."
+   },
+   {
+    "session_id": "S-000704",
+    "ts": "2024-01-08T11:00",
+    "investment_id": "inv_coding_asst",
+    "identity": "sso_user",
+    "team": "EMEA",
+    "record_ids": "revops-emea/deal-notes-summarizer",
+    "writes": "Commit to repo",
+    "tokens": 3266,
+    "prompt": "Debug why the summarizer posts duplicate notes on the same opportunity."
    }
   ]
  },
@@ -714,7 +810,7 @@
    "id": "inv_ai_sdr",
    "level": "1 \u00b7 Closed triangle",
    "why": "Writes first-touch activity (first response) records; 100% of its sessions are aimed at that driver, which moves the cycle key result",
-   "aligned": 0.78
+   "aligned": 0.784
   },
   {
    "id": "inv_meeting_prep",
@@ -726,7 +822,7 @@
    "id": "inv_chatgpt_ent",
    "level": "3 \u00b7 OKR only / unaligned",
    "why": "No record trace; 20% of sessions match a driver or key result, the rest serve no stated goal",
-   "aligned": 0.203
+   "aligned": 0.204
   },
   {
    "id": "inv_dealsum_emea",
@@ -738,6 +834,12 @@
    "id": "inv_dealsum_nae",
    "level": "2 \u00b7 Records only",
    "why": "Writes notes on opportunities, an element no driver depends on; 100% of its sessions match no driver or key result",
+   "aligned": 0.0
+  },
+  {
+   "id": "inv_coding_asst",
+   "level": "2 \u00b7 Via what it built",
+   "why": "Writes code, not CRM records: its sessions commit to the repos that deploy the deal-summary bots, so its impact is theirs (step 7)",
    "aligned": 0.0
   }
  ],
@@ -799,7 +901,7 @@
     "id": "inv_ai_sdr",
     "n": 273,
     "shares": {
-     "D1": 0.78,
+     "D1": 0.784,
      "D2": 0.0,
      "D3": 0.0,
      "D4": 0.0,
@@ -809,7 +911,7 @@
      "KR3": 0.0,
      "KR4": 0.0,
      "KR5": 0.0,
-     "none": 0.22
+     "none": 0.216
     }
    },
    {
@@ -834,16 +936,16 @@
     "n": 7977,
     "shares": {
      "D1": 0.0,
-     "D2": 0.07,
+     "D2": 0.069,
      "D3": 0.0,
      "D4": 0.073,
      "D5": 0.0,
      "KR1": 0.0,
      "KR2": 0.029,
-     "KR3": 0.032,
+     "KR3": 0.033,
      "KR4": 0.0,
      "KR5": 0.0,
-     "none": 0.797
+     "none": 0.796
     }
    },
    {
@@ -879,12 +981,29 @@
      "KR5": 0.0,
      "none": 1.0
     }
+   },
+   {
+    "id": "inv_coding_asst",
+    "n": 291,
+    "shares": {
+     "D1": 0.0,
+     "D2": 0.0,
+     "D3": 0.0,
+     "D4": 0.0,
+     "D5": 0.0,
+     "KR1": 0.0,
+     "KR2": 0.0,
+     "KR3": 0.0,
+     "KR4": 0.0,
+     "KR5": 0.0,
+     "none": 1.0
+    }
    }
   ],
   "examples": [
    {
     "id": "inv_ai_sdr",
-    "prompt": "Find the decision makers at Bayline Energy and their likely priorities before I reach out.",
+    "prompt": "Find the decision makers at Summit Retail and their likely priorities before I reach out.",
     "writes": "none",
     "top": [
      {
@@ -906,7 +1025,7 @@
    },
    {
     "id": "inv_meeting_prep",
-    "prompt": "Before the meeting with Metro Water, summarize their account history and the questions to ask.",
+    "prompt": "Build a one-page prep brief for my customer meeting with the facilities manager at Pinecrest Logistics, including what they care about.",
     "writes": "Doc linked to opportunity",
     "top": [
      {
@@ -915,14 +1034,14 @@
       "score": 0.22
      },
      {
-      "target": "First-touch activity (first response)",
-      "kind": "driver",
-      "score": 0.03
-     },
-     {
       "target": "Customer meetings",
       "kind": "driver",
-      "score": 0.02
+      "score": 0.1
+     },
+     {
+      "target": "Raise customer satisfaction with onboarding",
+      "kind": "key result",
+      "score": 0.06
      }
     ]
    },
@@ -950,6 +1069,28 @@
    },
    {
     "id": "inv_dealsum_emea",
+    "prompt": "Summarize the latest notes on the Lakeside University opportunity into a status line.",
+    "writes": "Note on opportunity",
+    "top": [
+     {
+      "target": "First-touch activity (first response)",
+      "kind": "driver",
+      "score": 0.0
+     },
+     {
+      "target": "Meeting-prep brief attached",
+      "kind": "driver",
+      "score": 0.0
+     },
+     {
+      "target": "Solutions engineer before Proposal",
+      "kind": "driver",
+      "score": 0.0
+     }
+    ]
+   },
+   {
+    "id": "inv_dealsum_nae",
     "prompt": "Condense the activity notes for the Bayline Energy deal into three bullets.",
     "writes": "Note on opportunity",
     "top": [
@@ -971,17 +1112,17 @@
     ]
    },
    {
-    "id": "inv_dealsum_nae",
-    "prompt": "Condense the activity notes for the Summit Retail deal into three bullets.",
-    "writes": "Note on opportunity",
+    "id": "inv_coding_asst",
+    "prompt": "Debug why the summarizer posts duplicate notes on the same opportunity.",
+    "writes": "Commit to repo",
     "top": [
      {
-      "target": "Book $12.2M in total bookings in 2024",
-      "kind": "key result",
-      "score": 0.02
+      "target": "First-touch activity (first response)",
+      "kind": "driver",
+      "score": 0.0
      },
      {
-      "target": "First-touch activity (first response)",
+      "target": "Meeting-prep brief attached",
       "kind": "driver",
       "score": 0.0
      },
@@ -995,10 +1136,11 @@
   ],
   "agreement": {
    "Analysis: pipeline and cycle": 1.0,
+   "Development: build deal-summary bot": 1.0,
    "Development: formulas and scripts": 1.0,
    "Drafting: internal email": 1.0,
    "Drafting: proposal text": 1.0,
-   "Outreach: first touch": 0.636,
+   "Outreach: first touch": 0.642,
    "Personal productivity": 1.0,
    "Research: account and contact": 1.0,
    "Research: account background": 1.0,
@@ -1031,70 +1173,70 @@
     "sessions": 6,
     "active_share": 0.5,
     "records": 3,
-    "aimed": 1.0
+    "aimed": 0.83
    },
    {
     "m": 4,
     "sessions": 28,
     "active_share": 0.5,
     "records": 14,
-    "aimed": 0.71
+    "aimed": 0.93
    },
    {
     "m": 5,
     "sessions": 8,
     "active_share": 0.5,
     "records": 4,
-    "aimed": 1.0
+    "aimed": 0.62
    },
    {
     "m": 6,
     "sessions": 22,
     "active_share": 1.0,
     "records": 11,
-    "aimed": 0.91
+    "aimed": 0.82
    },
    {
     "m": 7,
     "sessions": 46,
     "active_share": 1.0,
     "records": 23,
-    "aimed": 0.76
+    "aimed": 0.85
    },
    {
     "m": 8,
     "sessions": 46,
     "active_share": 1.0,
     "records": 23,
-    "aimed": 0.78
+    "aimed": 0.76
    },
    {
     "m": 9,
     "sessions": 50,
     "active_share": 1.0,
     "records": 25,
-    "aimed": 0.88
+    "aimed": 0.82
    },
    {
     "m": 10,
     "sessions": 27,
     "active_share": 1.0,
     "records": 22,
-    "aimed": 0.74
+    "aimed": 0.78
    },
    {
     "m": 11,
     "sessions": 20,
     "active_share": 1.0,
     "records": 20,
-    "aimed": 0.65
+    "aimed": 0.5
    },
    {
     "m": 12,
     "sessions": 20,
     "active_share": 1.0,
     "records": 20,
-    "aimed": 0.55
+    "aimed": 0.7
    }
   ],
   "inv_meeting_prep": [
@@ -1189,28 +1331,28 @@
     "sessions": 1061,
     "active_share": 1.0,
     "records": 0,
-    "aimed": 0.23
+    "aimed": 0.22
    },
    {
     "m": 2,
     "sessions": 991,
     "active_share": 1.0,
     "records": 0,
-    "aimed": 0.21
+    "aimed": 0.19
    },
    {
     "m": 3,
     "sessions": 917,
     "active_share": 1.0,
     "records": 0,
-    "aimed": 0.18
+    "aimed": 0.2
    },
    {
     "m": 4,
     "sessions": 846,
     "active_share": 0.94,
     "records": 0,
-    "aimed": 0.19
+    "aimed": 0.2
    },
    {
     "m": 5,
@@ -1231,42 +1373,42 @@
     "sessions": 629,
     "active_share": 0.72,
     "records": 0,
-    "aimed": 0.21
+    "aimed": 0.2
    },
    {
     "m": 8,
     "sessions": 555,
     "active_share": 0.66,
     "records": 0,
-    "aimed": 0.2
+    "aimed": 0.21
    },
    {
     "m": 9,
     "sessions": 485,
     "active_share": 0.6,
     "records": 0,
-    "aimed": 0.19
+    "aimed": 0.23
    },
    {
     "m": 10,
     "sessions": 412,
     "active_share": 0.49,
     "records": 0,
-    "aimed": 0.18
+    "aimed": 0.2
    },
    {
     "m": 11,
     "sessions": 340,
     "active_share": 0.43,
     "records": 0,
-    "aimed": 0.21
+    "aimed": 0.2
    },
    {
     "m": 12,
     "sessions": 266,
     "active_share": 0.34,
     "records": 0,
-    "aimed": 0.2
+    "aimed": 0.23
    }
   ],
   "inv_dealsum_emea": [
@@ -1440,6 +1582,92 @@
     "records": 8,
     "aimed": 0.0
    }
+  ],
+  "inv_coding_asst": [
+   {
+    "m": 1,
+    "sessions": 57,
+    "active_share": 0.5,
+    "records": 1,
+    "aimed": 0.0
+   },
+   {
+    "m": 2,
+    "sessions": 55,
+    "active_share": 0.5,
+    "records": 1,
+    "aimed": 0.0
+   },
+   {
+    "m": 3,
+    "sessions": 43,
+    "active_share": 0.75,
+    "records": 2,
+    "aimed": 0.0
+   },
+   {
+    "m": 4,
+    "sessions": 76,
+    "active_share": 0.75,
+    "records": 2,
+    "aimed": 0.0
+   },
+   {
+    "m": 5,
+    "sessions": 10,
+    "active_share": 0.5,
+    "records": 2,
+    "aimed": 0.0
+   },
+   {
+    "m": 6,
+    "sessions": 6,
+    "active_share": 0.5,
+    "records": 2,
+    "aimed": 0.0
+   },
+   {
+    "m": 7,
+    "sessions": 7,
+    "active_share": 0.5,
+    "records": 2,
+    "aimed": 0.0
+   },
+   {
+    "m": 8,
+    "sessions": 6,
+    "active_share": 0.5,
+    "records": 2,
+    "aimed": 0.0
+   },
+   {
+    "m": 9,
+    "sessions": 7,
+    "active_share": 0.5,
+    "records": 2,
+    "aimed": 0.0
+   },
+   {
+    "m": 10,
+    "sessions": 6,
+    "active_share": 0.5,
+    "records": 2,
+    "aimed": 0.0
+   },
+   {
+    "m": 11,
+    "sessions": 9,
+    "active_share": 0.5,
+    "records": 2,
+    "aimed": 0.0
+   },
+   {
+    "m": 12,
+    "sessions": 9,
+    "active_share": 0.5,
+    "records": 2,
+    "aimed": 0.0
+   }
   ]
  },
  "driver_trend": {
@@ -1476,11 +1704,11 @@
   "team_fit": [
    {
     "team": "EMEA",
-    "sessions": 2457,
-    "aimed": 0.259,
-    "on_driver": 0.146,
-    "spend": 129312,
-    "aimed_spend": 85150,
+    "sessions": 2606,
+    "aimed": 0.249,
+    "on_driver": 0.139,
+    "spend": 134227,
+    "aimed_spend": 85244,
     "tools": [
      {
       "id": "inv_ai_sdr",
@@ -1499,7 +1727,7 @@
      {
       "id": "inv_chatgpt_ent",
       "n": 2038,
-      "aimed": 0.2,
+      "aimed": 0.207,
       "top": "D4",
       "spend": 13796
      },
@@ -1509,6 +1737,13 @@
       "aimed": 0.0,
       "top": null,
       "spend": 18000
+     },
+     {
+      "id": "inv_coding_asst",
+      "n": 149,
+      "aimed": 0.0,
+      "top": null,
+      "spend": 4915
      }
     ],
     "kpi": {
@@ -1528,16 +1763,16 @@
    },
    {
     "team": "NA East",
-    "sessions": 2232,
-    "aimed": 0.225,
-    "on_driver": 0.106,
-    "spend": 70362,
-    "aimed_spend": 31464,
+    "sessions": 2374,
+    "aimed": 0.207,
+    "on_driver": 0.096,
+    "spend": 75046,
+    "aimed_spend": 31728,
     "tools": [
      {
       "id": "inv_ai_sdr",
       "n": 59,
-      "aimed": 0.712,
+      "aimed": 0.729,
       "top": "D1",
       "spend": 20747
      },
@@ -1551,8 +1786,8 @@
      {
       "id": "inv_chatgpt_ent",
       "n": 2038,
-      "aimed": 0.209,
-      "top": "D4",
+      "aimed": 0.202,
+      "top": "D2",
       "spend": 13796
      },
      {
@@ -1561,6 +1796,13 @@
       "aimed": 0.0,
       "top": null,
       "spend": 22000
+     },
+     {
+      "id": "inv_coding_asst",
+      "n": 142,
+      "aimed": 0.0,
+      "top": null,
+      "spend": 4685
      }
     ],
     "kpi": {
@@ -1581,10 +1823,10 @@
    {
     "team": "NA West",
     "sessions": 1700,
-    "aimed": 0.206,
+    "aimed": 0.215,
     "on_driver": 0.074,
     "spend": 12262,
-    "aimed_spend": 3130,
+    "aimed_spend": 3225,
     "tools": [
      {
       "id": "inv_meeting_prep",
@@ -1596,8 +1838,8 @@
      {
       "id": "inv_chatgpt_ent",
       "n": 1698,
-      "aimed": 0.206,
-      "top": "D4",
+      "aimed": 0.214,
+      "top": "D2",
       "spend": 11495
      }
     ],
@@ -1619,10 +1861,10 @@
    {
     "team": "LATAM",
     "sessions": 1529,
-    "aimed": 0.193,
-    "on_driver": 0.063,
+    "aimed": 0.198,
+    "on_driver": 0.067,
     "spend": 11105,
-    "aimed_spend": 2751,
+    "aimed_spend": 2805,
     "tools": [
      {
       "id": "inv_meeting_prep",
@@ -1634,8 +1876,8 @@
      {
       "id": "inv_chatgpt_ent",
       "n": 1527,
-      "aimed": 0.192,
-      "top": "D2",
+      "aimed": 0.197,
+      "top": "D4",
       "spend": 10337
      }
     ],
@@ -1657,10 +1899,10 @@
    {
     "team": "APAC",
     "sessions": 677,
-    "aimed": 0.22,
-    "on_driver": 0.081,
+    "aimed": 0.194,
+    "on_driver": 0.065,
     "spend": 4960,
-    "aimed_spend": 1386,
+    "aimed_spend": 1264,
     "tools": [
      {
       "id": "inv_meeting_prep",
@@ -1672,8 +1914,8 @@
      {
       "id": "inv_chatgpt_ent",
       "n": 676,
-      "aimed": 0.219,
-      "top": "D2",
+      "aimed": 0.192,
+      "top": "D4",
       "spend": 4576
      }
     ],
@@ -1856,7 +2098,19 @@
    "method": "Record-level with controls",
    "confidence": "Medium",
    "decision": "Consolidate into one build",
-   "avoided": 18000
+   "avoided": 18000,
+   "note": "Built twice: 63 engineer-days ($44K) of build effort on top of run cost"
+  },
+  {
+   "id": "inv_coding_asst",
+   "name": "Coding assistant (RevOps builders)",
+   "cost": 9600,
+   "level": "Via what it built",
+   "impact": "Built both deal-summary bots (291 sessions, 203 commits); the second build's sessions match the first's 5\u00d7 more closely than other work; its impact is the bots': none measured",
+   "method": "Lineage: coding sessions -> repo -> CI deploy of the bot identity -> CRM records",
+   "confidence": "Medium",
+   "decision": "Keep for builders; register each build so a duplicate is caught before it starts",
+   "avoided": 0
   },
   {
    "id": "inv_chatgpt_ent",
@@ -1871,7 +2125,7 @@
   }
  ],
  "totals": {
-  "ai_spend": 228000,
+  "ai_spend": 237600,
   "avoided": 39600
  }
 }

@@ -134,7 +134,11 @@ def main() -> None:
         top_d = top.index[0] if len(top) else None
         agrees = bool(written_drivers) and top_d in written_drivers
         al = float(x.aligned.mean())
-        if written_drivers and any(sig.get(w) for w in written_drivers) and agrees:
+        if (x.writes == "Commit to repo").any():
+            level = "2 · Via what it built"
+            why = (f"Writes code, not CRM records: its sessions commit to the repos that deploy the deal-summary bots, "
+                   f"so its impact is theirs (step 7)")
+        elif written_drivers and any(sig.get(w) for w in written_drivers) and agrees:
             level = "1 · Closed triangle"
             why = (f"Writes {tnames[written_drivers[0]].lower()} records; {round(100*top.get(top_d,0))}% of its sessions are aimed "
                    f"at that driver, which moves the cycle key result")
@@ -156,7 +160,7 @@ def main() -> None:
               "Drafting: proposal text": {"D4"}, "Summarize: deal notes": {None, "D5"},
               "Drafting: internal email": {None}, "Summarize: meeting notes": {None, "D2", "D5"}, "Personal productivity": {None},
               "Analysis: pipeline and cycle": {None, "KR3", "KR1", "KR2"}, "Strategy: account and territory plans": {None, "KR1", "KR2", "D4"},
-              "Development: formulas and scripts": {None}}
+              "Development: formulas and scripts": {None}, "Development: build deal-summary bot": {None, "D5", "D2"}}
     s["truth"] = s.session_id.map(gt)
     s["ok"] = [(None if pd.isna(m) else m) in EXPECT[t] for m, t in zip(s.match, s.truth)]
     agree = {p: round(float(g_.ok.mean()), 3) for p, g_ in s.groupby("truth")}
@@ -178,6 +182,10 @@ def main() -> None:
     # ---- 2 Classify: what is the AI used for, and is it direct or indirect activity
     cat, _ = classify(s.prompt.tolist())
     s["category"] = cat
+    # metadata beats text: a session that commits to a repo is development work, even when its
+    # text is about summarizing notes
+    s["category_text"] = cat
+    s.loc[s.writes == "Commit to repo", "category"] = "Development"
     s["mode"] = np.where(s.identity.ne("sso_user"), "direct",
                          np.where(s.writes_record, "indirect_traced", "indirect_untraced"))
     cats = [c["id"] for c in CATEGORIES]
@@ -194,8 +202,37 @@ def main() -> None:
         "tokens": {c: int(s[s.category == c].tokens.sum()) for c in cats},
         "aimed": {c: round(float(s[s.category == c].aligned.mean()), 3) for c in cats},
         "agreement": round(float((s.category == s.session_id.map(gtc)).mean()), 3),
+        "agreement_text_only": round(float((s.category_text == s.session_id.map(gtc)).mean()), 3),
         "examples": {c: s[s.category == c].prompt.iloc[0] for c in cats if (s.category == c).any()},
     }
+
+    # ---- 1b Build lineage: coding sessions -> repo -> deployed identity -> CRM records
+    builds = pd.read_csv(OUT / "code_build_log.csv")
+    by_ident = inv.set_index("identity")
+    lineage = []
+    code = s[s.writes == "Commit to repo"]
+    for _, b in builds.iterrows():
+        bot = by_ident.loc[b.deploys_identity]
+        cs = code[code.record_ids == b.repo]
+        pre = cs[cs.ts < b.deployed_at]
+        written = s[(s.identity == b.deploys_identity) & s.writes_record]
+        lineage.append({"repo": b.repo, "team": b.team, "bot_id": bot.investment_id, "bot": bot["name"],
+                        "identity": b.deploys_identity, "sessions": int(len(cs)), "build_sessions": int(len(pre)),
+                        "first_commit": b.first_commit, "deployed_at": b.deployed_at, "commits": int(b.commits),
+                        "engineer_days": int(b.engineer_days), "build_cost": int(b.engineer_days * 700),
+                        "records": int(written.record_ids.nunique()), "run_cost": int(bot.annual_cost_usd)})
+    # same bot built twice? compare the two builds' coding sessions
+    from sklearn.feature_extraction.text import TfidfVectorizer
+    from sklearn.metrics.pairwise import cosine_similarity
+    a = code[code.record_ids == builds.repo[0]].prompt.tolist()
+    b_ = code[code.record_ids == builds.repo[1]].prompt.tolist()
+    other = s[(s.investment_id == "inv_chatgpt_ent")].prompt.tolist()
+    vec = TfidfVectorizer(ngram_range=(1, 2), sublinear_tf=True).fit(a + b_ + other)
+    best = cosine_similarity(vec.transform(b_), vec.transform(a)).max(1)
+    base = cosine_similarity(vec.transform(b_), vec.transform(other)).max(1)
+    duplicate = {"later": builds.repo[1], "earlier": builds.repo[0], "share_near_identical": round(float((best >= 0.35).mean()), 3),
+                 "mean_best": round(float(best.mean()), 2), "mean_baseline": round(float(base.mean()), 2),
+                 "wasted_cost": int(builds.engineer_days[1] * 700)}
 
     # ---- 5 Momentum (monthly, 2024)
     s["m"] = pd.to_datetime(s.ts).dt.month
@@ -314,7 +351,13 @@ def main() -> None:
         {"id": "inv_dealsum", "name": "Deal-summary bots (EMEA and NA East builds)", "cost": 40000, "level": "Records only",
          "impact": f"{prove['dealsum']['cycle']} days (90% range {prove['dealsum']['lo']} to {prove['dealsum']['hi']}): no measurable effect",
          "method": "Record-level with controls", "confidence": "Medium",
-         "decision": "Consolidate into one build", "avoided": 18000},
+         "decision": "Consolidate into one build", "avoided": 18000,
+         "note": f"Built twice: {sum(l['engineer_days'] for l in lineage)} engineer-days (${sum(l['build_cost'] for l in lineage)//1000}K) of build effort on top of run cost"},
+        {"id": "inv_coding_asst", "name": "Coding assistant (RevOps builders)", "cost": 9600, "level": "Via what it built",
+         "impact": f"Built both deal-summary bots ({sum(l['sessions'] for l in lineage)} sessions, {int(builds.commits.sum())} commits); "
+                   f"the second build's sessions match the first's {duplicate['mean_best']/max(duplicate['mean_baseline'],0.01):.0f}× more closely than other work; its impact is the bots': none measured",
+         "method": "Lineage: coding sessions -> repo -> CI deploy of the bot identity -> CRM records", "confidence": "Medium",
+         "decision": "Keep for builders; register each build so a duplicate is caught before it starts", "avoided": 0},
         {"id": "inv_chatgpt_ent", "name": "ChatGPT Enterprise (sales seats)", "cost": 54000, "level": next(t["level"] for t in trace if t["id"] == "inv_chatgpt_ent").split("· ")[-1],
          "impact": f"Active seats fell from {round(100*act_first)}% to {round(100*act_last)}%; {100-round(100*chat.aligned.mean())}% of sessions serve no stated goal",
          "method": "Momentum and purpose only; no record trace to compare", "confidence": "Low",
@@ -324,7 +367,7 @@ def main() -> None:
     proven = {"inv_ai_sdr": f"{prove['sdr']['cycle']} days (rollout comparison)",
               "inv_meeting_prep": f"{prove['prep']['adjusted']} days (record level)"}
     cost = inv.set_index("investment_id").annual_cost_usd
-    REASONING = {"Analysis", "Strategy"}
+    REASONING = {"Analysis", "Strategy", "Development"}
     workloads = []
     for (i, c), x in s.groupby(["investment_id", "category"]):
         if len(x) < 20:
@@ -332,7 +375,7 @@ def main() -> None:
         n_inv = int((s.investment_id == i).sum())
         spend = float(cost[i]) * len(x) / n_inv
         if c in REASONING:
-            verdict, why = "Keep on frontier model", "Open-ended reasoning; low volume"
+            verdict, why = "Keep on frontier model", "Open-ended reasoning or code; low volume"
         elif i in proven:
             verdict, why = "Ready to pilot", f"Routine, repeatable; proven effect {proven[i]} to re-test a swap against"
         elif i.startswith("inv_dealsum"):
@@ -374,9 +417,10 @@ def main() -> None:
         {"source": "AI telemetry (session text)", "kind": "syn", "rows": int(len(sess)), "unit": "sessions"},
         {"source": "AI admin and usage reports", "kind": "syn", "rows": int(len(usage)), "unit": "rows"},
         {"source": "AI investment register", "kind": "syn", "rows": int(len(inv)), "unit": "investments"},
+        {"source": "Code repos and CI deploy log", "kind": "syn", "rows": int(builds.commits.sum()), "unit": "commits"},
     ]
     pipeline = [
-        ["Discover", f"{len(inv)} AI investments", f"{int((inv.ai_type == 'acting').sum())} direct, {int((inv.ai_type != 'acting').sum())} indirect"],
+        ["Discover", f"{len(inv)} AI investments", f"{int((inv.ai_type == 'acting').sum())} direct, {int((inv.ai_type != 'acting').sum())} indirect, {len(lineage)} builds"],
         ["Classify", f"{len(s):,} sessions", f"{len(cats)} work categories"],
         ["Map", f"{sum(len(o['key_results']) for o in okrs)} key results", f"{sum(1 for g_ in gold if g_['record'] is None)} blind spots"],
         ["Learn", f"{int(len(new)):,} new deals", f"{sum(1 for x in drivers if abs(x['days']) > x['ci'])} drivers that move the cycle"],
@@ -386,7 +430,7 @@ def main() -> None:
         ["Find", "5 teams", "1 AI opportunity"],
         ["Conclude", f"{fmt_k(inv.annual_cost_usd.sum())} AI spend", f"{len(report)} decisions"],
     ]
-    out = {"processed": processed, "pipeline": pipeline, "classify": classify_out, "open_weights": open_weights,
+    out = {"lineage": lineage, "duplicate": duplicate, "processed": processed, "pipeline": pipeline, "classify": classify_out, "open_weights": open_weights,
            "discover": discover, "map": mapping, "drivers": drivers, "trace": trace, "similarity": similarity, "momentum": mom,
            "driver_trend": driver_trend, "prove": prove, "find": find, "report": report,
            "totals": {"ai_spend": int(inv.annual_cost_usd.sum()), "avoided": sum(r["avoided"] for r in report)}}

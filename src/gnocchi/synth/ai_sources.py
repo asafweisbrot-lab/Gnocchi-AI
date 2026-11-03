@@ -6,6 +6,9 @@ AI investments in 2024 (one per tool, team-level):
   * inv_chatgpt_ent   bought, standalone via SSO              all teams all year, fading use
   * inv_dealsum_emea  built,  acting   identity svc_dealsum_emea  EMEA from Mar  (overlap)
   * inv_dealsum_nae   built,  acting   identity svc_dealsum_nae   NA East from May (overlap)
+  * inv_coding_asst   bought, assisting via SSO   RevOps builders in EMEA and NA East; its
+                      sessions built both deal-summary bots (commits to two repos that deploy
+                      the bots' identities) -> build lineage, and the same bot built twice
 Telemetry sessions carry the prompt text and the real opportunity ids they touched. The
 purpose is not in the telemetry: Gnocchi infers it from the text (similarity to operational
 drivers and key results). That inference is a hypothesis; joins to records are by key.
@@ -28,7 +31,18 @@ INVESTMENTS = [
      "identity": "svc_dealsum_emea", "annual_cost_usd": 18000, "teams": ["EMEA"]},
     {"investment_id": "inv_dealsum_nae", "name": "Deal-summary bot (NA East build)", "kind": "built", "ai_type": "acting",
      "identity": "svc_dealsum_nae", "annual_cost_usd": 22000, "teams": ["NA East"]},
+    {"investment_id": "inv_coding_asst", "name": "Coding assistant (RevOps builders)", "kind": "bought", "ai_type": "assisting",
+     "identity": "sso_user", "annual_cost_usd": 9600, "teams": ["EMEA", "NA East"]},
 ]
+# builds: coding sessions -> repo -> CI deploy of the bot identity (the Git/CI source)
+BUILDS = [
+    {"repo": "revops-emea/deal-notes-summarizer", "team": "EMEA", "builds": "inv_dealsum_emea",
+     "deploys_identity": "svc_dealsum_emea", "start": "2024-01-08", "deployed_at": "2024-03-01", "engineer_days": 34},
+    {"repo": "salesops-nae/opp-summary-bot", "team": "NA East", "builds": "inv_dealsum_nae",
+     "deploys_identity": "svc_dealsum_nae", "start": "2024-03-11", "deployed_at": "2024-05-01", "engineer_days": 29},
+]
+DAY_RATE = 700  # loaded engineer cost per day (assumption)
+CODING_SEATS = 2
 PURPOSES_CHATGPT = [("Drafting: internal email", 0.26), ("Research: account background", 0.14),
                     ("Summarize: meeting notes", 0.12), ("Personal productivity", 0.16),
                     ("Drafting: proposal text", 0.07), ("Analysis: pipeline and cycle", 0.10),
@@ -39,7 +53,8 @@ PURPOSE_CATEGORY = {"Outreach: first touch": "Writing", "Research: account and c
                     "Summarize: deal notes": "Summarization", "Summarize: meeting notes": "Summarization",
                     "Drafting: internal email": "Writing", "Drafting: proposal text": "Writing",
                     "Personal productivity": "Admin", "Analysis: pipeline and cycle": "Analysis",
-                    "Strategy: account and territory plans": "Strategy", "Development: formulas and scripts": "Development"}
+                    "Strategy: account and territory plans": "Strategy", "Development: formulas and scripts": "Development",
+                    "Development: build deal-summary bot": "Development"}
 SEATS = {"EMEA": 12, "NA East": 12, "NA West": 10, "LATAM": 9, "APAC": 4}
 
 
@@ -81,6 +96,20 @@ def sessions(opps: pd.DataFrame, ev: pd.DataFrame, g: np.random.Generator) -> pd
             ts = pd.Timestamp(o.close_date) - pd.Timedelta(days=int(g.integers(3, 20)))
             add(ts.strftime("%Y-%m-%dT%H:%M"), inv, ident, team, "Summarize: deal notes", oid,
                 "Note on opportunity", g.normal(2200, 400))
+    # Coding assistant: RevOps builders write the deal-summary bots (a burst before each
+    # launch, then maintenance); every session commits to the repo that deploys the bot
+    for b in BUILDS:
+        start, live = pd.Timestamp(b["start"]), pd.Timestamp(b["deployed_at"])
+        days = (live - start).days
+        for _ in range(int(g.integers(110, 130))):
+            ts = start + pd.Timedelta(days=int(g.integers(0, days)), hours=int(g.integers(8, 19)))
+            add(ts.strftime("%Y-%m-%dT%H:%M"), "inv_coding_asst", "sso_user", b["team"], "Development: build deal-summary bot",
+                b["repo"], "Commit to repo", g.normal(3600, 700))
+        for month in range(live.month, 13):
+            for _ in range(int(g.integers(2, 6))):
+                ts = pd.Timestamp(2024, month, int(g.integers(1, 28)), int(g.integers(8, 18)))
+                add(ts.strftime("%Y-%m-%dT%H:%M"), "inv_coding_asst", "sso_user", b["team"], "Development: build deal-summary bot",
+                    b["repo"], "Commit to repo", g.normal(3000, 600))
     # ChatGPT Enterprise: usage fades through the year, mostly not tied to records
     for month in range(1, 13):
         for team, seats in SEATS.items():
@@ -152,6 +181,22 @@ TEMPLATES = {
         "Write a Python script to dedupe the lead export CSV and normalize phone numbers.",
         "Debug this Excel macro that merges the weekly forecast sheets.",
     ],
+    "Development: build deal-summary bot": [
+        "Write an Apex trigger that sends new opportunity activity notes to the summarization service.",
+        "Write a Python function that condenses an opportunity's activity notes into a three-bullet status.",
+        "Add retries and rate limiting to the job that summarizes opportunity notes.",
+        "Write unit tests for the opportunity notes summarizer.",
+        "Set up the connected app so the bot can write the summary note back to the opportunity.",
+        "Debug why the summarizer posts duplicate notes on the same opportunity.",
+    ],
+    "Development: build deal-summary bot (NA East wording)": [
+        "Create an Apex trigger to push new opportunity notes to our summary API.",
+        "Python: summarize all activity notes on an opportunity into three short bullets.",
+        "Add retry logic and throttling to the opportunity summary job.",
+        "Write tests for the opportunity summary bot.",
+        "Configure a connected app so the bot can post its summary note to the opportunity record.",
+        "The summary bot writes the same note twice on one opportunity. Help me debug it.",
+    ],
     "Drafting: proposal text": [
         "Draft the executive summary for a proposal to {acct} covering pricing options and the rollout plan.",
         "Write the pricing and implementation section of our quote for {acct}.",
@@ -163,7 +208,9 @@ def add_prompts(sess: pd.DataFrame, g: np.random.Generator) -> pd.DataFrame:
     """Give every session the text a tool's telemetry would hold. The purpose label is
     removed from the telemetry and kept only in the ground truth: Gnocchi must infer it."""
     prompts = []
-    for p in sess.purpose:
+    for p, rec in zip(sess.purpose, sess.record_ids):
+        if isinstance(rec, str) and rec.startswith("salesops-nae/"):
+            p = "Development: build deal-summary bot (NA East wording)"
         t = TEMPLATES[p][int(g.integers(len(TEMPLATES[p])))]
         prompts.append(t.format(acct=ACCOUNTS[int(g.integers(len(ACCOUNTS)))],
                                 role=ROLES[int(g.integers(len(ROLES)))],
@@ -181,7 +228,7 @@ def admin_usage(sess: pd.DataFrame) -> pd.DataFrame:
         for team in inv["teams"]:
             for m in range(1, 13):
                 s = sess[(sess.investment_id == inv["investment_id"]) & (sess.team == team) & (sess.month == m)]
-                seats = SEATS[team] if inv["identity"] == "sso_user" else 1
+                seats = (CODING_SEATS if inv["investment_id"] == "inv_coding_asst" else SEATS[team]) if inv["identity"] == "sso_user" else 1
                 active = min(seats, int(np.ceil(len(s) / 20))) if inv["identity"] == "sso_user" else int(len(s) > 0)
                 rows.append({"investment_id": inv["investment_id"], "team": team, "month": f"2024-{m:02d}",
                              "licences_assigned": seats, "active_users": active, "sessions": len(s)})
@@ -198,12 +245,20 @@ def main() -> None:
     sess[["session_id", "purpose", "category"]].to_csv(OUT / "_ground_truth_session_purpose.csv", index=False)
     sess.drop(columns=["purpose", "category"]).to_json(OUT / "ai_telemetry_2024.jsonl", orient="records", lines=True)
     admin_usage(sess).to_csv(OUT / "ai_admin_usage_2024.csv", index=False)
+    # Git/CI source: one row per build repo
+    cs = sess[sess.investment_id == "inv_coding_asst"]
+    build_log = pd.DataFrame([{**{k: v for k, v in b.items() if k != "builds"},
+                               "commits": int((cs.record_ids == b["repo"]).sum() * 0.7),
+                               "first_commit": cs[cs.record_ids == b["repo"]].ts.min()[:10]} for b in BUILDS])
+    build_log.to_csv(OUT / "code_build_log.csv", index=False)
     print("sessions", len(sess), sess.investment_id.value_counts().to_dict())
     update_ground_truth("ai_sources", {
         "overlap": ["inv_dealsum_emea", "inv_dealsum_nae"],
         "fading": "inv_chatgpt_ent (usage declines ~7% a month; mostly unaligned purposes)",
         "acting": ["inv_ai_sdr", "inv_dealsum_emea", "inv_dealsum_nae"],
-        "assisting": ["inv_meeting_prep"], "standalone": ["inv_chatgpt_ent"]})
+        "assisting": ["inv_meeting_prep", "inv_coding_asst"], "standalone": ["inv_chatgpt_ent"],
+        "build_lineage": {b["repo"]: b["builds"] for b in BUILDS}, "duplicate_build": "same templates in both repos",
+        "day_rate": DAY_RATE})
 
 
 if __name__ == "__main__":

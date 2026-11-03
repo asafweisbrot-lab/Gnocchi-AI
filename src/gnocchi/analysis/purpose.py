@@ -19,7 +19,8 @@ CATEGORIES = [
                                "flag deals likely to slip average deal size longest cycle"},
     {"id": "Strategy", "text": "strategy plan account plan territory grow expansion targets stakeholders win tender incumbents "
                                "competitive outline bookings target"},
-    {"id": "Development", "text": "write formula script python excel macro debug code dedupe normalize csv report formula automate"},
+    {"id": "Development", "text": "write formula script python function excel macro debug code dedupe normalize csv report formula automate "
+                                  "apex trigger api service job retries retry logic rate limiting throttling unit tests write tests connected app configure bot help me debug"},
     {"id": "Summarization", "text": "summarize condense notes into bullets status line recap action items activity notes turn the notes"},
     {"id": "Admin", "text": "plan my week priorities convert table bullet points fix grammar linkedin post explain the difference"},
 ]

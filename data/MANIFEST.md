@@ -46,3 +46,4 @@ The reverse keys never left Asaf's machine.
 
 ## Session text and purpose
 - `ai_telemetry_2024.jsonl` carries a synthetic `prompt` per session; the planted purpose is held out in `_ground_truth_session_purpose.csv` and used only to check the similarity match.
+- `code_build_log.csv` (Git/CI): one row per repo that deploys a built bot's identity; coding-assistant sessions in the telemetry carry the repo in `record_ids` and `writes = "Commit to repo"`. Planted: NA East rebuilt EMEA's deal-summary bot (paraphrased prompts). Build cost uses an assumed $700 engineer day.
