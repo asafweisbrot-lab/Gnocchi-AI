@@ -1,0 +1,75 @@
+{
+ "variants": {
+  "Deal text (account, type, vertical)": {
+   "linked": 210,
+   "precision": 0.871,
+   "recall": 0.782
+  },
+  "Deal text + OKR in one sentence": {
+   "linked": 195,
+   "precision": 0.887,
+   "recall": 0.739
+  },
+  "Chunks, best chunk per field": {
+   "linked": 214,
+   "precision": 0.86,
+   "recall": 0.786
+  },
+  "Story per deal": {
+   "linked": 147,
+   "precision": 0.898,
+   "recall": 0.564
+  },
+  "Exact account name, then deal type": {
+   "linked": 214,
+   "precision": 0.85,
+   "recall": 0.778
+  },
+  "Exact account name, then type and stage at session time": {
+   "linked": 214,
+   "precision": 0.888,
+   "recall": 0.812
+  }
+ },
+ "ceiling_recall": 0.915,
+ "n_sessions": 7649,
+ "true_links": 234,
+ "multi_candidate": 50,
+ "example_story": "Verdant Logistics: a new-logo deal in State and Local Government, small deal under $25K, opened 2024-10-15, Demo on 2024-11-05, proposal added 2024-11-30, Proposal on 2024-11-30, closed won 2025-01-09. Counts toward: Book $4.2M in total bookings in 2025; Grow new-logo bookings 25% to $0.85M.",
+ "example_chunks": [
+  "Verdant Logistics",
+  "new-logo new State and Local Government",
+  "State and Local Government Commercial",
+  "tech partner tech_partner21",
+  "small deal under $25K",
+  "Discovery on 2024-10-15 Demo on 2024-11-05 proposal added 2024-11-30 Proposal on 2024-11-30 Negotiation on 2024-12-21 Closed Won on 2025-01-07",
+  "Book $4.2M in total bookings in 2025 Grow new-logo bookings 25% to $0.85M Cut the new-business sales cycle to under 60 days, median"
+ ],
+ "judge": {
+  "model": "openai/qwen2.5-1.5b",
+  "n": 55,
+  "calls": 63,
+  "median_call_s": 4.17,
+  "name_then_judge": {
+   "linked": 35,
+   "precision": 0.686,
+   "recall": 0.533
+  },
+  "name_then_type_same_sample": {
+   "linked": 38,
+   "precision": 0.737,
+   "recall": 0.622
+  },
+  "name_then_stage_same_sample": {
+   "linked": 38,
+   "precision": 0.868,
+   "recall": 0.733
+  },
+  "blob_same_sample": {
+   "linked": 37,
+   "precision": 0.811,
+   "recall": 0.667
+  },
+  "ran_at": "2026-11-03 17:23"
+ }
+}

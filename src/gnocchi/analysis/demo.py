@@ -833,7 +833,8 @@ def main() -> None:
         ["Find", "5 teams", f"1 AI opportunity, {len(clusters) + 1} parallel efforts"],
         ["Conclude", f"{fmt_k(inv0.annual_cost_usd.sum())} AI spend", f"{len(report)} decisions"],
     ]
-    out = {"judge": judge_out, "tools": tools_out, "rec_link": rec_link, "coverage": coverage, "team_plans": team_plans, "live": live_map, "split_names": {r["id"]: r["name"] for r in split["rows"]}, "lineage": lineage, "duplicate": duplicate, "parallel": parallel, "processed": processed, "pipeline": pipeline, "classify": classify_out, "open_weights": open_weights,
+    lab = DEMO / "deal_match_lab.json"
+    out = {"deal_lab": json.loads(lab.read_text()) if lab.exists() else None, "judge": judge_out, "tools": tools_out, "rec_link": rec_link, "coverage": coverage, "team_plans": team_plans, "live": live_map, "split_names": {r["id"]: r["name"] for r in split["rows"]}, "lineage": lineage, "duplicate": duplicate, "parallel": parallel, "processed": processed, "pipeline": pipeline, "classify": classify_out, "open_weights": open_weights,
            "discover": discover, "map": mapping, "drivers": drivers, "trace": trace, "similarity": similarity, "momentum": mom,
            "driver_trend": driver_trend, "prove": prove, "find": find, "report": report,
            "totals": {"ai_spend": int(inv0.annual_cost_usd.sum()), "avoided": sum(r["avoided"] for r in report)}}

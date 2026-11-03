@@ -393,6 +393,11 @@ footer{padding-block:8px 0}
   <div class="tbl"><table id="jtbl" style="min-width:0"></table></div>
   <div id="jex" style="display:grid;gap:8px"></div>
   <p class="muted" style="font-size:13px" id="j-note"></p>
+  <div style="display:grid;gap:8px;padding-top:6px"><h3>Second round: better ways to describe a deal</h3>
+  <p class="muted" style="font-size:14px">Same goal, matching a ChatGPT session to the deal it is about, with the deal described six ways. Chunks keep each field separate so none drowns another; a story is a short narrative built from the deal’s CRM history; the name rules look for the exact account name among the team’s open deals, then break ties by deal type and by stage at the time of the session.</p></div>
+  <div class="tbl"><table id="labtbl" style="min-width:0"></table></div>
+  <div class="tbl"><table id="labjudge" style="min-width:0"></table></div>
+  <p class="muted" style="font-size:13px" id="lab-note"></p>
 </section>
 <footer>
   <p><b>About the data.</b> Deals are real and anonymized (owner, account and partner names replaced); they are the full years 2023 and 2024 with every date moved one year later, so the baseline reads 2024 and the AI year 2025. CRM history, OKRs, AI logs and usage are synthetic, generated with a fixed seed. Only closed-won deals exist, so win rate isn’t studied. NA West and APAC are small teams, which widens their ranges.</p>
@@ -744,6 +749,22 @@ $("total-text").innerHTML = `Of ${fmt$(D.totals.ai_spend)} in AI spend, two inve
     : `Not run yet: it needs a model key. On the same ${J.n} sessions, word matching gets the right driver or key result for ${pc(W.target_acc)}, outreach paraphrases ${pc(W.outreach_acc)}, and deals ${pc(W.deal_precision)} right with ${pc(W.deal_recall)} of true links found. The judge has to beat those numbers to earn its cost.`;
   $("jex").innerHTML = run && J.examples ? `<h3 style="font-size:15px">Outreach sessions, both methods</h3>` + J.examples.map(e => `<div style="font-size:14px">“${esc(e.prompt)}” → word: <b>${esc(e.word||"none")}</b> · judge: <b>${esc(e.judge||"none")}</b> <span class="muted">${esc(e.reason)}</span></div>`).join("") : "";
   $("j-note").innerHTML = `Synthetic prompts come from templates, so both methods score higher here than on real text. ${run?`Ran ${esc(J.summary.ran_at)}; ${J.summary.errors} errors.`:"Run: set GNOCCHI_JUDGE_MODEL (for example anthropic/claude-haiku-4-5, or ollama/qwen2.5:7b on your machine) and the provider key, then run analysis/judge.py."}`;
+})();
+
+// B2 deal matching lab
+(function(){
+  const L = D.deal_lab; if (!L) return;
+  const pc = (v) => v == null ? "·" : `${Math.round(v*100)}%`;
+  const best = Object.entries(L.variants).sort((a,b)=>(b[1].precision+b[1].recall)-(a[1].precision+a[1].recall))[0][0];
+  $("labtbl").innerHTML = `<tr><th>How the deal is described (word matching)</th><th class="num">Sessions matched</th><th class="num">Right deal</th><th class="num">True links found</th></tr>` +
+    Object.entries(L.variants).map(([k,v]) => `<tr><td>${k===best?"<b>"+esc(k)+"</b>":esc(k)}</td><td class="num">${v.linked}</td><td class="num">${pc(v.precision)}</td><td class="num">${pc(v.recall)}</td></tr>`).join("") +
+    `<tr><td colspan="4" class="muted" style="font-size:12px">${L.true_links} true links among ${L.n_sessions.toLocaleString()} sessions; at most ${pc(L.ceiling_recall)} can be found by any method, because the rest never name the account. ${L.multi_candidate} sessions name an account with more than one open deal.</td></tr>`;
+  const J = L.judge;
+  if (J) $("labjudge").innerHTML = `<tr><th>Same ${J.n} sessions</th><th class="num">Right deal</th><th class="num">True links found</th></tr>` +
+    [["Exact name, then a small model says yes or no (Qwen2.5-1.5B, local)", J.name_then_judge], ["Exact name, then deal type", J.name_then_type_same_sample], ["Exact name, then type and stage at session time", J.name_then_stage_same_sample], ["Deal text, word matching", J.blob_same_sample]]
+      .map(([k,v]) => `<tr><td>${esc(k)}</td><td class="num">${pc(v.precision)}</td><td class="num">${pc(v.recall)}</td></tr>`).join("");
+  const sv = L.variants[best];
+  $("lab-note").innerHTML = `Best: ${esc(best.toLowerCase())}, ${pc(sv.precision)} right and ${pc(sv.recall)} found, against ${pc(L.variants["Deal text (account, type, vertical)"].precision)} and ${pc(L.variants["Deal text (account, type, vertical)"].recall)} today. Adding OKR text or writing stories doesn’t help word matching; stories are written for a model to read. ${J?`The small model answered ${J.calls} yes/no questions at ${J.median_call_s} s each and still lost to the rules: it is too small to read dates and deal types reliably.`:""} Example story: “${esc(L.example_story)}”`;
 })();
 
 // findings: each step moves one step closer to the conclusion
