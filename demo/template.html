@@ -386,6 +386,14 @@ footer{padding-block:8px 0}
   <div class="card-head"><span class="num">A</span><h2>Appendix: did the analysis find what was planted?</h2><p>The synthetic data carries known effects. Recovering them shows the method works; it says nothing about whether these tools work in a real company.</p></div>
   <div class="tbl"><table id="checktbl"></table></div>
 </section>
+<section class="card step" id="judge">
+  <div class="card-head"><span class="num">B</span><h2>Appendix: experiment, a small model as judge</h2><p>Word matching misses paraphrases and can’t tell apart two open deals of the same account. Here a small model, called through LiteLLM, reads each session with a shortlist from word matching (the top five drivers or key results, and up to five deals of the team open at the time) and picks one, or none, with a reason. Both are scored on the same labelled sample. The model is a setting, so a hosted model and a local open model run the same code.</p></div>
+  <div class="io">In <b id="j-in"></b> → Out <b>accuracy, cost and speed per method</b></div>
+  <div class="callout"><span class="eyebrow">Summary</span><p id="j-sum" style="font-size:18px"></p></div>
+  <div class="tbl"><table id="jtbl" style="min-width:0"></table></div>
+  <div id="jex" style="display:grid;gap:8px"></div>
+  <p class="muted" style="font-size:13px" id="j-note"></p>
+</section>
 <footer>
   <p><b>About the data.</b> Deals are real and anonymized (owner, account and partner names replaced); they are the full years 2023 and 2024 with every date moved one year later, so the baseline reads 2024 and the AI year 2025. CRM history, OKRs, AI logs and usage are synthetic, generated with a fixed seed. Only closed-won deals exist, so win rate isn’t studied. NA West and APAC are small teams, which widens their ranges.</p>
   <p>Everything is reported at team level. No person is a unit of analysis.</p>
@@ -430,7 +438,7 @@ const PL = Object.fromEntries(D.pipeline.map(p => [p[0], p]));
 const steps = [["overview","·","Summary",""],["live","●","Live map","daily run"],["processed","0","Processed",`${D.processed.length} sources`],
   ["discover","1","Discover",PL.Discover[2]],["classify","2","Classify",PL.Classify[2]],["map","3","Map",PL.Map[2]],
   ["learn","4","Learn",PL.Learn[2]],["trace","5","Trace",PL.Trace[2]],["momentum","6","Momentum",PL.Momentum[2]],
-  ["prove","7","Prove",PL.Prove[2]],["find","8","Find",PL.Find[2]],["conclude","9","Conclude",PL.Conclude[2]],["check","A","Appendix","planted vs found"]];
+  ["prove","7","Prove",PL.Prove[2]],["find","8","Find",PL.Find[2]],["conclude","9","Conclude",PL.Conclude[2]],["check","A","Appendix","planted vs found"],["judge","B","Model judge","experiment"]];
 $("rail").innerHTML = `<span class="lab">Report steps</span>` + steps.map(([id,n,l,o]) => `<a href="#${id}" data-id="${id}" class="${/^\d$/.test(n)?"done":""}"><span class="n">${/^\d$/.test(n)?"✓":n}</span><span><b>${/^\d$/.test(n)?n+" · ":""}${l}</b>${o?`<small>${esc(o)}</small>`:""}</span></a>`).join("");
 const io = new IntersectionObserver((es) => es.forEach(e => { if (e.isIntersecting) document.querySelectorAll("#rail a").forEach(a => a.classList.toggle("on", a.dataset.id === e.target.id)); }), {rootMargin: "-30% 0px -60% 0px"});
 document.querySelectorAll(".step").forEach(s => io.observe(s));
@@ -719,6 +727,23 @@ $("total-text").innerHTML = `Of ${fmt$(D.totals.ai_spend)} in AI spend, two inve
     e.candidates.map((k,i)=>`<tr><td class="mono" style="font-size:12px">${esc(k.text)}</td><td class="mono" style="font-size:12px">${esc(k.created)} → ${esc(k.close)}</td><td class="num">${k.score.toFixed(2)}</td><td style="font-size:13px">${k.open && k.score>=c.threshold && e.candidates.filter(z=>z.open).sort((a,b)=>b.score-a.score)[0]===k?"<b>Matched</b>":k.open?"Below threshold":"Not open when the session ran"}</td></tr>`).join("") + `</table></div>`;
 })();
 
+// B judge experiment
+(function(){
+  const J = D.judge, W = J.word, run = J.status === "run", M = run ? J.judge : null;
+  const pc = (v) => v == null ? "·" : `${Math.round(v*100)}%`;
+  $("j-in").textContent = `${J.n} labelled sessions`;
+  const rows = [["Right driver or key result (or none)", "target_acc"], ["Outreach paraphrases", "outreach_acc"], ["Deal matches that are the right deal", "deal_precision"], ["True deal links found", "deal_recall"]];
+  $("jtbl").innerHTML = `<tr><th>Metric</th><th class="num">Word matching</th><th class="num">${run?esc(J.model):"Judge model (not run)"}</th></tr>` +
+    rows.map(([l,k]) => `<tr><td>${l}</td><td class="num">${pc(W[k])}</td><td class="num"><b>${run?pc(M[k]):"·"}</b></td></tr>`).join("") +
+    `<tr><td>Cost per 1,000 sessions</td><td class="num">≈ $0</td><td class="num">${run&&J.summary.cost_usd!=null?"$"+(J.summary.cost_usd/J.n*1000).toFixed(2):"·"}</td></tr>` +
+    `<tr><td>Median time per session</td><td class="num">&lt; 0.01 s</td><td class="num">${run?J.summary.median_latency_s+" s":"·"}</td></tr>`;
+  $("j-sum").innerHTML = run
+    ? `On ${J.n} labelled sessions, ${esc(J.model)} picked the right driver or key result for ${pc(M.target_acc)} (word matching ${pc(W.target_acc)}), lifted outreach paraphrases from ${pc(W.outreach_acc)} to ${pc(M.outreach_acc)}, and matched the right deal ${pc(M.deal_precision)} of the time while finding ${pc(M.deal_recall)} of true links (word matching ${pc(W.deal_precision)} and ${pc(W.deal_recall)}), at $${(J.summary.cost_usd/J.n*1000).toFixed(2)} per 1,000 sessions.`
+    : `Not run yet: it needs a model key. On the same ${J.n} sessions, word matching gets the right driver or key result for ${pc(W.target_acc)}, outreach paraphrases ${pc(W.outreach_acc)}, and deals ${pc(W.deal_precision)} right with ${pc(W.deal_recall)} of true links found. The judge has to beat those numbers to earn its cost.`;
+  $("jex").innerHTML = run && J.examples ? `<h3 style="font-size:15px">Outreach sessions, both methods</h3>` + J.examples.map(e => `<div style="font-size:14px">“${esc(e.prompt)}” → word: <b>${esc(e.word||"none")}</b> · judge: <b>${esc(e.judge||"none")}</b> <span class="muted">${esc(e.reason)}</span></div>`).join("") : "";
+  $("j-note").innerHTML = `Synthetic prompts come from templates, so both methods score higher here than on real text. ${run?`Ran ${esc(J.summary.ran_at)}; ${J.summary.errors} errors.`:"Run: set GNOCCHI_JUDGE_MODEL (for example anthropic/claude-haiku-4-5, or ollama/qwen2.5:7b on your machine) and the provider key, then run analysis/judge.py."}`;
+})();
+
 // findings: each step moves one step closer to the conclusion
 (function(){
   const inv = D.discover.inventory, C = D.classify, tot = (o) => Object.values(o).reduce((a,b)=>a+b,0);
@@ -768,7 +793,7 @@ const truth = [
   ["Deal-notes element (D6)", "no effect planted", `${sgn(D.drivers[4].days)} ± ${D.drivers[4].ci} days`],
   ["Parallel build, caught early", "NA East starts 2025-03-11", `flagged week ${D.parallel.alert.week} (${D.parallel.alert.end})`],
   ["Duplicate build", "NA East rebuilt EMEA’s bot", `flagged: ${Math.round(D.duplicate.mean_best/Math.max(D.duplicate.mean_baseline,0.01))}× closer than other coding work`],
-  ["Session work category", "7 planted categories", `${Math.round(D.classify.agreement*100)}% of sessions classified correctly`],
+  ["Session work category", `${D.classify.categories.length} planted categories`, `${Math.round(D.classify.agreement*100)}% of sessions classified correctly`],
   ["Session purpose (similarity to drivers and key results)", "12 planted purposes", `${Math.round(D.similarity.overall_agreement*100)}% of sessions matched correctly`],
 ];
 $("checktbl").innerHTML = `<tr><th>Planted in the synthetic data</th><th>What was planted</th><th>What Gnocchi found</th></tr>` + truth.map(r=>`<tr><td>${r[0]}</td><td class="mono" style="font-size:13px">${r[1]}</td><td class="mono" style="font-size:13px"><b>${r[2]}</b></td></tr>`).join("");

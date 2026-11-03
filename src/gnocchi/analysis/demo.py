@@ -360,6 +360,52 @@ def main() -> None:
     s["truth"] = s.session_id.map(gt)
     s["ok"] = [(None if pd.isna(m) else m) in EXPECT[t] for m, t in zip(s.match, s.truth)]
     agree = {p: round(float(g_.ok.mean()), 3) for p, g_ in s.groupby("truth")}
+
+    # ---- Experiment: a small model as judge (see analysis/judge.py). Stage 1 here shortlists
+    # candidates; the judge picks. Both are scored on the same labelled sample.
+    smp = pd.concat([g_.sample(min(len(g_), 25), random_state=7) for _, g_ in s[s.truth.notna()].groupby("truth")])
+    smp = pd.concat([smp, s[s.investment_id.eq("inv_chatgpt_other") & gto.notna() & ~s.index.isin(smp.index)].sample(40, random_state=7)])
+    scope_i = scope.reset_index(drop=True)
+    items = []
+    for k, r in smp.iterrows():
+        row = sim[s.index.get_loc(k)]
+        top = np.argsort(-row)[:5]
+        deals = []
+        if r.investment_id == "inv_chatgpt_other":
+            rt = scope_i[(scope_i.team == r.team) & (scope_i.created_date <= pd.Timestamp(r.ts)) & (scope_i.close_date >= pd.Timestamp(r.ts))]
+            if len(rt):
+                ds_ = cosine_similarity(rvec.transform([r.prompt]), rvec.transform(rt.text))[0]
+                deals = [{"id": rt.opportunity_id.iloc[j], "text": f"{rt.text.iloc[j]} (opened {rt.created_date.iloc[j].date()}, closes {rt.close_date.iloc[j].date()})"}
+                         for j in np.argsort(-ds_)[:5]]
+        items.append({"session_id": r.session_id, "team": r.team, "ts": r.ts, "prompt": r.prompt,
+                      "targets": [{"id": targets[j]["id"], "name": targets[j]["name"]} for j in top], "deals": deals})
+    DEMO.mkdir(parents=True, exist_ok=True)
+    (DEMO / "judge_sample.json").write_text(json.dumps({"items": items}, indent=1))
+    jp = DEMO / "judge_predictions.json"
+    jpred = json.loads(jp.read_text()) if jp.exists() else None
+    def score(pred_target, pred_deal):
+        t_ok = [(pt in EXPECT[tr]) for pt, tr in zip(pred_target, smp.truth)]
+        out_ = {"target_acc": round(float(np.mean(t_ok)), 3),
+                "outreach_acc": round(float(np.mean([o for o, tr in zip(t_ok, smp.truth) if tr == "Outreach: first touch"])), 3)}
+        dmask = smp.investment_id.eq("inv_chatgpt_other").values
+        truth_d = smp.session_id.map(pd.read_csv(OUT / "_ground_truth_session_purpose.csv").set_index("session_id").opp).values
+        pd_ = np.array(pred_deal, dtype=object)
+        made = dmask & pd.notna(pd_)
+        has = dmask & pd.notna(truth_d)
+        out_["deal_precision"] = round(float((pd_[made] == truth_d[made]).mean()), 3) if made.any() else None
+        out_["deal_recall"] = round(float((pd_[has] == truth_d[has]).mean()), 3) if has.any() else None
+        return out_
+    word = score([None if pd.isna(m) else m for m in smp.match], [None if pd.isna(d_) else d_ for d_ in smp.deal])
+    judge_out = {"n": len(items), "word": word, "status": "not_run", "model": None}
+    if jpred:
+        pm = {x["session_id"]: x for x in jpred["predictions"]}
+        jt = [pm.get(sid, {}).get("target") for sid in smp.session_id]
+        jd = [pm.get(sid, {}).get("deal") for sid in smp.session_id]
+        judge_out.update({"status": "run", "model": jpred["summary"]["model"], "summary": jpred["summary"],
+                          "judge": score(jt, jd),
+                          "examples": [{"prompt": smp.prompt.iloc[i], "word": None if pd.isna(smp.match.iloc[i]) else smp.match.iloc[i],
+                                        "judge": jt[i], "reason": pm.get(smp.session_id.iloc[i], {}).get("reason", "")}
+                                       for i in [j for j in range(len(smp)) if smp.truth.iloc[j] == "Outreach: first touch"][:3]]})
     examples = []
     for i in inv.investment_id:
         xi = s[s.investment_id == i]
@@ -784,7 +830,7 @@ def main() -> None:
         ["Find", "5 teams", f"1 AI opportunity, {len(clusters) + 1} parallel efforts"],
         ["Conclude", f"{fmt_k(inv0.annual_cost_usd.sum())} AI spend", f"{len(report)} decisions"],
     ]
-    out = {"tools": tools_out, "rec_link": rec_link, "coverage": coverage, "team_plans": team_plans, "live": live_map, "split_names": {r["id"]: r["name"] for r in split["rows"]}, "lineage": lineage, "duplicate": duplicate, "parallel": parallel, "processed": processed, "pipeline": pipeline, "classify": classify_out, "open_weights": open_weights,
+    out = {"judge": judge_out, "tools": tools_out, "rec_link": rec_link, "coverage": coverage, "team_plans": team_plans, "live": live_map, "split_names": {r["id"]: r["name"] for r in split["rows"]}, "lineage": lineage, "duplicate": duplicate, "parallel": parallel, "processed": processed, "pipeline": pipeline, "classify": classify_out, "open_weights": open_weights,
            "discover": discover, "map": mapping, "drivers": drivers, "trace": trace, "similarity": similarity, "momentum": mom,
            "driver_trend": driver_trend, "prove": prove, "find": find, "report": report,
            "totals": {"ai_spend": int(inv0.annual_cost_usd.sum()), "avoided": sum(r["avoided"] for r in report)}}

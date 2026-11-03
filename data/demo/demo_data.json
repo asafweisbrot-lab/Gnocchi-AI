@@ -1,4 +1,15 @@
 {
+ "judge": {
+  "n": 440,
+  "word": {
+   "target_acc": 0.975,
+   "outreach_acc": 0.64,
+   "deal_precision": 0.854,
+   "deal_recall": 0.714
+  },
+  "status": "not_run",
+  "model": null
+ },
  "tools": {
   "tools": [
    {

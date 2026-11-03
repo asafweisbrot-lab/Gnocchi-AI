@@ -24,6 +24,8 @@ PYTHONPATH=src python -m gnocchi.synth.run_all
 ```bash
 PYTHONPATH=src python -m gnocchi.analysis.demo   # -> data/demo/demo_data.json
 python demo/build_page.py                         # -> demo/gnocchi_demo.html
+# optional judge experiment (LiteLLM): set GNOCCHI_JUDGE_MODEL and the provider key, then
+# PYTHONPATH=src python -m gnocchi.analysis.judge && rerun the two lines above
 ```
 
 ## Principles
