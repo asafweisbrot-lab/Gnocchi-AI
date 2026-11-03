@@ -131,7 +131,7 @@ section.card.step{padding:22px}
 .cl i{width:18px;height:18px;border-radius:50%;margin-top:2px;font-style:normal;display:grid;place-items:center;font-size:11px;font-family:var(--mono)}
 .cl i.done{background:var(--good);color:var(--surface)} .cl i.partial{background:var(--warn);color:var(--surface)} .cl i.open{border:1.5px dashed var(--muted)}
 .overview{display:grid;gap:14px;margin-bottom:20px}
-.lmap{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) minmax(0,.8fr);gap:28px;position:relative}
+.lmap{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1.1fr) minmax(0,1fr);gap:28px;position:relative}
 .lcol{display:grid;gap:6px;align-content:start}
 .lcol > span{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
 .node{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 10px;display:grid;grid-template-columns:10px minmax(0,1fr) auto;gap:8px;align-items:center;font-size:13px;position:relative}
@@ -148,6 +148,19 @@ section.card.step{padding:22px}
 .ctrl input[type=range]{flex:1;min-width:180px;accent-color:var(--accent)}
 .ctrl .date{font-family:var(--mono);font-size:14px;font-weight:500;min-width:96px}
 .evlog{display:grid;gap:6px;font-size:13px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:9px 11px;display:grid;gap:4px;font-size:13px;position:relative}
+.lcol + .lcol .box::before{content:"";position:absolute;left:-22px;top:18px;width:16px;border-top:1px dashed var(--line)}
+.box .hd{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.box .hd b{font-weight:600}
+.box .st{font-family:var(--mono);font-size:10px;letter-spacing:.04em;padding:1px 7px;border-radius:999px;white-space:nowrap}
+.box .st.run{background:color-mix(in srgb, var(--good) 22%, transparent);color:var(--good)}
+.box .st.idle{background:var(--chip);color:var(--muted)}
+.box .st.alert{background:color-mix(in srgb, var(--warn) 25%, transparent);color:var(--warn)}
+.box .kv{display:flex;justify-content:space-between;gap:8px;font-family:var(--mono);font-size:11.5px;color:var(--soft)}
+.box .kv b{color:var(--ink);font-weight:500;font-variant-numeric:tabular-nums}
+.hbar{display:grid;grid-template-columns:96px minmax(40px,1fr) 78px;gap:8px;align-items:center;font-size:12px}
+.hbar i{display:block;height:8px;border-radius:4px;background:var(--cmp)}
+.hbar span:last-child{font-family:var(--mono);font-size:11px;text-align:right;color:var(--soft)}
 .evlog div{display:grid;grid-template-columns:90px 64px minmax(0,1fr);gap:8px;align-items:start}
 .evlog .k{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.06em;padding:1px 6px;border-radius:4px;background:var(--chip);color:var(--soft);text-align:center}
 .evlog .k.alert{background:var(--warn);color:var(--surface)} .evlog .k.live{background:var(--good);color:var(--surface)}
@@ -194,13 +207,15 @@ footer{padding-block:8px 0}
 </section>
 
 <section class="card step" id="live">
-  <div class="card-head"><span class="num">LIVE</span><h2>Live map: every source and AI session Gnocchi watches</h2><p>The work in this report runs every day: new rows come in overnight, new sessions are classified, linked and matched, the parallel-build watch and the comparisons re-run weekly, and the report updates monthly. Replay 2025 day by day.</p></div>
+  <div class="card-head"><span class="num">LIVE</span><h2>Live map: every source and AI session Gnocchi watches</h2><p>Read left to right. Sources send new rows overnight; Gnocchi stores the op-DB records and the AI logs, classifies each session, links AI logs to the records they touch (agent writes, repo commits, deals named in the session), matches them to drivers and key results, and runs the weekly watch and comparisons. On the right, every AI session monitored, by tool, topic and team. Replay 2025 day by day.</p></div>
   <div class="ctrl"><button id="lplay" type="button">▶ Play 2025</button><input type="range" id="lday" min="0" max="365" value="365" aria-label="Day of 2025"><span class="date" id="ldate"></span></div>
   <div class="panel"><svg id="lstrip" role="img" aria-label="AI sessions per day in 2025"></svg></div>
   <div class="lmap">
-    <div class="lcol"><span>Sources · last sync</span><div id="lsrc" style="display:grid;gap:6px"></div></div>
-    <div class="lcol"><span>Daily run</span><div id="ljobs" style="display:grid;gap:6px"></div></div>
-    <div class="lcol"><span>AI sessions monitored · that day / to date</span><div id="ltools" style="display:grid;gap:6px"></div></div>
+    <div class="lcol"><span>1 · Sources · new today / to date</span><div id="lsrc" style="display:grid;gap:6px"></div></div>
+    <div class="lcol"><span>2 · Gnocchi · what each step did that day</span><div id="ljobs" style="display:grid;gap:6px"></div></div>
+    <div class="lcol"><span>3 · AI sessions monitored · today / to date</span><div id="ltools" style="display:grid;gap:6px"></div>
+      <span style="padding-top:10px">By topic</span><div id="ltopic" style="display:grid;gap:4px"></div>
+      <span style="padding-top:10px">By team</span><div id="lteam" style="display:grid;gap:4px"></div></div>
   </div>
   <div class="panel" style="display:grid;gap:8px"><h3>What the daily run saw</h3><div class="evlog" id="levents"></div></div>
 </section>
@@ -677,12 +692,37 @@ $("total-text").innerHTML = `Of ${fmt$(D.totals.ai_spend)} in AI spend, two inve
   ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"].forEach((m,k)=>txt(svg, (k*30.5+2)*bw, H-2, m));
   L.events.forEach(e => { const i = L.days.indexOf(e.d); if (i>=0) el("line",{x1:i*bw,x2:i*bw,y1:4,y2:H-16,stroke:e.kind==="alert"?css("--warn"):css("--muted"),"stroke-dasharray":"2 3"},svg); });
   const cur = el("line", {x1:0,x2:0,y1:0,y2:H-14,stroke:css("--accent"),"stroke-width":2}, svg);
-  $("ljobs").innerHTML = L.jobs.map(([j,c]) => `<div class="node"><i></i><span><b>${esc(j)}</b><small>${esc(c)}</small></span><span></span></div>`).join("");
+  const cumA = (a) => cum(a), cRec = cum(L.rec_new), cId = cum(L.links.identity), cRepo = cum(L.links.repo), cDeal = cum(L.links.deal), cAim = cum(L.aimed);
+  const catK = Object.keys(L.by_cat), cCat = Object.fromEntries(catK.map(k=>[k,cum(L.by_cat[k])])), teamK = Object.keys(L.by_team), cTeam = Object.fromEntries(teamK.map(k=>[k,cum(L.by_team[k])]));
+  const fmtn = (v) => v.toLocaleString();
+  const lastMon = (d) => { const t = new Date(d+"T00:00:00Z"); const back = (t.getUTCDay()+6)%7; t.setUTCDate(t.getUTCDate()-back); return t.toISOString().slice(0,10); };
+  const lastMonthEnd = (d) => { const t = new Date(d.slice(0,7)+"-01T00:00:00Z"); t.setUTCDate(0); return t.toISOString().slice(0,10); };
+  const box = (title, st, stc, rows) => `<div class="box"><div class="hd"><b>${title}</b><span class="st ${stc}">${st}</span></div>${rows.map(([k,v])=>`<div class="kv"><span>${k}</span><b>${v}</b></div>`).join("")}</div>`;
+  function drawJobs(i){
+    const d = L.days[i], today = tot[i] + L.crm[i] + L.commits[i], lm = lastMon(d), me = lastMonthEnd(d);
+    const linksToday = L.links.identity[i] + L.links.repo[i] + L.links.deal[i];
+    const alerts = L.events.filter(e=>e.kind==="alert" && e.d<=d).length;
+    $("ljobs").innerHTML = [
+      box("Ingest", today?"ran 02:00":"no new data", today?"run":"idle", [["rows in today", fmtn(today)]]),
+      box("Store · op-DB records", L.crm[i]?"updated":"no change", L.crm[i]?"run":"idle", [["deals stored", `${fmtn(cRec[i])} (+${L.rec_new[i]})`], ["changes stored", `${fmtn(cumCrm[i])} (+${L.crm[i]})`]]),
+      box("Store · AI logs", tot[i]?"updated":"no change", tot[i]?"run":"idle", [["sessions stored", `${fmtn(cumTot[i])} (+${tot[i]})`], ["repo commits", `${fmtn(cumCom[i])} (+${L.commits[i]})`]]),
+      box("Classify topic and activity", tot[i]?"ran":"idle", tot[i]?"run":"idle", [["sessions classified", `${fmtn(cumTot[i])} (+${tot[i]})`]]),
+      box("Link AI logs ↔ op-DB records", linksToday?"ran":"no new links", linksToday?"run":"idle", [["agent writes on records", `${fmtn(cId[i])} (+${L.links.identity[i]})`], ["sessions → repo commits", `${fmtn(cRepo[i])} (+${L.links.repo[i]})`], ["sessions → deals (name + log)", `${fmtn(cDeal[i])} (+${L.links.deal[i]})`]]),
+      box("Match to drivers and key results", tot[i]?"ran":"idle", tot[i]?"run":"idle", [["aimed at a driver or KR", `${fmtn(cAim[i])} (+${L.aimed[i]})`]]),
+      box("Parallel-build watch", d>=L.parallel_alert?"alert raised":`weekly · last ${lm.slice(5)}`, d>=L.parallel_alert?"alert":"idle", [["alerts to date", alerts]]),
+      box("Comparisons (rollout, dose, record level)", `weekly · last ${lm.slice(5)}`, "idle", [["next run", "Monday"]]),
+      box("Report and decisions", `monthly · last ${me.slice(5)}`, "idle", [["investments covered", D.discover.inventory.length]]),
+    ].join("");
+  }
   function draw(i){
     const d = L.days[Math.min(i, N-1)];
     $("ldate").textContent = d; cur.setAttribute("x1", (i+.5)*bw); cur.setAttribute("x2", (i+.5)*bw);
     $("lsrc").innerHTML = L.sources.map(sr => { const v = ser(sr.series, i); const fresh = v && v[0] > 0;
       return `<div class="node"><i class="${fresh?"pulse":""}" style="${v&&!fresh?"background:var(--muted)":""}"></i><span><b>${esc(sr.name)}</b><small>${esc(sr.cadence)} · ${sr.kind==="syn"?"synthetic":"real + synthetic"}</small></span><span class="ct">${v?`+${v[0].toLocaleString()}<br><span class="muted">${v[1].toLocaleString()}</span>`:""}</span></div>`; }).join("");
+    drawJobs(i);
+    const mxC = Math.max(1,...catK.map(k=>cCat[k][i])), mxT = Math.max(1,...teamK.map(k=>cTeam[k][i]));
+    $("ltopic").innerHTML = catK.sort((a,b)=>cCat[b][i]-cCat[a][i]).map(k=>`<div class="hbar"><span>${esc(k)}</span><i style="width:${Math.max(2,cCat[k][i]/mxC*100)}%"></i><span>+${L.by_cat[k][i]} / ${fmtn(cCat[k][i])}</span></div>`).join("");
+    $("lteam").innerHTML = teamK.map(k=>`<div class="hbar"><span>${esc(k)}</span><i style="width:${Math.max(2,cTeam[k][i]/mxT*100)}%;background:var(--accent)"></i><span>+${L.by_team[k][i]} / ${fmtn(cTeam[k][i])}</span></div>`).join("");
     $("ltools").innerHTML = tools.map((t,k) => `<div class="node"><i class="${L.counts[k][i]?"pulse":""}" style="${L.counts[k][i]?"":"background:var(--muted)"}"></i><span><b>${esc(nameOf[t]||t)}</b></span><span class="ct">${L.counts[k][i]} / ${cumTool[k][i].toLocaleString()}</span></div>`).join("") +
       `<div class="node" style="background:var(--bg)"><i style="background:var(--accent)"></i><span><b>All AI sessions to date</b></span><span class="ct">${cumTot[i].toLocaleString()}</span></div>`;
     $("levents").innerHTML = L.events.slice().reverse().map(e => `<div class="${e.d>d?"future":""}"><span class="mono" style="font-size:12px">${e.d}</span><span class="k ${e.kind}">${e.kind}</span><span>${esc(e.text)}</span></div>`).join("");
