@@ -1,4 +1,7370 @@
 {
+ "linkmap": {
+  "top_down": {
+   "kr": "Cut the new-business sales cycle to under 60 days, median",
+   "record": "Opportunity + stage history",
+   "measure": "median(close date - created date) where type = New",
+   "scope": 255,
+   "fields": [
+    {
+     "id": "D1",
+     "name": "First response",
+     "field": "Activity \u00b7 first touch",
+     "deals": 255,
+     "ai": 108,
+     "how": "agent identity wrote it",
+     "tools": [
+      "AI SDR agent"
+     ],
+     "days": 1.5,
+     "ci": 0.3,
+     "per": "per hour slower",
+     "matters": true
+    },
+    {
+     "id": "D3",
+     "name": "Solutions engineer before proposal",
+     "field": "Team member \u00b7 role",
+     "deals": 99,
+     "ai": 0,
+     "how": "people only",
+     "tools": [],
+     "days": -11.4,
+     "ci": 1.2,
+     "per": "when added",
+     "matters": true
+    },
+    {
+     "id": "D2",
+     "name": "Meeting-prep brief",
+     "field": "Attachment \u00b7 created with",
+     "deals": 72,
+     "ai": 72,
+     "how": "AI-made material attached",
+     "tools": [
+      "Meeting-prep assistant"
+     ],
+     "days": -3.5,
+     "ci": 2.2,
+     "per": "when attached",
+     "matters": true
+    },
+    {
+     "id": "D6",
+     "name": "Deal-notes summary",
+     "field": "Note \u00b7 written by",
+     "deals": 85,
+     "ai": 85,
+     "how": "agent identity wrote it",
+     "tools": [
+      "Deal-summary bot (EMEA build)",
+      "Deal-summary bot (NA East build)"
+     ],
+     "days": 0.2,
+     "ci": 1.9,
+     "per": "when present",
+     "matters": false
+    }
+   ],
+   "matter": 162,
+   "with_ai": 116,
+   "known_links": 373,
+   "by_tool": [
+    {
+     "tool": "AI SDR agent",
+     "sessions": 216,
+     "deals": 108
+    },
+    {
+     "tool": "Meeting-prep assistant",
+     "sessions": 72,
+     "deals": 72
+    },
+    {
+     "tool": "Deal-summary bot (EMEA build)",
+     "sessions": 66,
+     "deals": 66
+    },
+    {
+     "tool": "Deal-summary bot (NA East build)",
+     "sessions": 19,
+     "deals": 19
+    }
+   ]
+  },
+  "bottom_up": {
+   "steps": [
+    {
+     "step": "All AI sessions in 2025",
+     "n": 9391
+    },
+    {
+     "step": "No record id: help to people, not writes",
+     "n": 8766
+    },
+    {
+     "step": "Sales work (not coding)",
+     "n": 7649
+    },
+    {
+     "step": "Aimed at a driver or key result",
+     "n": 1719
+    },
+    {
+     "step": "Name an account with an open deal",
+     "n": 209
+    },
+    {
+     "step": "Matched to a new deal in scope",
+     "n": 143
+    }
+   ],
+   "deals": 70,
+   "precision": 0.93,
+   "why": {
+    "only open deal with that account": 121,
+    "still before proposal, deal type named": 11,
+    "still before proposal, first of several": 6,
+    "change-log details matched": 5
+   }
+  },
+  "between": {
+   "recovered": 0.903,
+   "n_known": 373,
+   "multi": 68,
+   "hist_true": [
+    59,
+    6,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "hist_wrong": [
+    71,
+    3,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "bins": [
+    0.0,
+    0.025,
+    0.05,
+    0.075,
+    0.1,
+    0.125,
+    0.15,
+    0.175,
+    0.2,
+    0.225,
+    0.25,
+    0.275,
+    0.3
+   ],
+   "rules": [
+    {
+     "rule": "only open deal with that account",
+     "n": 305,
+     "right": 1.0
+    },
+    {
+     "rule": "still before proposal, first of several",
+     "n": 57,
+     "right": 0.456
+    },
+    {
+     "rule": "still before proposal, deal type named",
+     "n": 11,
+     "right": 0.545
+    },
+    {
+     "rule": "no account named, or no open deal found",
+     "n": 0,
+     "right": 0.0
+    }
+   ],
+   "threshold": 0.12,
+   "target_agree": 0.885,
+   "reconcile": [
+    {
+     "tool": "AI SDR agent",
+     "both": 198,
+     "td_only": 18,
+     "bu_only": 0,
+     "target": 0.8
+    },
+    {
+     "tool": "Meeting-prep assistant",
+     "both": 67,
+     "td_only": 5,
+     "bu_only": 0,
+     "target": 1.0
+    },
+    {
+     "tool": "Deal-summary bot (EMEA build)",
+     "both": 53,
+     "td_only": 13,
+     "bu_only": 0,
+     "target": 1.0
+    },
+    {
+     "tool": "Deal-summary bot (NA East build)",
+     "both": 19,
+     "td_only": 0,
+     "bu_only": 0,
+     "target": 1.0
+    },
+    {
+     "tool": "ChatGPT Enterprise \u00b7 other tasks",
+     "both": 0,
+     "td_only": 0,
+     "bu_only": 143,
+     "target": 0.5
+    }
+   ],
+   "bu_trusted": 121,
+   "bu_leads": 22,
+   "trusted_rules": [
+    "only open deal with that account"
+   ]
+  },
+  "featured": [
+   "deal_001329",
+   "deal_000408",
+   "deal_000698",
+   "deal_001336"
+  ],
+  "deals": [
+   {
+    "id": "deal_000227",
+    "account": "Umbra Networks",
+    "team": "APAC",
+    "created": "2024-11-10",
+    "close": "2025-02-01",
+    "cycle": 82,
+    "first_resp": 5.4,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_000698",
+    "account": "Ironclad Dynamics",
+    "team": "APAC",
+    "created": "2024-11-20",
+    "close": "2025-01-30",
+    "cycle": 70,
+    "first_resp": 5.9,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2024-12-04",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "What does Ironclad Dynamics do, how big are they, and who are their main competitors? Context: they moved the close date to Jan 11.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     }
+    ]
+   },
+   {
+    "id": "deal_001792",
+    "account": "Ashford Health",
+    "team": "APAC",
+    "created": "2024-12-21",
+    "close": "2025-03-12",
+    "cycle": 81,
+    "first_resp": 6.1,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001717",
+    "account": "Port of Ashford",
+    "team": "APAC",
+    "created": "2024-12-26",
+    "close": "2025-03-18",
+    "cycle": 78,
+    "first_resp": 4.1,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001793",
+    "account": "Pinnacle Ventures",
+    "team": "APAC",
+    "created": "2025-01-05",
+    "close": "2025-03-18",
+    "cycle": 72,
+    "first_resp": 6.1,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001186",
+    "account": "Department of Revenue",
+    "team": "APAC",
+    "created": "2025-01-06",
+    "close": "2025-04-12",
+    "cycle": 98,
+    "first_resp": 7.6,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-02-21",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Write the pricing and implementation section of our new-logo quote for Department of Revenue.",
+      "dir": "bu",
+      "why": "still before proposal, deal type named",
+      "target": NaN
+     }
+    ]
+   },
+   {
+    "id": "deal_001773",
+    "account": "Brightline Logistics",
+    "team": "APAC",
+    "created": "2025-01-07",
+    "close": "2025-03-18",
+    "cycle": 71,
+    "first_resp": 7.0,
+    "se": 1,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001383",
+    "account": "Vantor Technologies",
+    "team": "APAC",
+    "created": "2025-01-08",
+    "close": "2025-03-13",
+    "cycle": 67,
+    "first_resp": 8.1,
+    "se": 1,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-02-06",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Draft the executive summary for a new-logo proposal to Vantor Technologies covering pricing options and the rollout plan.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D4"
+     }
+    ]
+   },
+   {
+    "id": "deal_001043",
+    "account": "Brightline Global",
+    "team": "APAC",
+    "created": "2025-01-14",
+    "close": "2025-04-04",
+    "cycle": 76,
+    "first_resp": 4.0,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001844",
+    "account": "Department of Revenue",
+    "team": "APAC",
+    "created": "2025-01-21",
+    "close": "2025-04-12",
+    "cycle": 77,
+    "first_resp": 3.5,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001856",
+    "account": "Kestrel Group",
+    "team": "APAC",
+    "created": "2025-02-15",
+    "close": "2025-04-25",
+    "cycle": 66,
+    "first_resp": 4.7,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001636",
+    "account": "Delphi Dynamics",
+    "team": "APAC",
+    "created": "2025-02-17",
+    "close": "2025-05-03",
+    "cycle": 75,
+    "first_resp": 6.3,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-03-02",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Write the pricing and implementation section of our new-logo quote for Delphi Dynamics. Context: they moved the close date to Apr 21.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     },
+     {
+      "ts": "2025-03-05",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Write the pricing and implementation section of our new-logo quote for Delphi Dynamics.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D4"
+     }
+    ]
+   },
+   {
+    "id": "deal_001853",
+    "account": "Brightline Solutions",
+    "team": "APAC",
+    "created": "2025-02-18",
+    "close": "2025-04-26",
+    "cycle": 66,
+    "first_resp": 6.0,
+    "se": 1,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-03-26",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Write the pricing and implementation section of our new-logo quote for Brightline Solutions. Context: next step is confirm budget owner.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     }
+    ]
+   },
+   {
+    "id": "deal_001341",
+    "account": "Radiant Global",
+    "team": "APAC",
+    "created": "2025-03-04",
+    "close": "2025-05-29",
+    "cycle": 86,
+    "first_resp": 6.4,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001886",
+    "account": "Ferro Ventures",
+    "team": "APAC",
+    "created": "2025-05-05",
+    "close": "2025-07-30",
+    "cycle": 84,
+    "first_resp": 5.3,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-06-07",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Give me background on Ferro Ventures's industry and recent news before the meeting. Context: they moved the close date to Jul 15.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     }
+    ]
+   },
+   {
+    "id": "deal_001959",
+    "account": "Verdant Global",
+    "team": "APAC",
+    "created": "2025-05-15",
+    "close": "2025-07-18",
+    "cycle": 62,
+    "first_resp": 5.3,
+    "se": 1,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001441",
+    "account": "Everest Logistics",
+    "team": "APAC",
+    "created": "2025-05-23",
+    "close": "2025-08-09",
+    "cycle": 79,
+    "first_resp": 7.0,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_000597",
+    "account": "Westbridge Global",
+    "team": "APAC",
+    "created": "2025-05-26",
+    "close": "2025-07-29",
+    "cycle": 62,
+    "first_resp": 5.1,
+    "se": 1,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001533",
+    "account": "Equinox Global",
+    "team": "APAC",
+    "created": "2025-06-15",
+    "close": "2025-09-02",
+    "cycle": 78,
+    "first_resp": 5.4,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001755",
+    "account": "Aurelia Technologies",
+    "team": "APAC",
+    "created": "2025-07-02",
+    "close": "2025-09-24",
+    "cycle": 86,
+    "first_resp": 7.7,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_002032",
+    "account": "Granby Health",
+    "team": "APAC",
+    "created": "2025-07-09",
+    "close": "2025-09-20",
+    "cycle": 77,
+    "first_resp": 8.9,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001973",
+    "account": "Ironclad Dynamics",
+    "team": "APAC",
+    "created": "2025-07-15",
+    "close": "2025-09-24",
+    "cycle": 69,
+    "first_resp": 5.4,
+    "se": 1,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_002005",
+    "account": "Quanta Solutions",
+    "team": "APAC",
+    "created": "2025-08-13",
+    "close": "2025-10-28",
+    "cycle": 75,
+    "first_resp": 5.8,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001829",
+    "account": "Aurelia Industries",
+    "team": "APAC",
+    "created": "2025-08-16",
+    "close": "2025-11-08",
+    "cycle": 80,
+    "first_resp": 3.7,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001761",
+    "account": "Everest Global",
+    "team": "APAC",
+    "created": "2025-08-18",
+    "close": "2025-10-21",
+    "cycle": 65,
+    "first_resp": 7.2,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001919",
+    "account": "Equinox Holdings",
+    "team": "APAC",
+    "created": "2025-09-16",
+    "close": "2025-11-28",
+    "cycle": 70,
+    "first_resp": 4.3,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-10-13",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Write the pricing and implementation section of our new-logo quote for Equinox Holdings.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D4"
+     },
+     {
+      "ts": "2025-10-21",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "What does Equinox Holdings do, how big are they, and who are their main competitors? Context: they moved the close date to Oct 31.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     }
+    ]
+   },
+   {
+    "id": "deal_001991",
+    "account": "Cobalt Ventures",
+    "team": "APAC",
+    "created": "2025-09-22",
+    "close": "2025-11-30",
+    "cycle": 68,
+    "first_resp": 5.8,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001937",
+    "account": "Vantor Systems",
+    "team": "APAC",
+    "created": "2025-10-01",
+    "close": "2025-12-26",
+    "cycle": 86,
+    "first_resp": 6.3,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001933",
+    "account": "Driftwood Logistics",
+    "team": "APAC",
+    "created": "2025-10-14",
+    "close": "2025-12-26",
+    "cycle": 78,
+    "first_resp": 9.5,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-11-07",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "What does Driftwood Logistics do, how big are they, and who are their main competitors?",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     },
+     {
+      "ts": "2025-11-19",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Draft the executive summary for a new-logo proposal to Driftwood Logistics covering pricing options and the rollout plan. Context: next step is security review with IT.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D4"
+     }
+    ]
+   },
+   {
+    "id": "deal_001082",
+    "account": "Tessera Ventures",
+    "team": "EMEA",
+    "created": "2024-10-29",
+    "close": "2025-01-22",
+    "cycle": 86,
+    "first_resp": 7.0,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001634",
+    "account": "Pinnacle Holdings",
+    "team": "EMEA",
+    "created": "2024-11-13",
+    "close": "2025-02-05",
+    "cycle": 77,
+    "first_resp": 1.8,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001720",
+    "account": "Northwind Group",
+    "team": "EMEA",
+    "created": "2024-11-24",
+    "close": "2025-01-29",
+    "cycle": 66,
+    "first_resp": 6.0,
+    "se": 1,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001500",
+    "account": "Delphi Group",
+    "team": "EMEA",
+    "created": "2024-12-02",
+    "close": "2025-02-12",
+    "cycle": 72,
+    "first_resp": 6.1,
+    "se": 1,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2024-12-24",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Write the pricing and implementation section of our new-logo quote for Delphi Group.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D4"
+     }
+    ]
+   },
+   {
+    "id": "deal_001591",
+    "account": "Driftwood Technologies",
+    "team": "EMEA",
+    "created": "2024-12-04",
+    "close": "2025-02-03",
+    "cycle": 62,
+    "first_resp": 6.8,
+    "se": 1,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001593",
+    "account": "Forge Networks",
+    "team": "EMEA",
+    "created": "2024-12-05",
+    "close": "2025-02-19",
+    "cycle": 74,
+    "first_resp": 5.1,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001713",
+    "account": "Beacon Global",
+    "team": "EMEA",
+    "created": "2024-12-08",
+    "close": "2025-02-27",
+    "cycle": 92,
+    "first_resp": 13.3,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001763",
+    "account": "Kestrel Dynamics",
+    "team": "EMEA",
+    "created": "2024-12-23",
+    "close": "2025-03-06",
+    "cycle": 74,
+    "first_resp": 7.1,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-02-20",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Condense the activity notes for the Kestrel Dynamics deal into three bullets.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001346",
+    "account": "Ferro Solutions",
+    "team": "EMEA",
+    "created": "2024-12-24",
+    "close": "2025-02-28",
+    "cycle": 63,
+    "first_resp": 4.5,
+    "se": 1,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001783",
+    "account": "Zephyr Group",
+    "team": "EMEA",
+    "created": "2024-12-29",
+    "close": "2025-03-07",
+    "cycle": 76,
+    "first_resp": 11.1,
+    "se": 1,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-02-08",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "What does Zephyr Group do, how big are they, and who are their main competitors?",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     }
+    ]
+   },
+   {
+    "id": "deal_001560",
+    "account": "Cobalt Logistics",
+    "team": "EMEA",
+    "created": "2025-01-01",
+    "close": "2025-04-03",
+    "cycle": 95,
+    "first_resp": 8.3,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-03-18",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Condense the activity notes for the Cobalt Logistics deal into three bullets.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001420",
+    "account": "Granite Holdings",
+    "team": "EMEA",
+    "created": "2025-01-03",
+    "close": "2025-03-28",
+    "cycle": 86,
+    "first_resp": 7.3,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-03-15",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Condense the activity notes for the Granite Holdings deal into three bullets.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001290",
+    "account": "Granite Group",
+    "team": "EMEA",
+    "created": "2025-01-04",
+    "close": "2025-03-27",
+    "cycle": 82,
+    "first_resp": 6.1,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001774",
+    "account": "Nexora Networks",
+    "team": "EMEA",
+    "created": "2025-01-05",
+    "close": "2025-03-11",
+    "cycle": 62,
+    "first_resp": 4.2,
+    "se": 1,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-02-24",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Condense the activity notes for the Nexora Networks deal into three bullets.",
+      "dir": "td",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001752",
+    "account": "Nexora Networks",
+    "team": "EMEA",
+    "created": "2025-01-06",
+    "close": "2025-03-11",
+    "cycle": 61,
+    "first_resp": 4.4,
+    "se": 1,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-01-27",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Give me background on Nexora Networks's industry and recent news before the meeting. Context: they moved the close date to Feb 16.",
+      "dir": "bu",
+      "why": "change-log details matched",
+      "target": NaN
+     },
+     {
+      "ts": "2025-02-02",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Draft the executive summary for a new-logo proposal to Nexora Networks covering pricing options and the rollout plan.",
+      "dir": "bu",
+      "why": "still before proposal, deal type named",
+      "target": "D4"
+     }
+    ]
+   },
+   {
+    "id": "deal_001894",
+    "account": "Driftwood Global",
+    "team": "EMEA",
+    "created": "2025-01-06",
+    "close": "2025-03-31",
+    "cycle": 84,
+    "first_resp": 6.1,
+    "se": 1,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-03-12",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Summarize the latest notes on the Driftwood Global opportunity into a status line.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_000673",
+    "account": "Juniper Group",
+    "team": "EMEA",
+    "created": "2025-01-08",
+    "close": "2025-03-28",
+    "cycle": 74,
+    "first_resp": 3.5,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001813",
+    "account": "Verdant Holdings",
+    "team": "EMEA",
+    "created": "2025-01-09",
+    "close": "2025-03-27",
+    "cycle": 76,
+    "first_resp": 6.0,
+    "se": 1,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-03-10",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Condense the activity notes for the Verdant Holdings deal into three bullets.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001893",
+    "account": "Verdant Holdings",
+    "team": "EMEA",
+    "created": "2025-01-11",
+    "close": "2025-03-31",
+    "cycle": 79,
+    "first_resp": 6.2,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-03-25",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Summarize the latest notes on the Verdant Holdings opportunity into a status line.",
+      "dir": "td",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001727",
+    "account": "Lumina Technologies",
+    "team": "EMEA",
+    "created": "2025-01-12",
+    "close": "2025-04-02",
+    "cycle": 76,
+    "first_resp": 3.9,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-03-27",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Summarize the latest notes on the Lumina Technologies opportunity into a status line.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001984",
+    "account": "Whitfield Bank",
+    "team": "EMEA",
+    "created": "2025-01-13",
+    "close": "2025-04-17",
+    "cycle": 95,
+    "first_resp": 7.2,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001269",
+    "account": "Everest Industries",
+    "team": "EMEA",
+    "created": "2025-01-19",
+    "close": "2025-03-28",
+    "cycle": 70,
+    "first_resp": 7.7,
+    "se": 1,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-03-12",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Condense the activity notes for the Everest Industries deal into three bullets.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001668",
+    "account": "City of Crestline",
+    "team": "EMEA",
+    "created": "2025-01-21",
+    "close": "2025-03-29",
+    "cycle": 70,
+    "first_resp": 8.0,
+    "se": 1,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-02-05",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Draft the executive summary for a new-logo proposal to City of Crestline covering pricing options and the rollout plan.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D4"
+     },
+     {
+      "ts": "2025-02-18",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Give me background on City of Crestline's industry and recent news before the meeting. Context: next step is map current camera estate (24 cameras).",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     }
+    ]
+   },
+   {
+    "id": "deal_001825",
+    "account": "Helix Industries",
+    "team": "EMEA",
+    "created": "2025-01-23",
+    "close": "2025-04-15",
+    "cycle": 80,
+    "first_resp": 5.2,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-04-10",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Summarize the latest notes on the Helix Industries opportunity into a status line.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001815",
+    "account": "Verdant Logistics",
+    "team": "EMEA",
+    "created": "2025-01-27",
+    "close": "2025-03-28",
+    "cycle": 66,
+    "first_resp": 10.3,
+    "se": 1,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-02-18",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Give me background on Verdant Logistics's industry and recent news before the meeting.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D2"
+     }
+    ]
+   },
+   {
+    "id": "deal_001895",
+    "account": "Zephyr Industries",
+    "team": "EMEA",
+    "created": "2025-01-30",
+    "close": "2025-03-31",
+    "cycle": 57,
+    "first_resp": 4.4,
+    "se": 1,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-02-23",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Write the pricing and implementation section of our new-logo quote for Zephyr Industries.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D4"
+     },
+     {
+      "ts": "2025-03-01",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Draft the executive summary for a new-logo proposal to Zephyr Industries covering pricing options and the rollout plan. Context: next step is map current camera estate (8 cameras).",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D4"
+     },
+     {
+      "ts": "2025-03-01",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Write the pricing and implementation section of our new-logo quote for Zephyr Industries. Context: next step is map current camera estate (8 cameras).",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     }
+    ]
+   },
+   {
+    "id": "deal_001597",
+    "account": "Radiant Holdings",
+    "team": "EMEA",
+    "created": "2025-02-15",
+    "close": "2025-05-08",
+    "cycle": 78,
+    "first_resp": 3.9,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-04-19",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Condense the activity notes for the Radiant Holdings deal into three bullets.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001225",
+    "account": "City of Ashford",
+    "team": "EMEA",
+    "created": "2025-02-23",
+    "close": "2025-05-15",
+    "cycle": 82,
+    "first_resp": 7.0,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001055",
+    "account": "City of Silverton",
+    "team": "EMEA",
+    "created": "2025-02-27",
+    "close": "2025-05-12",
+    "cycle": 68,
+    "first_resp": 2.5,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-04-01",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Build an account plan to grow City of Silverton next year, with expansion targets and the stakeholders to win. Context: the deal is now about $18K.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     },
+     {
+      "ts": "2025-04-23",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Summarize the latest notes on the City of Silverton opportunity into a status line.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001451",
+    "account": "Nexora Industries",
+    "team": "EMEA",
+    "created": "2025-03-02",
+    "close": "2025-05-29",
+    "cycle": 81,
+    "first_resp": 2.2,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-05-21",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Condense the activity notes for the Nexora Industries deal into three bullets.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001883",
+    "account": "Citadel Global",
+    "team": "EMEA",
+    "created": "2025-03-07",
+    "close": "2025-05-06",
+    "cycle": 59,
+    "first_resp": 5.6,
+    "se": 1,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001850",
+    "account": "Driftwood Logistics",
+    "team": "EMEA",
+    "created": "2025-03-11",
+    "close": "2025-05-29",
+    "cycle": 76,
+    "first_resp": 4.4,
+    "se": 1,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001902",
+    "account": "Juniper Labs",
+    "team": "EMEA",
+    "created": "2025-03-20",
+    "close": "2025-06-05",
+    "cycle": 69,
+    "first_resp": 1.0,
+    "se": 0,
+    "prep": 0,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-03-20",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-04-11",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Give me background on Juniper Labs's industry and recent news before the meeting.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D2"
+     },
+     {
+      "ts": "2025-05-19",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Summarize the latest notes on the Juniper Labs opportunity into a status line.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001545",
+    "account": "Driftwood Labs",
+    "team": "EMEA",
+    "created": "2025-03-24",
+    "close": "2025-05-31",
+    "cycle": 59,
+    "first_resp": 1.0,
+    "se": 1,
+    "prep": 0,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-03-24",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-05-15",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Summarize the latest notes on the Driftwood Labs opportunity into a status line.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001845",
+    "account": "Northwind Dynamics",
+    "team": "EMEA",
+    "created": "2025-03-29",
+    "close": "2025-06-14",
+    "cycle": 69,
+    "first_resp": 1.2,
+    "se": 0,
+    "prep": 0,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-03-29",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-04-19",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Write the pricing and implementation section of our new-logo quote for Northwind Dynamics. Context: it is for their CIO.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     },
+     {
+      "ts": "2025-04-26",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Draft the executive summary for a new-logo proposal to Northwind Dynamics covering pricing options and the rollout plan. Context: next step is security review with IT.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D4"
+     },
+     {
+      "ts": "2025-06-07",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Condense the activity notes for the Northwind Dynamics deal into three bullets.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001903",
+    "account": "Forge Dynamics",
+    "team": "EMEA",
+    "created": "2025-04-02",
+    "close": "2025-06-24",
+    "cycle": 74,
+    "first_resp": 0.9,
+    "se": 0,
+    "prep": 0,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-04-02",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-06-10",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Summarize the latest notes on the Forge Dynamics opportunity into a status line.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001961",
+    "account": "Westbridge Holdings",
+    "team": "EMEA",
+    "created": "2025-04-02",
+    "close": "2025-06-24",
+    "cycle": 74,
+    "first_resp": 0.5,
+    "se": 0,
+    "prep": 0,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-04-02",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-06-09",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Condense the activity notes for the Westbridge Holdings deal into three bullets.",
+      "dir": "td",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001867",
+    "account": "Nexora Networks",
+    "team": "EMEA",
+    "created": "2025-04-09",
+    "close": "2025-06-27",
+    "cycle": 70,
+    "first_resp": 0.7,
+    "se": 1,
+    "prep": 0,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-04-09",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-06-18",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Condense the activity notes for the Nexora Networks deal into three bullets.",
+      "dir": "td",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001897",
+    "account": "Granite Labs",
+    "team": "EMEA",
+    "created": "2025-04-10",
+    "close": "2025-07-05",
+    "cycle": 78,
+    "first_resp": 1.2,
+    "se": 0,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-04-10",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-05-03",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-06-30",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Condense the activity notes for the Granite Labs deal into three bullets.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001732",
+    "account": "Nexora Networks",
+    "team": "EMEA",
+    "created": "2025-04-12",
+    "close": "2025-06-27",
+    "cycle": 67,
+    "first_resp": 0.9,
+    "se": 1,
+    "prep": 0,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-04-12",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-06-18",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Condense the activity notes for the Nexora Networks deal into three bullets.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001569",
+    "account": "Summit Solutions",
+    "team": "EMEA",
+    "created": "2025-04-14",
+    "close": "2025-06-28",
+    "cycle": 66,
+    "first_resp": 0.5,
+    "se": 0,
+    "prep": 0,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-04-14",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-06-19",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Condense the activity notes for the Summit Solutions deal into three bullets.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001989",
+    "account": "Driftwood Global",
+    "team": "EMEA",
+    "created": "2025-04-15",
+    "close": "2025-06-30",
+    "cycle": 68,
+    "first_resp": 1.3,
+    "se": 0,
+    "prep": 0,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-04-15",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-06-24",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Summarize the latest notes on the Driftwood Global opportunity into a status line.",
+      "dir": "td",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001931",
+    "account": "Granite Labs",
+    "team": "EMEA",
+    "created": "2025-04-18",
+    "close": "2025-07-05",
+    "cycle": 70,
+    "first_resp": 1.1,
+    "se": 0,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-04-18",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "td",
+      "matters": true
+     },
+     {
+      "ts": "2025-05-09",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "td",
+      "matters": true
+     },
+     {
+      "ts": "2025-06-29",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Condense the activity notes for the Granite Labs deal into three bullets.",
+      "dir": "td",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001847",
+    "account": "Nexora Networks",
+    "team": "EMEA",
+    "created": "2025-04-21",
+    "close": "2025-06-27",
+    "cycle": 58,
+    "first_resp": 0.9,
+    "se": 0,
+    "prep": 0,
+    "sdr": 1,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-04-21",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "td",
+      "matters": true
+     }
+    ]
+   },
+   {
+    "id": "deal_001990",
+    "account": "Zephyr Industries",
+    "team": "EMEA",
+    "created": "2025-04-28",
+    "close": "2025-06-30",
+    "cycle": 54,
+    "first_resp": 0.9,
+    "se": 1,
+    "prep": 0,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-04-28",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-06-21",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Summarize the latest notes on the Zephyr Industries opportunity into a status line.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_002038",
+    "account": "Zephyr Industries",
+    "team": "EMEA",
+    "created": "2025-05-01",
+    "close": "2025-07-24",
+    "cycle": 75,
+    "first_resp": 0.9,
+    "se": 0,
+    "prep": 0,
+    "sdr": 1,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-05-01",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "td",
+      "matters": true
+     }
+    ]
+   },
+   {
+    "id": "deal_001987",
+    "account": "Driftwood Global",
+    "team": "EMEA",
+    "created": "2025-05-02",
+    "close": "2025-06-30",
+    "cycle": 52,
+    "first_resp": 1.7,
+    "se": 1,
+    "prep": 0,
+    "sdr": 1,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-05-02",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-05-13",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Build an account plan to grow Driftwood Global next year, with expansion targets and the stakeholders to win.",
+      "dir": "bu",
+      "why": "still before proposal, first of several",
+      "target": NaN
+     },
+     {
+      "ts": "2025-05-18",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "What does Driftwood Global do, how big are they, and who are their main competitors?",
+      "dir": "bu",
+      "why": "still before proposal, first of several",
+      "target": NaN
+     },
+     {
+      "ts": "2025-05-22",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Give me background on Driftwood Global's industry and recent news before the meeting. Context: next step is pilot with 8 cameras at the harbor site.",
+      "dir": "bu",
+      "why": "change-log details matched",
+      "target": NaN
+     }
+    ]
+   },
+   {
+    "id": "deal_001988",
+    "account": "Verdant Holdings",
+    "team": "EMEA",
+    "created": "2025-05-04",
+    "close": "2025-06-30",
+    "cycle": 49,
+    "first_resp": 1.2,
+    "se": 1,
+    "prep": 0,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-05-04",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-05-12",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Draft the executive summary for a new-logo proposal to Verdant Holdings covering pricing options and the rollout plan. Context: they moved the close date to Jun 08.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D4"
+     },
+     {
+      "ts": "2025-05-21",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Draft the executive summary for a new-logo proposal to Verdant Holdings covering pricing options and the rollout plan. Context: the deal is now about $4K.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D4"
+     },
+     {
+      "ts": "2025-06-18",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Summarize the latest notes on the Verdant Holdings opportunity into a status line.",
+      "dir": "td",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001811",
+    "account": "Citadel Logistics",
+    "team": "EMEA",
+    "created": "2025-05-06",
+    "close": "2025-07-22",
+    "cycle": 69,
+    "first_resp": 1.5,
+    "se": 0,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-05-06",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-05-26",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-05-27",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Write the pricing and implementation section of our new-logo quote for Citadel Logistics.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D4"
+     },
+     {
+      "ts": "2025-06-10",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Give me background on Citadel Logistics's industry and recent news before the meeting. Context: it is for their IT director.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D2"
+     },
+     {
+      "ts": "2025-07-15",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Summarize the latest notes on the Citadel Logistics opportunity into a status line.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001981",
+    "account": "Westbridge Holdings",
+    "team": "EMEA",
+    "created": "2025-05-09",
+    "close": "2025-07-17",
+    "cycle": 60,
+    "first_resp": 0.7,
+    "se": 1,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-05-09",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "td",
+      "matters": true
+     },
+     {
+      "ts": "2025-05-27",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     }
+    ]
+   },
+   {
+    "id": "deal_001934",
+    "account": "Citadel Systems",
+    "team": "EMEA",
+    "created": "2025-05-12",
+    "close": "2025-07-08",
+    "cycle": 48,
+    "first_resp": 0.6,
+    "se": 1,
+    "prep": 0,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-05-12",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-06-19",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Condense the activity notes for the Citadel Systems deal into three bullets.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001329",
+    "account": "City of Norcross",
+    "team": "EMEA",
+    "created": "2025-05-29",
+    "close": "2025-07-30",
+    "cycle": 53,
+    "first_resp": 0.9,
+    "se": 1,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-05-29",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-06-10",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Write the pricing and implementation section of our new-logo quote for City of Norcross.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D4"
+     },
+     {
+      "ts": "2025-06-14",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-06-22",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Draft the executive summary for a new-logo proposal to City of Norcross covering pricing options and the rollout plan. Context: it is for their Procurement lead.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D4"
+     },
+     {
+      "ts": "2025-06-26",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "What does City of Norcross do, how big are they, and who are their main competitors?",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     },
+     {
+      "ts": "2025-07-27",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Summarize the latest notes on the City of Norcross opportunity into a status line.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001756",
+    "account": "Meridian Solutions",
+    "team": "EMEA",
+    "created": "2025-05-30",
+    "close": "2025-08-21",
+    "cycle": 74,
+    "first_resp": 0.6,
+    "se": 0,
+    "prep": 0,
+    "sdr": 1,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-05-30",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     }
+    ]
+   },
+   {
+    "id": "deal_001932",
+    "account": "Citadel Group",
+    "team": "EMEA",
+    "created": "2025-06-06",
+    "close": "2025-08-15",
+    "cycle": 62,
+    "first_resp": 1.6,
+    "se": 1,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-06-06",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-06-24",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-06-27",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Draft the executive summary for a new-logo proposal to Citadel Group covering pricing options and the rollout plan.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D4"
+     },
+     {
+      "ts": "2025-06-28",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "What does Citadel Group do, how big are they, and who are their main competitors?",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     },
+     {
+      "ts": "2025-07-04",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "What does Citadel Group do, how big are they, and who are their main competitors? Context: it is for their Solutions Engineer.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D3"
+     },
+     {
+      "ts": "2025-08-01",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Condense the activity notes for the Citadel Group deal into three bullets.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_002077",
+    "account": "Verdant Holdings",
+    "team": "EMEA",
+    "created": "2025-06-07",
+    "close": "2025-09-01",
+    "cycle": 77,
+    "first_resp": 0.6,
+    "se": 0,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-06-07",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-06-30",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     }
+    ]
+   },
+   {
+    "id": "deal_001957",
+    "account": "Northwind Ventures",
+    "team": "EMEA",
+    "created": "2025-06-10",
+    "close": "2025-08-15",
+    "cycle": 58,
+    "first_resp": 1.1,
+    "se": 1,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-06-10",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-06-27",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     }
+    ]
+   },
+   {
+    "id": "deal_001682",
+    "account": "City of Montvale",
+    "team": "EMEA",
+    "created": "2025-06-10",
+    "close": "2025-09-05",
+    "cycle": 78,
+    "first_resp": 1.0,
+    "se": 0,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-06-10",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-07-03",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     }
+    ]
+   },
+   {
+    "id": "deal_002007",
+    "account": "Nexora Technologies",
+    "team": "EMEA",
+    "created": "2025-06-12",
+    "close": "2025-08-14",
+    "cycle": 54,
+    "first_resp": 1.0,
+    "se": 1,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-06-12",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-06-28",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-08-01",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Condense the activity notes for the Nexora Technologies deal into three bullets.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001778",
+    "account": "City of Millbrook",
+    "team": "EMEA",
+    "created": "2025-06-15",
+    "close": "2025-08-09",
+    "cycle": 48,
+    "first_resp": 2.1,
+    "se": 1,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-06-15",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-06-29",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     }
+    ]
+   },
+   {
+    "id": "deal_001656",
+    "account": "Northwind Partners",
+    "team": "EMEA",
+    "created": "2025-06-23",
+    "close": "2025-09-04",
+    "cycle": 64,
+    "first_resp": 0.7,
+    "se": 0,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-06-23",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-07-12",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-08-29",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Condense the activity notes for the Northwind Partners deal into three bullets.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_002078",
+    "account": "Driftwood Global",
+    "team": "EMEA",
+    "created": "2025-06-26",
+    "close": "2025-09-01",
+    "cycle": 59,
+    "first_resp": 1.4,
+    "se": 0,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-06-26",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-07-13",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-08-13",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Condense the activity notes for the Driftwood Global deal into three bullets.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001878",
+    "account": "Meridian Technologies",
+    "team": "EMEA",
+    "created": "2025-06-27",
+    "close": "2025-09-30",
+    "cycle": 87,
+    "first_resp": 1.1,
+    "se": 0,
+    "prep": 0,
+    "sdr": 1,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-06-27",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-07-23",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Write the pricing and implementation section of our new-logo quote for Meridian Technologies. Context: the deal is now about $38K.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     },
+     {
+      "ts": "2025-07-28",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Write the pricing and implementation section of our new-logo quote for Meridian Technologies.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D4"
+     }
+    ]
+   },
+   {
+    "id": "deal_001840",
+    "account": "Port of Yarrow",
+    "team": "EMEA",
+    "created": "2025-06-29",
+    "close": "2025-09-10",
+    "cycle": 65,
+    "first_resp": 1.2,
+    "se": 1,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-06-29",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-07-18",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-08-01",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Give me background on Port of Yarrow's industry and recent news before the meeting. Context: the deal is now about $51K.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     }
+    ]
+   },
+   {
+    "id": "deal_001958",
+    "account": "Cobalt Holdings",
+    "team": "EMEA",
+    "created": "2025-06-30",
+    "close": "2025-09-10",
+    "cycle": 64,
+    "first_resp": 1.1,
+    "se": 0,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-06-30",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-07-19",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-08-23",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Condense the activity notes for the Cobalt Holdings deal into three bullets.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001798",
+    "account": "Quanta Systems",
+    "team": "EMEA",
+    "created": "2025-07-01",
+    "close": "2025-09-16",
+    "cycle": 69,
+    "first_resp": 1.1,
+    "se": 1,
+    "prep": 0,
+    "sdr": 1,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-07-01",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     }
+    ]
+   },
+   {
+    "id": "deal_001838",
+    "account": "Port of Harborview",
+    "team": "EMEA",
+    "created": "2025-07-05",
+    "close": "2025-09-10",
+    "cycle": 59,
+    "first_resp": 1.3,
+    "se": 1,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-07-05",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-07-22",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-09-01",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Summarize the latest notes on the Port of Harborview opportunity into a status line.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001841",
+    "account": "Port of Danforth",
+    "team": "EMEA",
+    "created": "2025-07-06",
+    "close": "2025-09-10",
+    "cycle": 59,
+    "first_resp": 1.9,
+    "se": 1,
+    "prep": 0,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-07-06",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-07-21",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "What does Port of Danforth do, how big are they, and who are their main competitors?",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     },
+     {
+      "ts": "2025-08-01",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "What does Port of Danforth do, how big are they, and who are their main competitors? Context: next step is technical demo for the Procurement lead.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D3"
+     },
+     {
+      "ts": "2025-09-03",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Condense the activity notes for the Port of Danforth deal into three bullets.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001723",
+    "account": "Onyx Networks",
+    "team": "EMEA",
+    "created": "2025-07-08",
+    "close": "2025-09-24",
+    "cycle": 71,
+    "first_resp": 1.8,
+    "se": 0,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-07-08",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-07-25",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "What does Onyx Networks do, how big are they, and who are their main competitors?",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     },
+     {
+      "ts": "2025-07-29",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     }
+    ]
+   },
+   {
+    "id": "deal_001880",
+    "account": "Vantor Ventures",
+    "team": "EMEA",
+    "created": "2025-07-10",
+    "close": "2025-09-30",
+    "cycle": 74,
+    "first_resp": 1.1,
+    "se": 0,
+    "prep": 0,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-07-10",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-08-01",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "What does Vantor Ventures do, how big are they, and who are their main competitors?",
+      "dir": "bu",
+      "why": "still before proposal, first of several",
+      "target": NaN
+     },
+     {
+      "ts": "2025-09-22",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Condense the activity notes for the Vantor Ventures deal into three bullets.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001877",
+    "account": "Atlas Holdings",
+    "team": "EMEA",
+    "created": "2025-07-13",
+    "close": "2025-09-30",
+    "cycle": 70,
+    "first_resp": 0.9,
+    "se": 0,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-07-13",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-08-03",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     }
+    ]
+   },
+   {
+    "id": "deal_001879",
+    "account": "Summit Industries",
+    "team": "EMEA",
+    "created": "2025-07-13",
+    "close": "2025-09-30",
+    "cycle": 70,
+    "first_resp": 0.8,
+    "se": 1,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-07-13",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-08-03",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-09-15",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Summarize the latest notes on the Summit Industries opportunity into a status line.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_002021",
+    "account": "Delphi Group",
+    "team": "EMEA",
+    "created": "2025-07-13",
+    "close": "2025-09-25",
+    "cycle": 66,
+    "first_resp": 1.2,
+    "se": 1,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-07-13",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-07-31",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "What does Delphi Group do, how big are they, and who are their main competitors?",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     },
+     {
+      "ts": "2025-08-01",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-08-06",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Draft the executive summary for a new-logo proposal to Delphi Group covering pricing options and the rollout plan. Context: next step is technical demo for the CFO.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D4"
+     },
+     {
+      "ts": "2025-08-17",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Draft the executive summary for a new-logo proposal to Delphi Group covering pricing options and the rollout plan.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D4"
+     }
+    ]
+   },
+   {
+    "id": "deal_001881",
+    "account": "Vantor Ventures",
+    "team": "EMEA",
+    "created": "2025-07-14",
+    "close": "2025-09-30",
+    "cycle": 70,
+    "first_resp": 1.6,
+    "se": 0,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-07-14",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "td",
+      "matters": true
+     },
+     {
+      "ts": "2025-08-04",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "td",
+      "matters": true
+     },
+     {
+      "ts": "2025-09-13",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Summarize the latest notes on the Vantor Ventures opportunity into a status line.",
+      "dir": "td",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001875",
+    "account": "Tessera Dynamics",
+    "team": "EMEA",
+    "created": "2025-07-15",
+    "close": "2025-09-30",
+    "cycle": 69,
+    "first_resp": 1.1,
+    "se": 1,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-07-15",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-08-04",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-09-21",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Summarize the latest notes on the Tessera Dynamics opportunity into a status line.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001876",
+    "account": "Helix Ventures",
+    "team": "EMEA",
+    "created": "2025-07-18",
+    "close": "2025-09-30",
+    "cycle": 66,
+    "first_resp": 1.4,
+    "se": 1,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-07-18",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-08-06",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-09-22",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Summarize the latest notes on the Helix Ventures opportunity into a status line.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001469",
+    "account": "Verdant Labs",
+    "team": "EMEA",
+    "created": "2025-07-18",
+    "close": "2025-10-20",
+    "cycle": 85,
+    "first_resp": 0.8,
+    "se": 0,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-07-18",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-08-12",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-10-01",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Condense the activity notes for the Verdant Labs deal into three bullets.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_002025",
+    "account": "Juniper Solutions",
+    "team": "EMEA",
+    "created": "2025-07-19",
+    "close": "2025-10-09",
+    "cycle": 73,
+    "first_resp": 0.6,
+    "se": 0,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-07-19",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-08-09",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     }
+    ]
+   },
+   {
+    "id": "deal_002026",
+    "account": "Radiant Partners",
+    "team": "EMEA",
+    "created": "2025-07-25",
+    "close": "2025-10-10",
+    "cycle": 69,
+    "first_resp": 1.3,
+    "se": 0,
+    "prep": 0,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-07-25",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-09-27",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Condense the activity notes for the Radiant Partners deal into three bullets.",
+      "dir": "td",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_002067",
+    "account": "Radiant Partners",
+    "team": "EMEA",
+    "created": "2025-07-26",
+    "close": "2025-10-18",
+    "cycle": 76,
+    "first_resp": 1.3,
+    "se": 0,
+    "prep": 0,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-07-26",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-10-13",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Condense the activity notes for the Radiant Partners deal into three bullets.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001839",
+    "account": "Port of Cedarbrook",
+    "team": "EMEA",
+    "created": "2025-07-28",
+    "close": "2025-09-11",
+    "cycle": 37,
+    "first_resp": 1.4,
+    "se": 1,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-07-28",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-08-03",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "What does Port of Cedarbrook do, how big are they, and who are their main competitors? Context: next step is map current camera estate (24 cameras).",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     },
+     {
+      "ts": "2025-08-08",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-08-10",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Give me background on Port of Cedarbrook's industry and recent news before the meeting. Context: next step is technical demo for the IT director.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D3"
+     },
+     {
+      "ts": "2025-08-13",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Build an account plan to grow Port of Cedarbrook next year, with expansion targets and the stakeholders to win.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     }
+    ]
+   },
+   {
+    "id": "deal_001882",
+    "account": "Vantor Ventures",
+    "team": "EMEA",
+    "created": "2025-07-29",
+    "close": "2025-09-30",
+    "cycle": 55,
+    "first_resp": 1.5,
+    "se": 1,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-07-29",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "td",
+      "matters": true
+     },
+     {
+      "ts": "2025-08-14",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "td",
+      "matters": true
+     },
+     {
+      "ts": "2025-09-25",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Condense the activity notes for the Vantor Ventures deal into three bullets.",
+      "dir": "td",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001217",
+    "account": "Meridian Industries",
+    "team": "EMEA",
+    "created": "2025-08-02",
+    "close": "2025-09-18",
+    "cycle": 39,
+    "first_resp": 1.2,
+    "se": 1,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-08-02",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-08-13",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     }
+    ]
+   },
+   {
+    "id": "deal_001073",
+    "account": "Forge Labs",
+    "team": "EMEA",
+    "created": "2025-08-03",
+    "close": "2025-10-14",
+    "cycle": 64,
+    "first_resp": 1.0,
+    "se": 1,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-08-03",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-08-22",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     }
+    ]
+   },
+   {
+    "id": "deal_002015",
+    "account": "Citadel Partners",
+    "team": "EMEA",
+    "created": "2025-08-04",
+    "close": "2025-09-25",
+    "cycle": 44,
+    "first_resp": 1.1,
+    "se": 1,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-08-04",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-08-17",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-09-17",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Condense the activity notes for the Citadel Partners deal into three bullets.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001910",
+    "account": "acct_01254",
+    "team": "EMEA",
+    "created": "2025-08-04",
+    "close": "2025-10-28",
+    "cycle": 77,
+    "first_resp": 1.2,
+    "se": 0,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-08-04",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-08-27",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-10-20",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Condense the activity notes for the acct_01254 deal into three bullets.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_002060",
+    "account": "Verdant Holdings",
+    "team": "EMEA",
+    "created": "2025-08-05",
+    "close": "2025-10-25",
+    "cycle": 73,
+    "first_resp": 1.3,
+    "se": 0,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-08-05",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-08-25",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Give me background on Verdant Holdings's industry and recent news before the meeting.",
+      "dir": "bu",
+      "why": "still before proposal, deal type named",
+      "target": "D2"
+     },
+     {
+      "ts": "2025-08-27",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-08-29",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Give me background on Verdant Holdings's industry and recent news before the meeting.",
+      "dir": "bu",
+      "why": "still before proposal, deal type named",
+      "target": "D2"
+     },
+     {
+      "ts": "2025-09-05",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Draft the executive summary for a new-logo proposal to Verdant Holdings covering pricing options and the rollout plan.",
+      "dir": "bu",
+      "why": "still before proposal, deal type named",
+      "target": "D4"
+     }
+    ]
+   },
+   {
+    "id": "deal_001874",
+    "account": "Helix Holdings",
+    "team": "EMEA",
+    "created": "2025-08-07",
+    "close": "2025-09-30",
+    "cycle": 45,
+    "first_resp": 1.0,
+    "se": 1,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-08-07",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-08-16",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Draft the executive summary for a new-logo proposal to Helix Holdings covering pricing options and the rollout plan. Context: next step is confirm budget owner.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D4"
+     },
+     {
+      "ts": "2025-08-20",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     }
+    ]
+   },
+   {
+    "id": "deal_001048",
+    "account": "Verdant Group",
+    "team": "EMEA",
+    "created": "2025-08-07",
+    "close": "2025-10-24",
+    "cycle": 69,
+    "first_resp": 0.7,
+    "se": 0,
+    "prep": 0,
+    "sdr": 1,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-08-07",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     }
+    ]
+   },
+   {
+    "id": "deal_001683",
+    "account": "Everest Technologies",
+    "team": "EMEA",
+    "created": "2025-08-08",
+    "close": "2025-10-18",
+    "cycle": 63,
+    "first_resp": 1.0,
+    "se": 0,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-08-08",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-08-26",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     }
+    ]
+   },
+   {
+    "id": "deal_002101",
+    "account": "Verdant Holdings",
+    "team": "EMEA",
+    "created": "2025-08-14",
+    "close": "2025-10-31",
+    "cycle": 69,
+    "first_resp": 0.8,
+    "se": 0,
+    "prep": 0,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-08-14",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "td",
+      "matters": true
+     },
+     {
+      "ts": "2025-10-19",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Condense the activity notes for the Verdant Holdings deal into three bullets.",
+      "dir": "td",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_002061",
+    "account": "Verdant Holdings",
+    "team": "EMEA",
+    "created": "2025-08-17",
+    "close": "2025-10-11",
+    "cycle": 46,
+    "first_resp": 0.8,
+    "se": 1,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-08-17",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "td",
+      "matters": true
+     },
+     {
+      "ts": "2025-08-31",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "td",
+      "matters": true
+     },
+     {
+      "ts": "2025-09-26",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Condense the activity notes for the Verdant Holdings deal into three bullets.",
+      "dir": "td",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001808",
+    "account": "Cobalt Global",
+    "team": "EMEA",
+    "created": "2025-08-17",
+    "close": "2025-11-07",
+    "cycle": 73,
+    "first_resp": 0.4,
+    "se": 0,
+    "prep": 0,
+    "sdr": 1,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-08-17",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     }
+    ]
+   },
+   {
+    "id": "deal_002100",
+    "account": "Driftwood Global",
+    "team": "EMEA",
+    "created": "2025-08-18",
+    "close": "2025-10-31",
+    "cycle": 64,
+    "first_resp": 0.2,
+    "se": 0,
+    "prep": 0,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-08-18",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-10-17",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Condense the activity notes for the Driftwood Global deal into three bullets.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_002037",
+    "account": "Northwind Networks",
+    "team": "EMEA",
+    "created": "2025-08-20",
+    "close": "2025-11-12",
+    "cycle": 75,
+    "first_resp": 0.8,
+    "se": 0,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-08-20",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-09-11",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-11-08",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Summarize the latest notes on the Northwind Networks opportunity into a status line.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001625",
+    "account": "Zephyr Dynamics",
+    "team": "EMEA",
+    "created": "2025-08-22",
+    "close": "2025-11-12",
+    "cycle": 73,
+    "first_resp": 0.6,
+    "se": 0,
+    "prep": 0,
+    "sdr": 1,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-08-22",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     }
+    ]
+   },
+   {
+    "id": "deal_001997",
+    "account": "Nexora Solutions",
+    "team": "EMEA",
+    "created": "2025-08-22",
+    "close": "2025-11-19",
+    "cycle": 81,
+    "first_resp": 1.5,
+    "se": 0,
+    "prep": 0,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-08-22",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-11-10",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Summarize the latest notes on the Nexora Solutions opportunity into a status line.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_000095",
+    "account": "Forge Dynamics",
+    "team": "EMEA",
+    "created": "2025-08-24",
+    "close": "2025-10-28",
+    "cycle": 57,
+    "first_resp": 1.4,
+    "se": 1,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-08-24",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-09-10",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-10-14",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Condense the activity notes for the Forge Dynamics deal into three bullets.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_002099",
+    "account": "Zephyr Industries",
+    "team": "EMEA",
+    "created": "2025-08-25",
+    "close": "2025-10-31",
+    "cycle": 58,
+    "first_resp": 1.0,
+    "se": 1,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-08-25",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-09-11",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     }
+    ]
+   },
+   {
+    "id": "deal_002070",
+    "account": "Granite Partners",
+    "team": "EMEA",
+    "created": "2025-08-25",
+    "close": "2025-11-15",
+    "cycle": 74,
+    "first_resp": 1.5,
+    "se": 0,
+    "prep": 0,
+    "sdr": 1,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-08-25",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     }
+    ]
+   },
+   {
+    "id": "deal_001976",
+    "account": "City of Thornbury",
+    "team": "EMEA",
+    "created": "2025-08-26",
+    "close": "2025-11-12",
+    "cycle": 70,
+    "first_resp": 1.6,
+    "se": 0,
+    "prep": 0,
+    "sdr": 1,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-08-26",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     }
+    ]
+   },
+   {
+    "id": "deal_002071",
+    "account": "Delphi Labs",
+    "team": "EMEA",
+    "created": "2025-08-26",
+    "close": "2025-11-15",
+    "cycle": 71,
+    "first_resp": 0.4,
+    "se": 0,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-08-26",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-09-16",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     }
+    ]
+   },
+   {
+    "id": "deal_001836",
+    "account": "Department of National Archives",
+    "team": "EMEA",
+    "created": "2025-09-01",
+    "close": "2025-11-21",
+    "cycle": 71,
+    "first_resp": 0.3,
+    "se": 1,
+    "prep": 0,
+    "sdr": 1,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-09-01",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     }
+    ]
+   },
+   {
+    "id": "deal_001789",
+    "account": "Ferro Dynamics",
+    "team": "EMEA",
+    "created": "2025-09-02",
+    "close": "2025-11-06",
+    "cycle": 57,
+    "first_resp": 1.3,
+    "se": 1,
+    "prep": 0,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-09-02",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-09-17",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Write the pricing and implementation section of our new-logo quote for Ferro Dynamics.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D4"
+     },
+     {
+      "ts": "2025-09-23",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "What does Ferro Dynamics do, how big are they, and who are their main competitors? Context: next step is confirm budget owner.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     },
+     {
+      "ts": "2025-10-20",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Condense the activity notes for the Ferro Dynamics deal into three bullets.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_002096",
+    "account": "Nexora Solutions",
+    "team": "EMEA",
+    "created": "2025-09-03",
+    "close": "2025-11-19",
+    "cycle": 68,
+    "first_resp": 0.8,
+    "se": 0,
+    "prep": 0,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-09-03",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "td",
+      "matters": true
+     },
+     {
+      "ts": "2025-11-05",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Condense the activity notes for the Nexora Solutions deal into three bullets.",
+      "dir": "td",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_002065",
+    "account": "Equinox Logistics",
+    "team": "EMEA",
+    "created": "2025-09-04",
+    "close": "2025-11-18",
+    "cycle": 66,
+    "first_resp": 0.8,
+    "se": 0,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-09-04",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-09-23",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-11-12",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Condense the activity notes for the Equinox Logistics deal into three bullets.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001832",
+    "account": "Ferro Technologies",
+    "team": "EMEA",
+    "created": "2025-09-04",
+    "close": "2025-12-06",
+    "cycle": 84,
+    "first_resp": 0.9,
+    "se": 1,
+    "prep": 0,
+    "sdr": 1,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-09-04",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-09-25",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Draft the executive summary for a new-logo proposal to Ferro Technologies covering pricing options and the rollout plan.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D4"
+     },
+     {
+      "ts": "2025-10-10",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Give me background on Ferro Technologies's industry and recent news before the meeting.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D2"
+     }
+    ]
+   },
+   {
+    "id": "deal_002076",
+    "account": "City of Norcross",
+    "team": "EMEA",
+    "created": "2025-09-05",
+    "close": "2025-11-21",
+    "cycle": 67,
+    "first_resp": 0.2,
+    "se": 1,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-09-05",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-09-25",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-10-04",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "What does City of Norcross do, how big are they, and who are their main competitors?",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     },
+     {
+      "ts": "2025-11-16",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Summarize the latest notes on the City of Norcross opportunity into a status line.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001710",
+    "account": "Lumina Ventures",
+    "team": "EMEA",
+    "created": "2025-09-05",
+    "close": "2025-11-15",
+    "cycle": 62,
+    "first_resp": 0.6,
+    "se": 0,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-09-05",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-09-23",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-09-23",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Write the pricing and implementation section of our new-logo quote for Lumina Ventures.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D4"
+     },
+     {
+      "ts": "2025-09-29",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "What does Lumina Ventures do, how big are they, and who are their main competitors?",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     },
+     {
+      "ts": "2025-11-11",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Summarize the latest notes on the Lumina Ventures opportunity into a status line.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_002059",
+    "account": "Meridian Technologies",
+    "team": "EMEA",
+    "created": "2025-09-06",
+    "close": "2025-11-04",
+    "cycle": 49,
+    "first_resp": 0.2,
+    "se": 1,
+    "prep": 0,
+    "sdr": 1,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-09-06",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     }
+    ]
+   },
+   {
+    "id": "deal_002105",
+    "account": "Kestrel Holdings",
+    "team": "EMEA",
+    "created": "2025-09-06",
+    "close": "2025-12-04",
+    "cycle": 80,
+    "first_resp": 0.9,
+    "se": 0,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-09-06",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-09-30",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     }
+    ]
+   },
+   {
+    "id": "deal_001956",
+    "account": "Lumina Group",
+    "team": "EMEA",
+    "created": "2025-09-08",
+    "close": "2025-11-19",
+    "cycle": 63,
+    "first_resp": 0.5,
+    "se": 0,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-09-08",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-09-26",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-11-10",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Summarize the latest notes on the Lumina Group opportunity into a status line.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_002090",
+    "account": "Forge Industries",
+    "team": "EMEA",
+    "created": "2025-09-09",
+    "close": "2025-11-18",
+    "cycle": 61,
+    "first_resp": 0.4,
+    "se": 1,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-09-09",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-09-27",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-10-31",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Condense the activity notes for the Forge Industries deal into three bullets.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_002093",
+    "account": "acct_00224",
+    "team": "EMEA",
+    "created": "2025-09-18",
+    "close": "2025-12-04",
+    "cycle": 69,
+    "first_resp": 1.0,
+    "se": 0,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-09-18",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-10-08",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-11-20",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Condense the activity notes for the acct_00224 deal into three bullets.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001953",
+    "account": "Meridian Technologies",
+    "team": "EMEA",
+    "created": "2025-09-20",
+    "close": "2025-11-15",
+    "cycle": 48,
+    "first_resp": 1.2,
+    "se": 1,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-09-20",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-10-04",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     }
+    ]
+   },
+   {
+    "id": "deal_001503",
+    "account": "Summit Logistics",
+    "team": "EMEA",
+    "created": "2025-09-21",
+    "close": "2025-12-20",
+    "cycle": 82,
+    "first_resp": 1.1,
+    "se": 1,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-09-21",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-10-15",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-12-16",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Summarize the latest notes on the Summit Logistics opportunity into a status line.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_002066",
+    "account": "Stonehaven Health",
+    "team": "EMEA",
+    "created": "2025-09-22",
+    "close": "2025-11-26",
+    "cycle": 57,
+    "first_resp": 1.5,
+    "se": 1,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-09-22",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-10-09",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-11-21",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Condense the activity notes for the Stonehaven Health deal into three bullets.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001824",
+    "account": "Aurelia Solutions",
+    "team": "EMEA",
+    "created": "2025-09-23",
+    "close": "2025-12-17",
+    "cycle": 77,
+    "first_resp": 1.4,
+    "se": 1,
+    "prep": 0,
+    "sdr": 1,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-09-23",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-10-05",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Write the pricing and implementation section of our new-logo quote for Aurelia Solutions.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D4"
+     },
+     {
+      "ts": "2025-10-18",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Build an account plan to grow Aurelia Solutions next year, with expansion targets and the stakeholders to win.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     },
+     {
+      "ts": "2025-11-03",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Build an account plan to grow Aurelia Solutions next year, with expansion targets and the stakeholders to win. Context: next step is discovery call with the Facilities manager.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     }
+    ]
+   },
+   {
+    "id": "deal_001751",
+    "account": "Millbrook Bank",
+    "team": "EMEA",
+    "created": "2025-09-29",
+    "close": "2025-12-29",
+    "cycle": 82,
+    "first_resp": 0.8,
+    "se": 0,
+    "prep": 0,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-09-29",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-12-15",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Condense the activity notes for the Millbrook Bank deal into three bullets.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001330",
+    "account": "Kestrel Holdings",
+    "team": "EMEA",
+    "created": "2025-10-01",
+    "close": "2025-12-10",
+    "cycle": 61,
+    "first_resp": 1.0,
+    "se": 1,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-10-01",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-10-14",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "What does Kestrel Holdings do, how big are they, and who are their main competitors? Context: the deal is now about $47K.",
+      "dir": "bu",
+      "why": "still before proposal, first of several",
+      "target": NaN
+     },
+     {
+      "ts": "2025-10-19",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     }
+    ]
+   },
+   {
+    "id": "deal_001208",
+    "account": "Overton Health",
+    "team": "EMEA",
+    "created": "2025-10-02",
+    "close": "2025-12-20",
+    "cycle": 70,
+    "first_resp": 0.8,
+    "se": 0,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-10-02",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-10-23",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-10-31",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Write the pricing and implementation section of our new-logo quote for Overton Health.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D4"
+     },
+     {
+      "ts": "2025-11-02",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Draft the executive summary for a new-logo proposal to Overton Health covering pricing options and the rollout plan. Context: next step is map current camera estate (40 cameras).",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D4"
+     }
+    ]
+   },
+   {
+    "id": "deal_000255",
+    "account": "Port of Millbrook",
+    "team": "EMEA",
+    "created": "2025-10-03",
+    "close": "2025-12-23",
+    "cycle": 73,
+    "first_resp": 1.4,
+    "se": 0,
+    "prep": 0,
+    "sdr": 1,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-10-03",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-10-22",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Develop a competitive strategy to win the Port of Millbrook tender against two incumbents. Context: next step is pilot with 120 cameras at the downtown HQ.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     },
+     {
+      "ts": "2025-10-31",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Give me background on Port of Millbrook's industry and recent news before the meeting.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D2"
+     },
+     {
+      "ts": "2025-11-02",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "What does Port of Millbrook do, how big are they, and who are their main competitors? Context: next step is confirm budget owner.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     }
+    ]
+   },
+   {
+    "id": "deal_000015",
+    "account": "Granite Technologies",
+    "team": "EMEA",
+    "created": "2025-10-08",
+    "close": "2025-12-22",
+    "cycle": 67,
+    "first_resp": 1.5,
+    "se": 1,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-10-08",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-10-28",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-10-31",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Give me background on Granite Technologies's industry and recent news before the meeting.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D2"
+     },
+     {
+      "ts": "2025-12-09",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Summarize the latest notes on the Granite Technologies opportunity into a status line.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001907",
+    "account": "Bridgeton Health",
+    "team": "EMEA",
+    "created": "2025-10-15",
+    "close": "2025-12-11",
+    "cycle": 49,
+    "first_resp": 1.2,
+    "se": 1,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-10-15",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-10-29",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-11-22",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (EMEA build)",
+      "text": "Summarize the latest notes on the Bridgeton Health opportunity into a status line.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_002102",
+    "account": "Montvale Health",
+    "team": "EMEA",
+    "created": "2025-10-15",
+    "close": "2025-12-24",
+    "cycle": 61,
+    "first_resp": 0.9,
+    "se": 1,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-10-15",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-11-02",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     }
+    ]
+   },
+   {
+    "id": "deal_001642",
+    "account": "Verdant Logistics",
+    "team": "LATAM",
+    "created": "2024-10-15",
+    "close": "2025-01-09",
+    "cycle": 84,
+    "first_resp": 4.9,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2024-11-26",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Draft the executive summary for a new-logo proposal to Verdant Logistics covering pricing options and the rollout plan.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D4"
+     }
+    ]
+   },
+   {
+    "id": "deal_001705",
+    "account": "Pinnacle Technologies",
+    "team": "LATAM",
+    "created": "2024-10-31",
+    "close": "2025-01-17",
+    "cycle": 79,
+    "first_resp": 6.8,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001699",
+    "account": "Nexora Dynamics",
+    "team": "LATAM",
+    "created": "2024-11-06",
+    "close": "2025-02-02",
+    "cycle": 88,
+    "first_resp": 6.5,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2024-11-20",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Write the pricing and implementation section of our new-logo quote for Nexora Dynamics. Context: it is for their CIO.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     },
+     {
+      "ts": "2024-11-20",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Write the pricing and implementation section of our new-logo quote for Nexora Dynamics. Context: it is for their CIO.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     },
+     {
+      "ts": "2024-12-18",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Give me background on Nexora Dynamics's industry and recent news before the meeting. Context: they moved the close date to Dec 30.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     }
+    ]
+   },
+   {
+    "id": "deal_000630",
+    "account": "Zephyr Ventures",
+    "team": "LATAM",
+    "created": "2024-11-24",
+    "close": "2025-02-09",
+    "cycle": 79,
+    "first_resp": 7.9,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001698",
+    "account": "Onyx Logistics",
+    "team": "LATAM",
+    "created": "2024-12-12",
+    "close": "2025-03-26",
+    "cycle": 100,
+    "first_resp": 3.7,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001771",
+    "account": "Brightline Holdings",
+    "team": "LATAM",
+    "created": "2024-12-17",
+    "close": "2025-03-01",
+    "cycle": 77,
+    "first_resp": 8.0,
+    "se": 1,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001822",
+    "account": "Umbra Holdings",
+    "team": "LATAM",
+    "created": "2025-02-19",
+    "close": "2025-05-23",
+    "cycle": 88,
+    "first_resp": 3.5,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_000503",
+    "account": "Helix Partners",
+    "team": "LATAM",
+    "created": "2025-02-20",
+    "close": "2025-05-20",
+    "cycle": 86,
+    "first_resp": 4.3,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-03-11",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Give me background on Helix Partners's industry and recent news before the meeting.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D2"
+     },
+     {
+      "ts": "2025-03-29",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Draft the executive summary for a new-logo proposal to Helix Partners covering pricing options and the rollout plan. Context: next step is security review with IT.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D4"
+     }
+    ]
+   },
+   {
+    "id": "deal_001730",
+    "account": "Quanta Global",
+    "team": "LATAM",
+    "created": "2025-03-02",
+    "close": "2025-05-15",
+    "cycle": 72,
+    "first_resp": 5.1,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001914",
+    "account": "Onyx Partners",
+    "team": "LATAM",
+    "created": "2025-03-12",
+    "close": "2025-05-24",
+    "cycle": 76,
+    "first_resp": 8.1,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001945",
+    "account": "Forge Global",
+    "team": "LATAM",
+    "created": "2025-03-19",
+    "close": "2025-06-05",
+    "cycle": 81,
+    "first_resp": 8.0,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001718",
+    "account": "Delphi Systems",
+    "team": "LATAM",
+    "created": "2025-03-25",
+    "close": "2025-05-31",
+    "cycle": 68,
+    "first_resp": 6.8,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-04-11",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "What does Delphi Systems do, how big are they, and who are their main competitors? Context: the deal is now about $5K.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     },
+     {
+      "ts": "2025-04-20",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Give me background on Delphi Systems's industry and recent news before the meeting. Context: the deal is now about $5K.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     },
+     {
+      "ts": "2025-04-30",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Draft the executive summary for a new-logo proposal to Delphi Systems covering pricing options and the rollout plan. Context: next step is confirm budget owner.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D4"
+     }
+    ]
+   },
+   {
+    "id": "deal_001556",
+    "account": "Helix Global",
+    "team": "LATAM",
+    "created": "2025-04-04",
+    "close": "2025-06-21",
+    "cycle": 80,
+    "first_resp": 7.8,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001983",
+    "account": "Summit Technologies",
+    "team": "LATAM",
+    "created": "2025-04-30",
+    "close": "2025-07-19",
+    "cycle": 77,
+    "first_resp": 4.4,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_002010",
+    "account": "Delphi Global",
+    "team": "LATAM",
+    "created": "2025-05-02",
+    "close": "2025-07-14",
+    "cycle": 79,
+    "first_resp": 10.1,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-05-19",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "What does Delphi Global do, how big are they, and who are their main competitors? Context: it is for their Procurement lead.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     },
+     {
+      "ts": "2025-05-27",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Write the pricing and implementation section of our new-logo quote for Delphi Global.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D4"
+     }
+    ]
+   },
+   {
+    "id": "deal_001938",
+    "account": "Zephyr Labs",
+    "team": "LATAM",
+    "created": "2025-05-18",
+    "close": "2025-08-06",
+    "cycle": 80,
+    "first_resp": 6.5,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-05-31",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Write the pricing and implementation section of our new-logo quote for Zephyr Labs. Context: they moved the close date to Jul 24.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     },
+     {
+      "ts": "2025-06-15",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Build an account plan to grow Zephyr Labs next year, with expansion targets and the stakeholders to win.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     },
+     {
+      "ts": "2025-06-17",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Write the pricing and implementation section of our new-logo quote for Zephyr Labs. Context: next step is discovery call with the CFO.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     }
+    ]
+   },
+   {
+    "id": "deal_001941",
+    "account": "Pinnacle Systems",
+    "team": "LATAM",
+    "created": "2025-05-21",
+    "close": "2025-08-11",
+    "cycle": 82,
+    "first_resp": 6.1,
+    "se": 0,
+    "prep": 1,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-06-14",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     }
+    ]
+   },
+   {
+    "id": "deal_001816",
+    "account": "Aurelia Group",
+    "team": "LATAM",
+    "created": "2025-05-22",
+    "close": "2025-08-11",
+    "cycle": 79,
+    "first_resp": 4.9,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001905",
+    "account": "Kestrel Group",
+    "team": "LATAM",
+    "created": "2025-06-05",
+    "close": "2025-08-11",
+    "cycle": 69,
+    "first_resp": 7.3,
+    "se": 1,
+    "prep": 1,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-06-25",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     }
+    ]
+   },
+   {
+    "id": "deal_001942",
+    "account": "Meridian Logistics",
+    "team": "LATAM",
+    "created": "2025-06-06",
+    "close": "2025-08-11",
+    "cycle": 58,
+    "first_resp": 1.5,
+    "se": 1,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-06-17",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Draft the executive summary for a new-logo proposal to Meridian Logistics covering pricing options and the rollout plan. Context: it is for their CFO.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D4"
+     },
+     {
+      "ts": "2025-06-17",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Draft the executive summary for a new-logo proposal to Meridian Logistics covering pricing options and the rollout plan. Context: next step is discovery call with the CFO.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D4"
+     }
+    ]
+   },
+   {
+    "id": "deal_002053",
+    "account": "Verdant Group",
+    "team": "LATAM",
+    "created": "2025-07-28",
+    "close": "2025-10-14",
+    "cycle": 71,
+    "first_resp": 2.2,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-08-24",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Write the pricing and implementation section of our new-logo quote for Verdant Group. Context: it is for their Procurement lead.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     },
+     {
+      "ts": "2025-08-25",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Build an account plan to grow Verdant Group next year, with expansion targets and the stakeholders to win.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     },
+     {
+      "ts": "2025-08-28",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Write the pricing and implementation section of our new-logo quote for Verdant Group.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D4"
+     }
+    ]
+   },
+   {
+    "id": "deal_001791",
+    "account": "Westvale University",
+    "team": "LATAM",
+    "created": "2025-08-25",
+    "close": "2025-11-12",
+    "cycle": 78,
+    "first_resp": 5.4,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001821",
+    "account": "Westbridge Networks",
+    "team": "LATAM",
+    "created": "2025-09-17",
+    "close": "2025-12-17",
+    "cycle": 88,
+    "first_resp": 4.6,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_002123",
+    "account": "Equinox Solutions",
+    "team": "LATAM",
+    "created": "2025-09-29",
+    "close": "2025-12-27",
+    "cycle": 95,
+    "first_resp": 10.1,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_002127",
+    "account": "Westbridge Networks",
+    "team": "LATAM",
+    "created": "2025-10-01",
+    "close": "2025-12-27",
+    "cycle": 81,
+    "first_resp": 2.3,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-11-08",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Draft the executive summary for a new-logo proposal to Westbridge Networks covering pricing options and the rollout plan.",
+      "dir": "bu",
+      "why": "still before proposal, deal type named",
+      "target": "D4"
+     }
+    ]
+   },
+   {
+    "id": "deal_002126",
+    "account": "Aurelia Logistics",
+    "team": "LATAM",
+    "created": "2025-10-02",
+    "close": "2025-12-27",
+    "cycle": 88,
+    "first_resp": 7.4,
+    "se": 0,
+    "prep": 1,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-10-28",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     }
+    ]
+   },
+   {
+    "id": "deal_002034",
+    "account": "Onyx Ventures",
+    "team": "LATAM",
+    "created": "2025-10-04",
+    "close": "2025-12-30",
+    "cycle": 88,
+    "first_resp": 7.2,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_002073",
+    "account": "Onyx Ventures",
+    "team": "LATAM",
+    "created": "2025-10-05",
+    "close": "2025-12-30",
+    "cycle": 89,
+    "first_resp": 8.0,
+    "se": 0,
+    "prep": 1,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-10-31",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "td",
+      "matters": true
+     }
+    ]
+   },
+   {
+    "id": "deal_002111",
+    "account": "Juniper Technologies",
+    "team": "LATAM",
+    "created": "2025-10-08",
+    "close": "2025-12-12",
+    "cycle": 62,
+    "first_resp": 4.5,
+    "se": 1,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_002046",
+    "account": "Ferro Global",
+    "team": "LATAM",
+    "created": "2025-10-14",
+    "close": "2025-12-26",
+    "cycle": 71,
+    "first_resp": 5.3,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-11-13",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Write the pricing and implementation section of our new-logo quote for Ferro Global.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D4"
+     }
+    ]
+   },
+   {
+    "id": "deal_002125",
+    "account": "Northwind Holdings",
+    "team": "LATAM",
+    "created": "2025-10-14",
+    "close": "2025-12-27",
+    "cycle": 75,
+    "first_resp": 6.8,
+    "se": 0,
+    "prep": 1,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-11-05",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     }
+    ]
+   },
+   {
+    "id": "deal_002133",
+    "account": "Juniper Holdings",
+    "team": "LATAM",
+    "created": "2025-10-22",
+    "close": "2025-12-31",
+    "cycle": 75,
+    "first_resp": 9.3,
+    "se": 1,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-11-03",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Give me background on Juniper Holdings's industry and recent news before the meeting. Context: next step is confirm budget owner.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     }
+    ]
+   },
+   {
+    "id": "deal_002128",
+    "account": "Equinox Logistics",
+    "team": "LATAM",
+    "created": "2025-10-26",
+    "close": "2025-12-23",
+    "cycle": 53,
+    "first_resp": 3.1,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-11-15",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Give me background on Equinox Logistics's industry and recent news before the meeting.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D2"
+     },
+     {
+      "ts": "2025-11-22",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "What does Equinox Logistics do, how big are they, and who are their main competitors?",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     },
+     {
+      "ts": "2025-11-23",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Write the pricing and implementation section of our new-logo quote for Equinox Logistics. Context: the deal is now about $6K.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     }
+    ]
+   },
+   {
+    "id": "deal_001336",
+    "account": "Beacon Holdings",
+    "team": "NA East",
+    "created": "2024-10-30",
+    "close": "2025-01-16",
+    "cycle": 75,
+    "first_resp": 4.7,
+    "se": 1,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_000422",
+    "account": "Westbridge Ventures",
+    "team": "NA East",
+    "created": "2024-11-03",
+    "close": "2025-01-12",
+    "cycle": 68,
+    "first_resp": 5.1,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001612",
+    "account": "Driftwood Dynamics",
+    "team": "NA East",
+    "created": "2024-11-17",
+    "close": "2025-01-30",
+    "cycle": 75,
+    "first_resp": 6.7,
+    "se": 1,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_000071",
+    "account": "Caldera County",
+    "team": "NA East",
+    "created": "2024-11-17",
+    "close": "2025-02-04",
+    "cycle": 82,
+    "first_resp": 8.3,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001611",
+    "account": "Citadel Networks",
+    "team": "NA East",
+    "created": "2024-11-21",
+    "close": "2025-02-09",
+    "cycle": 78,
+    "first_resp": 5.2,
+    "se": 1,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001427",
+    "account": "Westbridge Networks",
+    "team": "NA East",
+    "created": "2024-11-23",
+    "close": "2025-02-12",
+    "cycle": 77,
+    "first_resp": 3.8,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001458",
+    "account": "Avalore County",
+    "team": "NA East",
+    "created": "2024-11-24",
+    "close": "2025-02-27",
+    "cycle": 102,
+    "first_resp": 11.0,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001534",
+    "account": "Kingsford University",
+    "team": "NA East",
+    "created": "2024-11-26",
+    "close": "2025-02-19",
+    "cycle": 85,
+    "first_resp": 6.5,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001524",
+    "account": "Vantor Labs",
+    "team": "NA East",
+    "created": "2024-11-30",
+    "close": "2025-01-30",
+    "cycle": 62,
+    "first_resp": 6.8,
+    "se": 1,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001342",
+    "account": "Westbridge Dynamics",
+    "team": "NA East",
+    "created": "2024-12-03",
+    "close": "2025-02-20",
+    "cycle": 82,
+    "first_resp": 8.4,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001637",
+    "account": "Cobalt Holdings",
+    "team": "NA East",
+    "created": "2024-12-03",
+    "close": "2025-02-16",
+    "cycle": 76,
+    "first_resp": 6.7,
+    "se": 1,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_000571",
+    "account": "Delphi Industries",
+    "team": "NA East",
+    "created": "2024-12-05",
+    "close": "2025-02-22",
+    "cycle": 83,
+    "first_resp": 8.7,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001770",
+    "account": "Felmoor County Sheriff",
+    "team": "NA East",
+    "created": "2024-12-11",
+    "close": "2025-02-28",
+    "cycle": 80,
+    "first_resp": 6.7,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_000006",
+    "account": "Citadel Ventures",
+    "team": "NA East",
+    "created": "2024-12-29",
+    "close": "2025-03-21",
+    "cycle": 84,
+    "first_resp": 7.7,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-01-14",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "What does Citadel Ventures do, how big are they, and who are their main competitors? Context: next step is map current camera estate (20 cameras).",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     },
+     {
+      "ts": "2025-01-18",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Develop a competitive strategy to win the Citadel Ventures tender against two incumbents. Context: next step is confirm budget owner.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     },
+     {
+      "ts": "2025-01-19",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Draft the executive summary for a new-logo proposal to Citadel Ventures covering pricing options and the rollout plan.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D4"
+     }
+    ]
+   },
+   {
+    "id": "deal_001601",
+    "account": "Montvale School District",
+    "team": "NA East",
+    "created": "2025-01-01",
+    "close": "2025-03-15",
+    "cycle": 76,
+    "first_resp": 8.1,
+    "se": 1,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001638",
+    "account": "Zephyr Systems",
+    "team": "NA East",
+    "created": "2025-01-01",
+    "close": "2025-03-29",
+    "cycle": 85,
+    "first_resp": 5.1,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001599",
+    "account": "Quanta Systems",
+    "team": "NA East",
+    "created": "2025-01-04",
+    "close": "2025-03-27",
+    "cycle": 80,
+    "first_resp": 5.4,
+    "se": 1,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001820",
+    "account": "Corvane County",
+    "team": "NA East",
+    "created": "2025-01-05",
+    "close": "2025-03-27",
+    "cycle": 84,
+    "first_resp": 7.9,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-02-10",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Build an account plan to grow Corvane County next year, with expansion targets and the stakeholders to win. Context: next step is pilot with 24 cameras at the airport terminal.",
+      "dir": "bu",
+      "why": "change-log details matched",
+      "target": NaN
+     }
+    ]
+   },
+   {
+    "id": "deal_000522",
+    "account": "Tarsino County",
+    "team": "NA East",
+    "created": "2025-01-10",
+    "close": "2025-04-02",
+    "cycle": 83,
+    "first_resp": 6.6,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001529",
+    "account": "Everest Ventures",
+    "team": "NA East",
+    "created": "2025-01-13",
+    "close": "2025-03-29",
+    "cycle": 75,
+    "first_resp": 6.6,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001343",
+    "account": "Corvane County",
+    "team": "NA East",
+    "created": "2025-01-13",
+    "close": "2025-03-25",
+    "cycle": 70,
+    "first_resp": 5.8,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-01-29",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "What does Corvane County do, how big are they, and who are their main competitors?",
+      "dir": "bu",
+      "why": "still before proposal, first of several",
+      "target": NaN
+     },
+     {
+      "ts": "2025-01-30",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Write the pricing and implementation section of our new-logo quote for Corvane County.",
+      "dir": "bu",
+      "why": "still before proposal, deal type named",
+      "target": "D4"
+     },
+     {
+      "ts": "2025-01-31",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Develop a competitive strategy to win the Corvane County tender against two incumbents. Context: it is for their Facilities manager.",
+      "dir": "bu",
+      "why": "still before proposal, first of several",
+      "target": NaN
+     }
+    ]
+   },
+   {
+    "id": "deal_000995",
+    "account": "Summit Systems",
+    "team": "NA East",
+    "created": "2025-01-20",
+    "close": "2025-03-29",
+    "cycle": 69,
+    "first_resp": 7.2,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001172",
+    "account": "Tessera Systems",
+    "team": "NA East",
+    "created": "2025-01-21",
+    "close": "2025-03-20",
+    "cycle": 55,
+    "first_resp": 4.6,
+    "se": 1,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-01-31",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "What does Tessera Systems do, how big are they, and who are their main competitors? Context: the deal is now about $88K.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     },
+     {
+      "ts": "2025-02-13",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Draft the executive summary for a new-logo proposal to Tessera Systems covering pricing options and the rollout plan.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D4"
+     },
+     {
+      "ts": "2025-02-15",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Draft the executive summary for a new-logo proposal to Tessera Systems covering pricing options and the rollout plan.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D4"
+     }
+    ]
+   },
+   {
+    "id": "deal_001379",
+    "account": "Aurelia Systems",
+    "team": "NA East",
+    "created": "2025-02-11",
+    "close": "2025-04-25",
+    "cycle": 67,
+    "first_resp": 2.7,
+    "se": 1,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001351",
+    "account": "Ironclad Partners",
+    "team": "NA East",
+    "created": "2025-02-12",
+    "close": "2025-04-19",
+    "cycle": 67,
+    "first_resp": 7.1,
+    "se": 1,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-03-06",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Draft the executive summary for a new-logo proposal to Ironclad Partners covering pricing options and the rollout plan.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D4"
+     },
+     {
+      "ts": "2025-03-08",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Give me background on Ironclad Partners's industry and recent news before the meeting. Context: next step is discovery call with the Procurement lead.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     }
+    ]
+   },
+   {
+    "id": "deal_001776",
+    "account": "Kestrel Partners",
+    "team": "NA East",
+    "created": "2025-02-17",
+    "close": "2025-05-30",
+    "cycle": 101,
+    "first_resp": 6.0,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-05-21",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (NA East build)",
+      "text": "Summarize the latest notes on the Kestrel Partners opportunity into a status line.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001834",
+    "account": "Vantor Technologies",
+    "team": "NA East",
+    "created": "2025-02-23",
+    "close": "2025-04-26",
+    "cycle": 60,
+    "first_resp": 5.2,
+    "se": 1,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001887",
+    "account": "Stonehaven Police",
+    "team": "NA East",
+    "created": "2025-03-17",
+    "close": "2025-05-31",
+    "cycle": 77,
+    "first_resp": 7.4,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-05-22",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (NA East build)",
+      "text": "Condense the activity notes for the Stonehaven Police deal into three bullets.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001906",
+    "account": "Verdant Solutions",
+    "team": "NA East",
+    "created": "2025-03-19",
+    "close": "2025-05-21",
+    "cycle": 63,
+    "first_resp": 6.6,
+    "se": 1,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-05-18",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (NA East build)",
+      "text": "Condense the activity notes for the Verdant Solutions deal into three bullets.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_000408",
+    "account": "Forge Group",
+    "team": "NA East",
+    "created": "2025-03-21",
+    "close": "2025-05-23",
+    "cycle": 66,
+    "first_resp": 8.5,
+    "se": 1,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-04-05",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Give me background on Forge Group's industry and recent news before the meeting. Context: they moved the close date to May 12.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     },
+     {
+      "ts": "2025-04-09",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Build an account plan to grow Forge Group next year, with expansion targets and the stakeholders to win. Context: next step is confirm budget owner.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     },
+     {
+      "ts": "2025-05-09",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (NA East build)",
+      "text": "Summarize the latest notes on the Forge Group opportunity into a status line.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001818",
+    "account": "Lumina Systems",
+    "team": "NA East",
+    "created": "2025-04-03",
+    "close": "2025-06-26",
+    "cycle": 82,
+    "first_resp": 5.0,
+    "se": 1,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001466",
+    "account": "Corvane County",
+    "team": "NA East",
+    "created": "2025-04-06",
+    "close": "2025-06-28",
+    "cycle": 82,
+    "first_resp": 5.5,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-06-17",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (NA East build)",
+      "text": "Condense the activity notes for the Corvane County deal into three bullets.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001828",
+    "account": "Esmark County Sheriff",
+    "team": "NA East",
+    "created": "2025-04-09",
+    "close": "2025-06-17",
+    "cycle": 72,
+    "first_resp": 7.9,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001511",
+    "account": "Forge Solutions",
+    "team": "NA East",
+    "created": "2025-04-14",
+    "close": "2025-06-26",
+    "cycle": 73,
+    "first_resp": 6.4,
+    "se": 1,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-05-11",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Write the pricing and implementation section of our new-logo quote for Forge Solutions.",
+      "dir": "bu",
+      "why": "still before proposal, deal type named",
+      "target": "D4"
+     },
+     {
+      "ts": "2025-05-15",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Draft the executive summary for a new-logo proposal to Forge Solutions covering pricing options and the rollout plan.",
+      "dir": "bu",
+      "why": "still before proposal, deal type named",
+      "target": "D4"
+     }
+    ]
+   },
+   {
+    "id": "deal_001800",
+    "account": "Tessera Labs",
+    "team": "NA East",
+    "created": "2025-04-20",
+    "close": "2025-07-22",
+    "cycle": 84,
+    "first_resp": 0.9,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-07-06",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (NA East build)",
+      "text": "Condense the activity notes for the Tessera Labs deal into three bullets.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001322",
+    "account": "Junction City University",
+    "team": "NA East",
+    "created": "2025-05-18",
+    "close": "2025-07-30",
+    "cycle": 76,
+    "first_resp": 8.1,
+    "se": 1,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-07-18",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (NA East build)",
+      "text": "Condense the activity notes for the Junction City University deal into three bullets.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001948",
+    "account": "City of Norcross",
+    "team": "NA East",
+    "created": "2025-05-19",
+    "close": "2025-07-30",
+    "cycle": 76,
+    "first_resp": 8.9,
+    "se": 1,
+    "prep": 1,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-06-10",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-06-13",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Draft the executive summary for a new-logo proposal to City of Norcross covering pricing options and the rollout plan.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D4"
+     },
+     {
+      "ts": "2025-06-15",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "What does City of Norcross do, how big are they, and who are their main competitors?",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     }
+    ]
+   },
+   {
+    "id": "deal_001846",
+    "account": "Lumina Group",
+    "team": "NA East",
+    "created": "2025-05-23",
+    "close": "2025-08-15",
+    "cycle": 82,
+    "first_resp": 5.3,
+    "se": 0,
+    "prep": 1,
+    "sdr": 0,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-06-16",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-07-28",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (NA East build)",
+      "text": "Condense the activity notes for the Lumina Group deal into three bullets.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001899",
+    "account": "Cobalt Dynamics",
+    "team": "NA East",
+    "created": "2025-05-29",
+    "close": "2025-07-30",
+    "cycle": 62,
+    "first_resp": 6.1,
+    "se": 1,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-07-24",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (NA East build)",
+      "text": "Condense the activity notes for the Cobalt Dynamics deal into three bullets.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001995",
+    "account": "Brightline Solutions",
+    "team": "NA East",
+    "created": "2025-06-01",
+    "close": "2025-08-09",
+    "cycle": 70,
+    "first_resp": 7.2,
+    "se": 1,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001780",
+    "account": "Summit Systems",
+    "team": "NA East",
+    "created": "2025-06-08",
+    "close": "2025-08-20",
+    "cycle": 74,
+    "first_resp": 7.1,
+    "se": 1,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-06-20",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Write the pricing and implementation section of our new-logo quote for Summit Systems.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D4"
+     },
+     {
+      "ts": "2025-06-28",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Build an account plan to grow Summit Systems next year, with expansion targets and the stakeholders to win.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     },
+     {
+      "ts": "2025-06-30",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "What does Summit Systems do, how big are they, and who are their main competitors? Context: it is for their CIO.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     }
+    ]
+   },
+   {
+    "id": "deal_002001",
+    "account": "Radiant Networks",
+    "team": "NA East",
+    "created": "2025-06-18",
+    "close": "2025-09-25",
+    "cycle": 89,
+    "first_resp": 0.2,
+    "se": 0,
+    "prep": 0,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-06-18",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-09-09",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (NA East build)",
+      "text": "Summarize the latest notes on the Radiant Networks opportunity into a status line.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_000108",
+    "account": "Nexora Holdings",
+    "team": "NA East",
+    "created": "2025-06-27",
+    "close": "2025-09-20",
+    "cycle": 75,
+    "first_resp": 0.3,
+    "se": 0,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-06-27",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-07-19",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-09-14",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (NA East build)",
+      "text": "Summarize the latest notes on the Nexora Holdings opportunity into a status line.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001775",
+    "account": "Atlas Dynamics",
+    "team": "NA East",
+    "created": "2025-07-04",
+    "close": "2025-09-20",
+    "cycle": 70,
+    "first_resp": 1.2,
+    "se": 1,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-07-04",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-07-25",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-09-06",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (NA East build)",
+      "text": "Summarize the latest notes on the Atlas Dynamics opportunity into a status line.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001549",
+    "account": "Quanta Holdings",
+    "team": "NA East",
+    "created": "2025-07-14",
+    "close": "2025-10-02",
+    "cycle": 71,
+    "first_resp": 0.8,
+    "se": 0,
+    "prep": 0,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-07-14",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-09-26",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (NA East build)",
+      "text": "Summarize the latest notes on the Quanta Holdings opportunity into a status line.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001855",
+    "account": "Tessera Partners",
+    "team": "NA East",
+    "created": "2025-07-22",
+    "close": "2025-10-16",
+    "cycle": 77,
+    "first_resp": 0.4,
+    "se": 0,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-07-22",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-08-14",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     }
+    ]
+   },
+   {
+    "id": "deal_001724",
+    "account": "Redmoor University",
+    "team": "NA East",
+    "created": "2025-08-03",
+    "close": "2025-10-25",
+    "cycle": 74,
+    "first_resp": 0.7,
+    "se": 1,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-08-03",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-08-25",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     }
+    ]
+   },
+   {
+    "id": "deal_002042",
+    "account": "Umbra Networks",
+    "team": "NA East",
+    "created": "2025-08-04",
+    "close": "2025-10-16",
+    "cycle": 65,
+    "first_resp": 1.3,
+    "se": 0,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-08-04",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-08-23",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-08-23",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Draft the executive summary for a new-logo proposal to Umbra Networks covering pricing options and the rollout plan. Context: they moved the close date to Sep 16.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D4"
+     },
+     {
+      "ts": "2025-10-13",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (NA East build)",
+      "text": "Summarize the latest notes on the Umbra Networks opportunity into a status line.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001463",
+    "account": "Lumina Solutions",
+    "team": "NA East",
+    "created": "2025-08-09",
+    "close": "2025-10-31",
+    "cycle": 76,
+    "first_resp": 1.8,
+    "se": 0,
+    "prep": 0,
+    "sdr": 1,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-08-09",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-08-21",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Write the pricing and implementation section of our new-logo quote for Lumina Solutions. Context: next step is confirm budget owner.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     },
+     {
+      "ts": "2025-08-21",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Give me background on Lumina Solutions's industry and recent news before the meeting. Context: next step is confirm budget owner.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     },
+     {
+      "ts": "2025-09-02",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "What does Lumina Solutions do, how big are they, and who are their main competitors?",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     }
+    ]
+   },
+   {
+    "id": "deal_001996",
+    "account": "Forge Industries",
+    "team": "NA East",
+    "created": "2025-08-17",
+    "close": "2025-11-18",
+    "cycle": 86,
+    "first_resp": 1.8,
+    "se": 0,
+    "prep": 0,
+    "sdr": 1,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-08-17",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-09-15",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Develop a competitive strategy to win the Forge Industries tender against two incumbents.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     },
+     {
+      "ts": "2025-09-20",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Write the pricing and implementation section of our new-logo quote for Forge Industries. Context: it is for their Head of security operations.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     },
+     {
+      "ts": "2025-09-29",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Give me background on Forge Industries's industry and recent news before the meeting.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D2"
+     }
+    ]
+   },
+   {
+    "id": "deal_000009",
+    "account": "Equinox Partners",
+    "team": "NA East",
+    "created": "2025-08-23",
+    "close": "2025-10-25",
+    "cycle": 54,
+    "first_resp": 0.8,
+    "se": 1,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-08-23",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-09-08",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-09-08",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Draft the executive summary for a new-logo proposal to Equinox Partners covering pricing options and the rollout plan.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D4"
+     },
+     {
+      "ts": "2025-10-14",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (NA East build)",
+      "text": "Condense the activity notes for the Equinox Partners deal into three bullets.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_002050",
+    "account": "Mirenza County",
+    "team": "NA East",
+    "created": "2025-08-29",
+    "close": "2025-11-15",
+    "cycle": 70,
+    "first_resp": 1.1,
+    "se": 1,
+    "prep": 0,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-08-29",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-11-03",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (NA East build)",
+      "text": "Condense the activity notes for the Mirenza County deal into three bullets.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_002104",
+    "account": "Juniper Systems",
+    "team": "NA East",
+    "created": "2025-09-07",
+    "close": "2025-12-03",
+    "cycle": 78,
+    "first_resp": 0.4,
+    "se": 0,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-09-07",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-09-25",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Write the pricing and implementation section of our new-logo quote for Juniper Systems.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D4"
+     },
+     {
+      "ts": "2025-09-27",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Write the pricing and implementation section of our new-logo quote for Juniper Systems.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D4"
+     },
+     {
+      "ts": "2025-09-30",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     }
+    ]
+   },
+   {
+    "id": "deal_001484",
+    "account": "Aurelia Holdings",
+    "team": "NA East",
+    "created": "2025-09-10",
+    "close": "2025-12-10",
+    "cycle": 82,
+    "first_resp": 1.0,
+    "se": 1,
+    "prep": 0,
+    "sdr": 1,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-09-10",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     }
+    ]
+   },
+   {
+    "id": "deal_002012",
+    "account": "Onyx Global",
+    "team": "NA East",
+    "created": "2025-09-12",
+    "close": "2025-11-13",
+    "cycle": 54,
+    "first_resp": 1.5,
+    "se": 1,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-09-12",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-09-28",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-09-28",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Write the pricing and implementation section of our new-logo quote for Onyx Global. Context: next step is confirm budget owner.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     },
+     {
+      "ts": "2025-09-29",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Write the pricing and implementation section of our new-logo quote for Onyx Global.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D4"
+     },
+     {
+      "ts": "2025-10-02",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Build an account plan to grow Onyx Global next year, with expansion targets and the stakeholders to win.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     },
+     {
+      "ts": "2025-10-31",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (NA East build)",
+      "text": "Summarize the latest notes on the Onyx Global opportunity into a status line.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_000012",
+    "account": "Beacon Technologies",
+    "team": "NA East",
+    "created": "2025-10-13",
+    "close": "2025-12-30",
+    "cycle": 70,
+    "first_resp": 1.1,
+    "se": 0,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-10-13",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-11-03",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-12-14",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (NA East build)",
+      "text": "Summarize the latest notes on the Beacon Technologies opportunity into a status line.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_000069",
+    "account": "Driftwood Industries",
+    "team": "NA East",
+    "created": "2025-10-16",
+    "close": "2025-12-26",
+    "cycle": 63,
+    "first_resp": 1.2,
+    "se": 1,
+    "prep": 1,
+    "sdr": 1,
+    "dealsum": 1,
+    "traces": [
+     {
+      "ts": "2025-10-16",
+      "kind": "Agent write",
+      "tool": "AI SDR agent",
+      "text": "Task: First-touch email",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-11-04",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     },
+     {
+      "ts": "2025-12-08",
+      "kind": "Agent write",
+      "tool": "Deal-summary bot (NA East build)",
+      "text": "Condense the activity notes for the Driftwood Industries deal into three bullets.",
+      "dir": "both",
+      "matters": false
+     }
+    ]
+   },
+   {
+    "id": "deal_001764",
+    "account": "Citadel Holdings",
+    "team": "NA West",
+    "created": "2024-12-12",
+    "close": "2025-02-28",
+    "cycle": 72,
+    "first_resp": 2.6,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001468",
+    "account": "Everest Solutions",
+    "team": "NA West",
+    "created": "2024-12-20",
+    "close": "2025-03-08",
+    "cycle": 77,
+    "first_resp": 5.5,
+    "se": 1,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-01-01",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Draft the executive summary for a new-logo proposal to Everest Solutions covering pricing options and the rollout plan.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D4"
+     },
+     {
+      "ts": "2025-01-22",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Draft the executive summary for a new-logo proposal to Everest Solutions covering pricing options and the rollout plan. Context: it is for their Facilities manager.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D4"
+     }
+    ]
+   },
+   {
+    "id": "deal_001429",
+    "account": "Ferro Global",
+    "team": "NA West",
+    "created": "2025-01-05",
+    "close": "2025-03-29",
+    "cycle": 82,
+    "first_resp": 5.6,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001645",
+    "account": "Onyx Solutions",
+    "team": "NA West",
+    "created": "2025-03-03",
+    "close": "2025-05-28",
+    "cycle": 80,
+    "first_resp": 2.5,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_000232",
+    "account": "Aurelia Global",
+    "team": "NA West",
+    "created": "2025-03-28",
+    "close": "2025-06-26",
+    "cycle": 90,
+    "first_resp": 6.3,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001788",
+    "account": "Lumina Technologies",
+    "team": "NA West",
+    "created": "2025-04-01",
+    "close": "2025-06-26",
+    "cycle": 80,
+    "first_resp": 2.6,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-04-14",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Write the pricing and implementation section of our new-logo quote for Lumina Technologies.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D4"
+     },
+     {
+      "ts": "2025-04-26",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Write the pricing and implementation section of our new-logo quote for Lumina Technologies. Context: next step is discovery call with the CIO.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     },
+     {
+      "ts": "2025-05-06",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Develop a competitive strategy to win the Lumina Technologies tender against two incumbents. Context: it is for their IT director.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     }
+    ]
+   },
+   {
+    "id": "deal_001445",
+    "account": "Tarsino County",
+    "team": "NA West",
+    "created": "2025-04-03",
+    "close": "2025-06-28",
+    "cycle": 87,
+    "first_resp": 6.9,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_002023",
+    "account": "Port of Havenport",
+    "team": "NA West",
+    "created": "2025-06-13",
+    "close": "2025-09-11",
+    "cycle": 88,
+    "first_resp": 4.8,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_001563",
+    "account": "Tessera Ventures",
+    "team": "NA West",
+    "created": "2025-06-29",
+    "close": "2025-09-03",
+    "cycle": 71,
+    "first_resp": 9.6,
+    "se": 1,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-07-22",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Give me background on Tessera Ventures's industry and recent news before the meeting.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D2"
+     },
+     {
+      "ts": "2025-07-29",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Give me background on Tessera Ventures's industry and recent news before the meeting.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": "D2"
+     },
+     {
+      "ts": "2025-08-06",
+      "kind": "Session matched",
+      "tool": "ChatGPT Enterprise",
+      "text": "Write the pricing and implementation section of our new-logo quote for Tessera Ventures. Context: it is for their Facilities manager.",
+      "dir": "bu",
+      "why": "only open deal with that account",
+      "target": NaN
+     }
+    ]
+   },
+   {
+    "id": "deal_002057",
+    "account": "City of Foxhollow",
+    "team": "NA West",
+    "created": "2025-07-12",
+    "close": "2025-09-30",
+    "cycle": 76,
+    "first_resp": 3.8,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   },
+   {
+    "id": "deal_000729",
+    "account": "Juniper Partners",
+    "team": "NA West",
+    "created": "2025-07-28",
+    "close": "2025-10-08",
+    "cycle": 70,
+    "first_resp": 5.2,
+    "se": 0,
+    "prep": 1,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": [
+     {
+      "ts": "2025-08-18",
+      "kind": "AI-made material",
+      "tool": "Meeting-prep assistant",
+      "text": "Meeting prep brief attached",
+      "dir": "both",
+      "matters": true
+     }
+    ]
+   },
+   {
+    "id": "deal_000896",
+    "account": "Sundara County",
+    "team": "NA West",
+    "created": "2025-08-07",
+    "close": "2025-11-01",
+    "cycle": 90,
+    "first_resp": 8.8,
+    "se": 0,
+    "prep": 0,
+    "sdr": 0,
+    "dealsum": 0,
+    "traces": []
+   }
+  ]
+ },
  "deal_lab": {
   "variants": {
    "Deal text (account, type, vertical)": {

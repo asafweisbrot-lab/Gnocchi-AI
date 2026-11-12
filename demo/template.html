@@ -87,6 +87,54 @@ footer{padding-block:40px 0;color:var(--muted);font-size:14px;display:grid;gap:1
   .spark{grid-template-columns:minmax(0,1fr)}
 }
 @media (prefers-reduced-motion:no-preference){nav.rail a{transition:background .15s}}
+/* link map */
+.streams{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr) minmax(0,1fr);gap:14px}
+.stream{display:grid;gap:10px;align-content:start;border-radius:10px;padding:14px;background:var(--bg)}
+.stream.td{border-top:4px solid var(--accent)} .stream.bu{border-top:4px dashed var(--cmp)}
+.stream.mid{background:var(--dark);color:var(--dark-ink);border-top:4px solid var(--accent)} .stream.mid .eyebrow{color:#EE9A69}
+.stream.bu .eyebrow{color:var(--cmp)}
+.stack{display:grid;gap:0}
+.sbox{display:grid;grid-template-columns:auto minmax(0,1fr);gap:2px 10px;padding:9px 0;border-bottom:1px solid var(--line);position:relative}
+.stream.mid .sbox{border-color:#4A443D}
+.sbox:last-child{border-bottom:none}
+.sbox b{font-size:24px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.05;min-width:64px}
+.sbox span{font-size:13.5px;line-height:1.35;color:var(--soft)} .stream.mid .sbox span{color:#CFC7BC}
+.sbox small{grid-column:2;font-family:var(--mono);font-size:11px;color:var(--muted)} .stream.mid .sbox small{color:#A9A196}
+.sbox.hl b{color:var(--accent)} .stream.bu .sbox.hl b{color:var(--cmp)} .stream.mid .sbox.hl b{color:#EE9A69}
+.lm-steps{display:flex;flex-wrap:wrap;gap:6px}
+.lm-steps button{font-family:var(--mono);font-size:12px;padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--soft);cursor:pointer;min-height:36px}
+.lm-steps button.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.lm-steps button.bu.on{background:var(--cmp);border-color:var(--cmp);color:#fff}
+.lm-steps button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.lm-fields{display:flex;flex-wrap:wrap;gap:8px}
+.lm-fields .fchip{display:grid;gap:1px;padding:8px 12px;border-radius:8px;border:1px solid var(--line);background:var(--surface);font-size:13px;min-width:170px}
+.lm-fields .fchip b{font-size:14px} .lm-fields .fchip small{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.lm-fields .fchip.on{border:2px solid var(--accent);background:color-mix(in srgb, var(--accent) 10%, var(--surface))}
+.lm-fields .fchip.off{opacity:.55}
+.lm-dig{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:18px;align-items:start}
+.lm-grid{display:grid;gap:10px}
+.lm-team{display:grid;grid-template-columns:70px minmax(0,1fr);gap:8px;align-items:start}
+.lm-team > span{font-family:var(--mono);font-size:11px;color:var(--muted);padding-top:3px}
+.lm-dots{display:flex;flex-wrap:wrap;gap:4px}
+.lm-dots button{width:16px;height:16px;border-radius:50%;border:1px solid var(--line);background:var(--chip);padding:0;cursor:pointer;position:relative}
+.lm-dots button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.lm-dots button.sel{outline:2px solid var(--ink);outline-offset:2px}
+.lm-dots button.m{background:var(--surface);border:2px solid var(--accent)}
+.lm-dots button.ai{background:var(--accent);border-color:var(--accent)}
+.lm-dots button.dim{opacity:.25}
+.lm-dots button.bu{box-shadow:0 0 0 2.5px var(--cmp)}
+.lm-dots button.both{background:var(--ink);border:2px solid var(--accent);box-shadow:0 0 0 2.5px var(--cmp)}
+.lm-deal{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:grid;gap:10px;min-height:280px}
+.lm-deal .kv{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.lm-deal .kv div{background:var(--bg);border-radius:6px;padding:6px 8px;font-size:12px;color:var(--muted)}
+.lm-deal .kv div b{display:block;font-size:15px;color:var(--ink)}
+.lm-deal .kv div.on{box-shadow:inset 0 0 0 2px var(--accent)}
+.tr{display:grid;grid-template-columns:78px minmax(0,1fr);gap:8px;font-size:13px;padding:7px 0;border-top:1px solid var(--line)}
+.tr .when{font-family:var(--mono);font-size:11px;color:var(--muted);padding-top:2px}
+.tr .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;padding:1px 6px;border-radius:3px;margin-right:6px}
+.tr .k.td{background:var(--accent);color:var(--accent-ink)} .tr .k.bu{border:1px dashed var(--cmp);color:var(--cmp)} .tr .k.both{background:var(--ink);color:var(--bg);box-shadow:0 0 0 2px var(--cmp)}
+.verdict{font-size:14px;font-weight:600;padding:8px 10px;border-radius:6px;background:var(--bg)}
+@media (max-width:900px){.streams{grid-template-columns:minmax(0,1fr)} .lm-dig{grid-template-columns:minmax(0,1fr)} .lm-deal .kv{grid-template-columns:repeat(2,minmax(0,1fr))}}
 /* platform shell */
 .appbar{position:sticky;top:0;z-index:8;background:var(--dark);color:var(--dark-ink);margin-inline:calc(-1 * max(16px, env(safe-area-inset-left, 0px)));
   padding:10px max(16px, env(safe-area-inset-left, 0px));display:flex;align-items:center;gap:14px;flex-wrap:wrap}
@@ -315,6 +363,38 @@ footer{padding-block:8px 0}
   <div class="finding"><span class="eyebrow">Finding</span><p id="f-trace"></p></div>
   <div class="sources" id="src-trace"></div>
 </section>
+<section class="card step" id="linkmap">
+  <div class="card-head"><span class="num">5b</span><h2>Link map: from the target down, from the AI up, and what happens between</h2><p>One key result, the new-business sales cycle, followed both ways. <b>Top-down</b> starts from the target, finds the record fields that move it, then digs around those records for AI traces. <b>Bottom-up</b> starts from every AI session and matches it to records and targets. <b>Between</b>, the links top-down already knows set the bar for bottom-up, and every link gets an evidence level before anything is tested.</p></div>
+  <div class="streams">
+    <div class="stream td"><span class="eyebrow">Top-down · target → records → AI</span><div id="lm-td" class="stack"></div></div>
+    <div class="stream mid"><span class="eyebrow">Between · calibrate → reconcile → test</span><div id="lm-mid" class="stack"></div></div>
+    <div class="stream bu"><span class="eyebrow">Bottom-up · AI → records → target</span><div id="lm-bu" class="stack"></div></div>
+  </div>
+
+  <div class="panel" style="display:grid;gap:14px">
+    <div style="display:grid;gap:6px;max-width:80ch"><h3>Dig: the 255 new deals behind the target, one dot each</h3>
+    <p class="muted" style="font-size:14px">Step through it. Each dot is a 2025 new deal, grouped by team. Click any dot to open the deal and see the fields that matter and every AI trace around it.</p></div>
+    <div class="lm-steps" role="tablist" id="lm-steps"></div>
+    <p id="lm-stepnote" style="font-size:15px;min-height:44px"></p>
+    <div class="lm-fields" id="lm-fields"></div>
+    <div class="lm-dig">
+      <div id="lm-grid" class="lm-grid" aria-label="New deals in scope"></div>
+      <div id="lm-deal" class="lm-deal" aria-live="polite"></div>
+    </div>
+    <div class="legend" id="lm-legend"></div>
+  </div>
+
+  <div class="panel" style="display:grid;gap:10px">
+    <div style="display:grid;gap:6px;max-width:80ch"><h3>Between, in detail</h3>
+    <p class="muted" style="font-size:14px">Calibrate: the bottom-up matching rule is run on the sessions whose record top-down already knows, so each rule's accuracy is measured, not assumed. Reconcile: each link gets an evidence level.</p></div>
+    <div class="grid2">
+      <div class="tbl"><table id="lm-rules" style="min-width:0"></table></div>
+      <div class="tbl"><table id="lm-recon" style="min-width:0"></table></div>
+    </div>
+  </div>
+  <div class="finding"><span class="eyebrow">Finding</span><p id="f-linkmap"></p></div>
+  <div class="sources" id="src-linkmap"></div>
+</section>
 <section class="card step" id="momentum">
   <div class="card-head"><span class="num">06</span><h2>Momentum: is each tool used, and on what</h2><p>An assignment date shows access, not use. Usage, the records each tool touches and the target’s driver go on one timeline.</p></div>
   <div class="io">In <b>admin usage, telemetry, change log</b> → Out <b>use and record footprint</b></div>
@@ -440,6 +520,7 @@ const SRC = {
   momentum: [["syn","AI admin usage"],["syn","AI telemetry"],["syn","CRM change log"]],
   prove: [["real","CRM closed-won"],["syn","CRM change log"],["syn","Rollout dates"]],
   find: [["syn","CRM change log"],["syn","OKR map"]],
+  linkmap: [["syn","CRM change log (identities, materials)"],["syn","AI telemetry"],["real","CRM closed-won 2025"],["syn","Driver model (step 4)"]],
   classify: [["syn","AI telemetry (session text)"],["syn","SSO and agent identities"],["syn","CRM change log (linked materials)"]],
 };
 for (const k in SRC) if ($("src-"+k)) $("src-"+k).innerHTML = SRC[k].map(([c,t]) => `<span class="pill ${c}">${esc(t)}</span>`).join("");
@@ -457,7 +538,7 @@ $("summary").innerHTML = [
 const PL = Object.fromEntries(D.pipeline.map(p => [p[0], p]));
 const steps = [["overview","·","Summary",""],["live","●","Live map","daily run"],["processed","0","Processed",`${D.processed.length} sources`],
   ["discover","1","Discover",PL.Discover[2]],["classify","2","Classify",PL.Classify[2]],["map","3","Map",PL.Map[2]],
-  ["learn","4","Learn",PL.Learn[2]],["trace","5","Trace",PL.Trace[2]],["momentum","6","Momentum",PL.Momentum[2]],
+  ["learn","4","Learn",PL.Learn[2]],["trace","5","Trace",PL.Trace[2]],["linkmap","↕","Link map","top-down · between · bottom-up"],["momentum","6","Momentum",PL.Momentum[2]],
   ["prove","7","Prove",PL.Prove[2]],["find","8","Find",PL.Find[2]],["conclude","9","Conclude",PL.Conclude[2]],["check","A","Appendix","planted vs found"],["judge","B","Model judge","experiment"]];
 $("rail").innerHTML = `<span class="lab">Report steps</span>` + steps.map(([id,n,l,o]) => `<a href="#${id}" data-id="${id}" class="${/^\d$/.test(n)?"done":""}"><span class="n">${/^\d$/.test(n)?"✓":n}</span><span><b>${/^\d$/.test(n)?n+" · ":""}${l}</b>${o?`<small>${esc(o)}</small>`:""}</span></a>`).join("");
 const io = new IntersectionObserver((es) => es.forEach(e => { if (e.isIntersecting) document.querySelectorAll("#rail a").forEach(a => a.classList.toggle("on", a.dataset.id === e.target.id)); }), {rootMargin: "-30% 0px -60% 0px"});
@@ -861,4 +942,83 @@ const truth = [
   ["Session purpose (similarity to drivers and key results)", "12 planted purposes", `${Math.round(D.similarity.overall_agreement*100)}% of sessions matched correctly`],
 ];
 $("checktbl").innerHTML = `<tr><th>Planted in the synthetic data</th><th>What was planted</th><th>What Gnocchi found</th></tr>` + truth.map(r=>`<tr><td>${r[0]}</td><td class="mono" style="font-size:13px">${r[1]}</td><td class="mono" style="font-size:13px"><b>${r[2]}</b></td></tr>`).join("");
+
+// ---- 5b Link map: top-down, between, bottom-up
+(function(){
+  const L = D.linkmap; if (!L) return;
+  const T = L.top_down, B = L.bottom_up, M = L.between;
+  const n = (v) => Number(v).toLocaleString("en-US");
+  const pct = (v) => Math.round(v*100) + "%";
+  const box = (b, t, sm, hl) => `<div class="sbox${hl?" hl":""}"><b>${b}</b><span>${t}</span>${sm?`<small>${sm}</small>`:""}</div>`;
+  const drv = T.fields.filter(f => f.matters);
+  $("lm-td").innerHTML =
+    box("1", `<b style="font-size:14px;color:var(--ink)">Target</b> · ${esc(T.kr)}`, esc(T.measure)) +
+    box(drv.length, "fields that move it: " + drv.map(f => esc(f.name.toLowerCase())).join(", "), "learned from history (step 4)") +
+    box(n(T.matter), `of ${n(T.scope)} new deals had one of those fields set`, "records that matter") +
+    box(n(T.with_ai), "of them carry an AI trace on that field", "agent write or AI-made material") +
+    box(n(T.known_links), `known links, ${T.by_tool.filter(t=>t.sessions).length} tools`, T.by_tool.map(t=>`${esc(t.tool)} ${t.sessions}`).join(" · "), true);
+  $("lm-bu").innerHTML = B.steps.map((st, i) => box(n(st.n), esc(st.step), i === B.steps.length-1 ? `${B.deals} deals · ${pct(B.precision)} right vs planted truth` : "", i === B.steps.length-1)).join("");
+  const sdr = M.reconcile.find(r => r.tool.startsWith("AI SDR"));
+  $("lm-mid").innerHTML =
+    box(pct(M.recovered), `<b style="color:#F4F0EA">Calibrate.</b> The bottom-up rule, run on ${n(M.n_known)} links top-down already knows, finds the right deal ${pct(M.recovered)} of the time.`, "known links are the answer key") +
+    box(M.rules.length - 1, `rules measured. Trusted: ${M.trusted_rules.map(esc).join(", ")} (${pct(M.rules[0].right)} right). The rest become leads.`, `bottom-up: ${M.bu_trusted} trusted, ${M.bu_leads} leads`) +
+    box(pct(M.target_agree), `<b style="color:#F4F0EA">Reconcile.</b> Of known links, this share also aim at the record's own driver. Each link gets a level: both agree, top-down only, bottom-up only.`, "", true) +
+    box("→ 7", `<b style="color:#F4F0EA">Test.</b> Only tools with strong links go to impact testing by comparison.`, `<a href="#prove" style="color:#EE9A69">Prove</a>`);
+  // dig stages
+  const ST = [
+    ["1 · Target", "All 255 new deals closed in 2025 count toward the new-deal cycle. Nothing is highlighted yet."],
+    ["2 · Fields that matter", `The driver model (step 4) says three fields move the cycle. ${n(T.matter)} deals had one set: a solutions engineer added, a meeting-prep brief attached, or a first touch logged by the AI SDR. The deal-summary note is traced too, but it doesn't move the cycle.`],
+    ["3 · Dig for AI traces", `Around those records, Gnocchi looks for AI: an agent identity that wrote the field, or an AI-made material attached. ${n(T.with_ai)} deals carry one. Deals with an SE and no AI trace are where AI isn't helping yet (step 8).`],
+    ["4 · Bottom-up", `Now from the other side: ChatGPT sessions that name an account with an open deal. ${B.steps.at(-1).n} sessions land on ${B.deals} of these deals (blue ring).`],
+    ["5 · Both agree", "Deals where an AI trace on a field that matters is confirmed from the other side: the tool's own session text names the same deal, or a ChatGPT session does. These are the strongest links, tested first."],
+  ];
+  let stage = 0, sel = L.featured[0];
+  const dir = (d) => { const tdM = d.traces.filter(t => t.dir !== "bu" && t.matters), bu = d.traces.some(t => t.dir === "bu");
+    return {td: tdM.length > 0, tdAny: d.traces.some(t => t.dir !== "bu"), bu: bu || tdM.some(t => t.dir === "both"),
+            both: tdM.some(t => t.dir === "both") || (tdM.length > 0 && bu)}; };
+  const matter = (d) => d.se || d.prep || d.sdr;
+  const aiOn = (d) => d.sdr || d.prep;
+  $("lm-steps").innerHTML = ST.map(([l], i) => `<button type="button" role="tab" data-i="${i}" class="${i===3?"bu":""}">${l}</button>`).join("");
+  const byTeam = {}; L.deals.forEach(d => (byTeam[d.team] ||= []).push(d));
+  $("lm-grid").innerHTML = Object.entries(byTeam).map(([t, ds]) => `<div class="lm-team"><span>${esc(t)}<br>${ds.length}</span><div class="lm-dots">${ds.map(d => `<button type="button" data-id="${d.id}" aria-label="${esc(d.account)}, ${esc(t)}" title="${esc(d.account)}"></button>`).join("")}</div></div>`).join("");
+  const DM = Object.fromEntries(L.deals.map(d => [d.id, d]));
+  function paint(){
+    document.querySelectorAll("#lm-steps button").forEach(b => b.classList.toggle("on", +b.dataset.i === stage));
+    $("lm-stepnote").textContent = ST[stage][1];
+    $("lm-fields").innerHTML = T.fields.map(f => `<div class="fchip ${stage>=1 ? (f.matters ? "on" : "off") : ""}"><b>${esc(f.name)}</b><small>${esc(f.field)} · ${f.matters ? sgn(f.days)+" days "+esc(f.per) : "no effect on the cycle"}</small>${stage>=2 ? `<small>${f.ai ? `AI on ${f.ai} deals · ${esc(f.how)}` : "no AI trace: people only"}</small>` : ""}</div>`).join("");
+    document.querySelectorAll("#lm-grid button").forEach(b => {
+      const d = DM[b.dataset.id], x = dir(d);
+      b.className = "";
+      if (stage >= 1 && matter(d)) b.classList.add("m");
+      if (stage >= 1 && !matter(d)) b.classList.add("dim");
+      if (stage >= 2 && aiOn(d)) b.classList.add("ai");
+      if (stage >= 3 && x.bu) { b.classList.add("bu"); b.classList.remove("dim"); }
+      if (stage === 4) { if (x.both) b.classList.add("both"); else b.classList.add("dim"); }
+      if (d.id === sel) b.classList.add("sel");
+    });
+    deal(DM[sel]);
+  }
+  function deal(d){
+    const x = dir(d);
+    const tag = (t) => t.dir === "both" ? `<span class="k both">both</span>` : t.dir === "bu" ? `<span class="k bu">bottom-up</span>` : `<span class="k td">top-down</span>`;
+    const v = x.both ? "Both agree: strongest link. Goes to impact testing first." :
+      x.td ? "Top-down only: AI touched a field that matters; what it was for is not confirmed." :
+      x.tdAny ? "AI left a trace, but only on a field that doesn't move the cycle (the summary note)." :
+      x.bu ? "Bottom-up only: a lead to verify, not a confirmed link." :
+      matter(d) ? "No AI on the fields that matter: an AI opportunity (step 8)." : "No AI trace on this deal.";
+    $("lm-deal").innerHTML = `<div><span class="eyebrow">${esc(d.team)} · new deal · ${esc(d.created)} → ${esc(d.close)}</span><h3 style="font-size:20px">${esc(d.account)}</h3><p class="muted" style="font-size:13px">${d.cycle} days to close</p></div>
+      <div class="kv"><div class="on">First response<b>${d.first_resp} h</b></div><div class="on">SE before proposal<b>${d.se ? "Yes" : "No"}</b></div><div class="on">Prep brief<b>${d.prep ? "Yes" : "No"}</b></div><div>Summary note<b>${d.dealsum ? "Yes" : "No"}</b></div></div>
+      <div>${d.traces.length ? d.traces.map(t => `<div class="tr"><span class="when">${esc(t.ts)}</span><div>${tag(t)}<b>${esc(t.tool)}</b> · <span class="muted">${esc(t.kind)}</span><br>${esc(t.text)}${t.why ? `<br><small class="muted mono">matched: ${esc(t.why)}</small>` : ""}</div></div>`).join("") : `<p class="muted" style="font-size:13px">No agent write, AI-made material or matched session on this deal.</p>`}</div>
+      <p class="verdict">${v}</p>`;
+  }
+  $("lm-steps").addEventListener("click", e => { const b = e.target.closest("button"); if (b) { stage = +b.dataset.i; paint(); } });
+  $("lm-grid").addEventListener("click", e => { const b = e.target.closest("button"); if (b) { sel = b.dataset.id; paint(); } });
+  $("lm-legend").innerHTML = `<span><i style="background:var(--chip);height:10px;width:10px;border-radius:50%"></i>deal in scope</span><span><i style="border:2px solid var(--accent);height:10px;width:10px;border-radius:50%"></i>a field that matters was set</span><span><i style="background:var(--accent);height:10px;width:10px;border-radius:50%"></i>AI trace on that field (top-down)</span><span><i style="box-shadow:0 0 0 2.5px var(--cmp);height:10px;width:10px;border-radius:50%"></i>session matched (bottom-up)</span><span><i style="background:var(--ink);box-shadow:0 0 0 2.5px var(--cmp);height:10px;width:10px;border-radius:50%"></i>both agree</span>`;
+  $("lm-rules").innerHTML = `<tr><th>Bottom-up rule</th><th class="num">Known links settled</th><th class="num">Right</th><th>Use</th></tr>` +
+    M.rules.filter(r => r.n).map(r => `<tr><td>${esc(r.rule)}</td><td class="num">${r.n}</td><td class="num">${pct(r.right)}</td><td>${r.right >= 0.9 ? `<span class="tag l1">trust</span>` : `<span class="tag l3">lead</span>`}</td></tr>`).join("");
+  $("lm-recon").innerHTML = `<tr><th>Tool</th><th class="num">Both agree</th><th class="num">Top-down only</th><th class="num">Bottom-up only</th><th class="num">Aimed at its driver</th></tr>` +
+    M.reconcile.map(r => `<tr><td>${esc(r.tool)}</td><td class="num">${r.both || "–"}</td><td class="num">${r.td_only || "–"}</td><td class="num">${r.bu_only || "–"}</td><td class="num">${pct(r.target)}</td></tr>`).join("");
+  $("f-linkmap").innerHTML = `Top-down found ${n(T.known_links)} links Gnocchi can be sure of, on ${n(T.with_ai)} deals. Run against them, the bottom-up rule picks the right deal ${pct(M.recovered)} of the time; its “only open deal with that account” rule is right ${pct(M.rules[0].right)} of the time, while “first of several” is right only ${pct((M.rules.find(r=>r.rule.includes("first of several"))||{right:0}).right)}, so those matches stay leads. That leaves ${M.bu_trusted} trusted ChatGPT links and ${M.bu_leads} leads.`;
+  paint();
+})();
 </script>

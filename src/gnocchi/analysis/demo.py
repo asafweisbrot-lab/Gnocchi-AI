@@ -70,6 +70,131 @@ def boot(df, fn, n=300, seed=7):
     return float(np.percentile(vals, 5)), float(np.percentile(vals, 95))
 
 
+def build_linkmap(s, scope, crm_real, ev, docs, drivers, gold, kr_text, inv, gto) -> dict:
+    """Link map for one key result (the new-deal cycle): top-down from the target to the
+    records and the AI traces around them, bottom-up from every session to the records and
+    targets, and what happens between the two (calibrate, reconcile, then test)."""
+    from gnocchi.analysis.deal_match_lab import link_deals
+    new = scope[scope.type == "New"].copy()
+    ids = set(new.opportunity_id)
+    acct = lambda o: crm_real.loc[o, "account name"] if o in crm_real.index else o
+    cyc = next(g_ for g_ in gold if g_["kr_id"].startswith("EMEA-") and "created date" in str(g_["fields"]))
+    # ---- top-down: target -> driver fields -> records where they changed -> AI traces
+    w = {d["driver"]: d for d in drivers}
+    sig = lambda d: abs(d["days"]) > d["ci"]
+    sdr_w = ev[(ev.changed_by == "svc_ai_sdr") & ev.record_id.isin(ids)]
+    prep_w = ev[(ev.created_with == "Meeting-prep assistant") & ev.record_id.isin(ids)]
+    se_w = ev[(ev.object == "OpportunityTeamMember") & (ev.new_value == "Solutions Engineer") & ev.record_id.isin(ids)]
+    act = ev[(ev.object == "Activity") & ev.record_id.isin(ids)]
+    known = s[s.record_ids.isin(ids) & s.identity.ne("sso_user")].copy()        # agents writing to the record
+    known = pd.concat([known, s[s.record_ids.isin(ids) & (s.investment_id == "inv_meeting_prep")]]).drop_duplicates("session_id")
+    notes = known[known.investment_id.isin(["inv_dealsum_emea", "inv_dealsum_nae"])]
+    TOOL = dict(zip(inv.investment_id, inv["name"]))
+    fields = [
+        {"id": "D1", "name": "First response", "field": "Activity · first touch", "d": w["First response time"],
+         "deals": int(act.record_id.nunique()), "ai": int(sdr_w.record_id.nunique()), "how": "agent identity wrote it",
+         "tools": ["AI SDR agent"]},
+        {"id": "D3", "name": "Solutions engineer before proposal", "field": "Team member · role", "d": w["Solutions engineer before Proposal"],
+         "deals": int(se_w.record_id.nunique()), "ai": 0, "how": "people only", "tools": []},
+        {"id": "D2", "name": "Meeting-prep brief", "field": "Attachment · created with", "d": w["Meeting-prep brief attached"],
+         "deals": int(prep_w.record_id.nunique()), "ai": int(prep_w.record_id.nunique()), "how": "AI-made material attached",
+         "tools": ["Meeting-prep assistant"]},
+        {"id": "D6", "name": "Deal-notes summary", "field": "Note · written by", "d": w["Deal-notes summary on the opportunity"],
+         "deals": int(notes.record_ids.nunique()), "ai": int(notes.record_ids.nunique()), "how": "agent identity wrote it",
+         "tools": ["Deal-summary bot (EMEA build)", "Deal-summary bot (NA East build)"]},
+    ]
+    for f in fields:
+        d = f.pop("d")
+        f.update({"days": d["days"], "ci": d["ci"], "per": d["per"], "matters": bool(sig(d))})
+    matter = set(sdr_w.record_id) | set(prep_w.record_id) | set(se_w.record_id)
+    top_down = {"kr": kr_text.get(cyc["kr_id"], "Cut the new-business sales cycle"), "record": cyc["record"],
+                "measure": cyc["fields"], "scope": int(len(new)), "fields": fields,
+                "matter": int(len(matter)), "with_ai": int(len(matter & (set(sdr_w.record_id) | set(prep_w.record_id)))),
+                "known_links": int(len(known)),
+                "by_tool": [{"tool": TOOL.get(i, i), "sessions": int((known.investment_id == i).sum()),
+                             "deals": int(known[known.investment_id == i].record_ids.nunique())}
+                            for i in ["inv_ai_sdr", "inv_meeting_prep", "inv_dealsum_emea", "inv_dealsum_nae"]]}
+    # ---- bottom-up: every session -> target similarity -> account named -> a deal in scope
+    other = s[s.identity.eq("sso_user") & s.record_ids.isna()]
+    gpt = s[s.investment_id == "inv_chatgpt_other"]
+    linked = gpt[gpt.deal.isin(ids)]
+    bottom_up = {"steps": [
+        {"step": "All AI sessions in 2025", "n": int(len(s))},
+        {"step": "No record id: help to people, not writes", "n": int(len(other))},
+        {"step": "Sales work (not coding)", "n": int(len(gpt))},
+        {"step": "Aimed at a driver or key result", "n": int(gpt.match.notna().sum())},
+        {"step": "Name an account with an open deal", "n": int(gpt.deal.notna().sum())},
+        {"step": "Matched to a new deal in scope", "n": int(len(linked))}],
+        "deals": int(linked.deal.nunique()),
+        "precision": round(float((linked.deal == gto.loc[linked.index]).mean()), 3) if len(linked) else None,
+        "why": linked.deal_why.value_counts().to_dict()}
+    # ---- between: run the bottom-up rule on the sessions whose record we already know
+    kp, kwhy, _, ksims = link_deals(known, scope, docs, ev)
+    known["bu"] = kp
+    known["agree"] = known.bu == known.record_ids
+    target_of = {"inv_ai_sdr": "D1", "inv_meeting_prep": "D2", "inv_dealsum_emea": "D6", "inv_dealsum_nae": "D6"}
+    known["tgt_ok"] = [m == target_of.get(i) for m, i in zip(known.match, known.investment_id)]
+    true_sc, wrong_sc = [], []
+    for k, sc in ksims.items():
+        rec = known.loc[k, "record_ids"]
+        for c, v in sc.items():
+            (true_sc if c == rec else wrong_sc).append(round(float(v), 2))
+    BINS = np.linspace(0, 0.3, 13)
+    hist = lambda xs: np.histogram(np.clip(xs, 0, 0.2999), bins=BINS)[0].astype(int).tolist()
+    known["why"] = kwhy
+    rules = [{"rule": r_, "n": int((known.why == r_).sum()), "right": round(float(known[known.why == r_].agree.mean()), 3)}
+             for r_ in known.why.dropna().value_counts().index]
+    rules.append({"rule": "no account named, or no open deal found", "n": int(known.why.isna().sum()), "right": 0.0})
+    recon = []
+    for i in ["inv_ai_sdr", "inv_meeting_prep", "inv_dealsum_emea", "inv_dealsum_nae"]:
+        x = known[known.investment_id == i]
+        recon.append({"tool": TOOL.get(i, i), "both": int(x.agree.sum()), "td_only": int((~x.agree).sum()), "bu_only": 0,
+                      "target": round(float(x.tgt_ok.mean()), 2) if len(x) else 0})
+    recon.append({"tool": "ChatGPT Enterprise · other tasks", "both": 0, "td_only": 0, "bu_only": int(len(linked)),
+                  "target": round(float(linked.match.notna().mean()), 2) if len(linked) else 0})
+    between = {"recovered": round(float(known.agree.mean()), 3), "n_known": int(len(known)),
+               "multi": int(len(ksims)), "hist_true": hist(true_sc), "hist_wrong": hist(wrong_sc), "bins": [round(float(b), 3) for b in BINS], "rules": rules,
+               "threshold": 0.12, "target_agree": round(float(known.tgt_ok.mean()), 3), "reconcile": recon}
+    # ---- drill-down: a handful of deals that show each pattern
+    gl = linked.groupby("deal")
+    def deal_view(o):
+        r = new.set_index("opportunity_id").loc[o]
+        tr = []
+        kd = known[known.record_ids == o]
+        ag = lambda i: "both" if kd[kd.investment_id == i].agree.any() else "td"
+        for _, e in sdr_w[sdr_w.record_id == o].sort_values("ts").head(2).iterrows():
+            tr.append({"ts": e.ts[:10], "kind": "Agent write", "tool": "AI SDR agent", "text": f"{e.field}: {e.new_value}", "dir": ag("inv_ai_sdr"), "matters": True})
+        for _, e in prep_w[prep_w.record_id == o].sort_values("ts").head(2).iterrows():
+            tr.append({"ts": e.ts[:10], "kind": "AI-made material", "tool": "Meeting-prep assistant", "text": "Meeting prep brief attached", "dir": ag("inv_meeting_prep"), "matters": True})
+        for _, e in notes[notes.record_ids == o].sort_values("ts").head(2).iterrows():
+            agn = bool(known.loc[known.session_id == e.session_id, "agree"].iloc[0])
+            tr.append({"ts": e.ts[:10], "kind": "Agent write", "tool": TOOL[e.investment_id], "text": e.prompt, "dir": "both" if agn else "td", "matters": False})
+        for _, e in (gl.get_group(o).sort_values("ts").head(3).iterrows() if o in gl.groups else []):
+            tr.append({"ts": e.ts[:10], "kind": "Session matched", "tool": "ChatGPT Enterprise", "text": e.prompt, "dir": "bu",
+                       "why": e.deal_why, "target": e.match})
+        tr.sort(key=lambda t: t["ts"])
+        return {"id": o, "account": acct(o), "team": r.team, "created": str(r.created_date.date()), "close": str(r.close_date.date()),
+                "cycle": int(r.cycle_days), "first_resp": round(float(r.first_response_hours), 1), "se": int(r.se), "prep": int(r.prep),
+                "sdr": int(r.sdr), "dealsum": int(r.dealsum), "traces": tr}
+    pats = [new[(new.sdr == 1) & (new.prep == 1) & new.opportunity_id.isin(linked.deal)],
+            new[(new.dealsum == 1) & new.opportunity_id.isin(linked.deal)],
+            new[new.opportunity_id.isin(linked.deal) & (new.sdr == 0) & (new.prep == 0)],
+            new[(new.se == 1) & (new.sdr == 0) & (new.prep == 0) & ~new.opportunity_id.isin(linked.deal)]]
+    pick = []
+    for p in pats:
+        for o in p.opportunity_id:
+            if o not in pick:
+                pick.append(o)
+                break
+    trusted_rules = {r_["rule"] for r_ in rules if r_["right"] >= 0.9}
+    between["bu_trusted"] = int(linked.deal_why.isin(trusted_rules).sum())
+    between["bu_leads"] = int(len(linked) - between["bu_trusted"])
+    between["trusted_rules"] = sorted(trusted_rules)
+    order = new.sort_values(["team", "created_date"]).opportunity_id
+    return {"top_down": top_down, "bottom_up": bottom_up, "between": between, "featured": pick,
+            "deals": [deal_view(o) for o in order]}
+
+
 def main() -> None:
     opps, ev, sess, usage, inv, okrs, gold = load()
     new = opps[opps.type == "New"].copy()
@@ -365,6 +490,7 @@ def main() -> None:
     s["truth"] = s.session_id.map(gt)
     s["ok"] = [(None if pd.isna(m) else m) in EXPECT[t] for m, t in zip(s.match, s.truth)]
     agree = {p: round(float(g_.ok.mean()), 3) for p, g_ in s.groupby("truth")}
+    linkmap = build_linkmap(s, scope, crm_real, ev25, docs, drivers, gold, kr_text, inv, gto)
 
     # ---- Experiment: a small model as judge (see analysis/judge.py). Stage 1 here shortlists
     # candidates; the judge picks. Both are scored on the same labelled sample.
@@ -847,7 +973,7 @@ def main() -> None:
         ["Conclude", f"{fmt_k(inv0.annual_cost_usd.sum())} AI spend", f"{len(report)} decisions"],
     ]
     lab = DEMO / "deal_match_lab.json"
-    out = {"deal_lab": json.loads(lab.read_text()) if lab.exists() else None, "judge": judge_out, "tools": tools_out, "rec_link": rec_link, "coverage": coverage, "team_plans": team_plans, "live": live_map, "split_names": {r["id"]: r["name"] for r in split["rows"]}, "lineage": lineage, "duplicate": duplicate, "parallel": parallel, "processed": processed, "pipeline": pipeline, "classify": classify_out, "open_weights": open_weights,
+    out = {"linkmap": linkmap, "deal_lab": json.loads(lab.read_text()) if lab.exists() else None, "judge": judge_out, "tools": tools_out, "rec_link": rec_link, "coverage": coverage, "team_plans": team_plans, "live": live_map, "split_names": {r["id"]: r["name"] for r in split["rows"]}, "lineage": lineage, "duplicate": duplicate, "parallel": parallel, "processed": processed, "pipeline": pipeline, "classify": classify_out, "open_weights": open_weights,
            "discover": discover, "map": mapping, "drivers": drivers, "trace": trace, "similarity": similarity, "momentum": mom,
            "driver_trend": driver_trend, "prove": prove, "find": find, "report": report,
            "totals": {"ai_spend": int(inv0.annual_cost_usd.sum()), "avoided": sum(r["avoided"] for r in report)}}
