@@ -64,7 +64,7 @@ def support(rng):
             {"kr": "Cut median time to resolution under 24 hours", "fields": ["Resolved at", "Created at"], "duration": True, "action": "Median", "why": "a duration per ticket, then the typical ticket", "rows": ["Status = Resolved"], "date": "Resolved at", "grain": "month", "record": "Ticket"},
             {"kr": "Raise CSAT to 4.5", "fields": ["CSAT score"], "action": "Average", "why": "the mean survey score", "rows": ["Survey answered"], "date": "Resolved at", "grain": "month", "record": "Ticket + survey"},
             {"kr": "Deflect 30% of contacts to self-service", "fields": ["Channel", "Article viewed"], "action": "Share", "why": "deflected ÷ all contacts", "rows": ["Contact created"], "date": "Created at", "grain": "quarter", "record": "Contact + KB views"},
-            {"kr": "Keep agent attrition under 15%", "blind": "Attrition lives in the HR system, not in ticketing; connect the HRIS to see it"}],
+            {"kr": "Keep support rep attrition under 15%", "blind": "Attrition lives in the HR system, not in ticketing; connect the HRIS to see it"}],
         "drivers": [{"driver": "First assignment time", "per": "per hour slower", "v": drv["first_assign_h"], "unit": "h"},
                     {"driver": "KB article linked", "per": "when linked", "v": drv["kb_linked"], "unit": "h"},
                     {"driver": "Ticket reopened", "per": "when reopened", "v": drv["reopened"], "unit": "h"}],
