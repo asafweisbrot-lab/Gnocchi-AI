@@ -217,8 +217,20 @@ def main() -> None:
 
     # ---- 2 Map
     kr_text = {kr["kr_id"]: kr["text"] for o in okrs if o["team"] == "EMEA" for kr in o["key_results"]}
+    # the fields carry the progress: what is measured, how it is combined, which rows count,
+    # and the date that places each record in a period
+    SHAPE = {
+        "EMEA-KR1": {"measure": ["Amount (converted)"], "action": "Sum", "why": "bookings add up",
+                     "filter": ["Sales stage = Closed Won"], "date": "Close date"},
+        "EMEA-KR2": {"measure": ["Amount (converted)"], "action": "Sum", "why": "bookings add up",
+                     "filter": ["Type = New", "Sales stage = Closed Won"], "date": "Close date"},
+        "EMEA-KR3": {"measure": ["Close date", "Created date"], "action": "Median", "why": "a duration per deal: close date − created date, then the typical deal",
+                     "filter": ["Type = New"], "date": "Close date", "duration": True},
+        "EMEA-KR4": {"measure": ["Record count"], "action": "Count", "why": "renewals counted",
+                     "filter": ["Type = Renewal", "Sales stage = Closed Won"], "date": "Close date"},
+    }
     mapping = [{"kr": kr_text[g_["kr_id"]], "record": g_["record"], "fields": g_["fields"],
-                "grain": g_["time_slice"], "blind_spot": g_["record"] is None}
+                "grain": g_["time_slice"], "blind_spot": g_["record"] is None, "note": g_.get("note"), **SHAPE.get(g_["kr_id"], {})}
                for g_ in gold if g_["kr_id"].startswith("EMEA-")]
 
     # ---- 3 Learn drivers of the New-deal cycle (both years, controls: deal size, team, month)

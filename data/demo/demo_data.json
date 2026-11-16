@@ -19910,35 +19910,80 @@
    "record": "Opportunity",
    "fields": "sum(amount (converted)) where sales stage = Closed Won",
    "grain": "year",
-   "blind_spot": false
+   "blind_spot": false,
+   "note": null,
+   "measure": [
+    "Amount (converted)"
+   ],
+   "action": "Sum",
+   "why": "bookings add up",
+   "filter": [
+    "Sales stage = Closed Won"
+   ],
+   "date": "Close date"
   },
   {
    "kr": "Grow new-logo bookings 25% to $10.31M",
    "record": "Opportunity",
    "fields": "sum(amount (converted)) where type = New and Closed Won",
    "grain": "quarter",
-   "blind_spot": false
+   "blind_spot": false,
+   "note": null,
+   "measure": [
+    "Amount (converted)"
+   ],
+   "action": "Sum",
+   "why": "bookings add up",
+   "filter": [
+    "Type = New",
+    "Sales stage = Closed Won"
+   ],
+   "date": "Close date"
   },
   {
    "kr": "Cut the new-business sales cycle to under 60 days, median",
    "record": "Opportunity + stage history",
    "fields": "median(close date - created date) where type = New",
    "grain": "month",
-   "blind_spot": false
+   "blind_spot": false,
+   "note": null,
+   "measure": [
+    "Close date",
+    "Created date"
+   ],
+   "action": "Median",
+   "why": "a duration per deal: close date \u2212 created date, then the typical deal",
+   "filter": [
+    "Type = New"
+   ],
+   "date": "Close date",
+   "duration": true
   },
   {
    "kr": "Renew at least 117 contracts",
    "record": "Opportunity",
    "fields": "count where type = Renewal and Closed Won",
    "grain": "quarter",
-   "blind_spot": false
+   "blind_spot": false,
+   "note": null,
+   "measure": [
+    "Record count"
+   ],
+   "action": "Count",
+   "why": "renewals counted",
+   "filter": [
+    "Type = Renewal",
+    "Sales stage = Closed Won"
+   ],
+   "date": "Close date"
   },
   {
    "kr": "Raise customer satisfaction with onboarding",
    "record": null,
    "fields": null,
    "grain": null,
-   "blind_spot": true
+   "blind_spot": true,
+   "note": "blind spot: no CRM record holds onboarding satisfaction"
   }
  ],
  "drivers": [

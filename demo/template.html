@@ -87,6 +87,9 @@ footer{padding-block:40px 0;color:var(--muted);font-size:14px;display:grid;gap:1
   .spark{grid-template-columns:minmax(0,1fr)}
 }
 @media (prefers-reduced-motion:no-preference){nav.rail a{transition:background .15s}}
+.fld{display:inline-block;font-family:var(--mono);font-size:12px;padding:3px 8px;border-radius:4px;background:color-mix(in srgb, var(--accent) 16%, var(--surface));color:var(--ink);border:1px solid var(--accent);margin:2px 0;white-space:nowrap}
+.fld.f2{background:var(--chip);border-color:var(--line);color:var(--soft)}
+.act{font-weight:700;font-size:15px;color:var(--accent)}
 /* link map */
 .streams{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr) minmax(0,1fr);gap:14px}
 .stream{display:grid;gap:10px;align-content:start;border-radius:10px;padding:14px;background:var(--bg)}
@@ -309,8 +312,8 @@ footer{padding-block:8px 0}
   <div class="sources" id="src-classify"></div>
 </section>
 <section class="card step" id="map">
-  <div class="card-head"><span class="num">03</span><h2>Map: link each key result to the records that hold its progress</h2><p>The semantic layer reads each team OKR and proposes where its progress is recorded, which fields carry it and at what grain. A person confirms. A key result with no record is a blind spot. Shown: EMEA.</p></div>
-  <div class="io">In <b>25 key results, KPI definitions</b> → Out <b>KR → record map</b></div>
+  <div class="card-head"><span class="num">03</span><h2>Map: find the fields that carry each key result’s progress</h2><p>The semantic layer reads each team OKR and proposes the fields that carry its progress, not just the record they sit on: what is measured, how it is combined, which rows count, and the date that places each record in a period. Bookings are a <b>sum</b> of amounts by close date; the sales cycle is a <b>duration</b> per deal, close date minus created date, then the <b>median</b> across deals closed that month. A person confirms. A key result with no field to read is a blind spot. Shown: EMEA.</p></div>
+  <div class="io">In <b>25 key results, KPI definitions, CRM schema</b> → Out <b>KR → fields, action, date, grain</b></div>
 
   <div class="panel tbl"><table id="mapping"></table></div>
 
@@ -559,9 +562,14 @@ const ses = D.discover.sample_sessions.map(s => JSON.stringify({ts:s.ts, investm
 $("logs").textContent = "# CRM change history (synthetic) for one real deal\n" + log + "\n\n# AI telemetry (synthetic), one session per tool\n" + ses;
 
 // 2 mapping
-$("mapping").innerHTML = `<tr><th>Key result</th><th>Record</th><th>Fields that carry progress</th><th>Grain</th></tr>` +
-  D.map.map(m => `<tr><td><b>${esc(m.kr)}</b></td><td>${m.blind_spot?'<span class="tag blind">Blind spot</span>':esc(m.record)}</td><td class="mono" style="font-size:12px">${esc(m.fields||"No record holds this")}</td><td>${esc(m.grain||"·")}</td></tr>`).join("");
-
+$("mapping").innerHTML = `<tr><th>Key result</th><th>Fields that carry progress</th><th>Action</th><th>Rows that count</th><th>Period set by</th><th>Grain</th></tr>` +
+  D.map.map(m => m.blind_spot
+    ? `<tr><td><b>${esc(m.kr)}</b></td><td colspan="5"><span class="tag blind">Blind spot</span> <span class="muted">${esc((m.note||"no CRM record holds this").replace(/^blind spot:\s*/,""))}</span></td></tr>`
+    : `<tr><td><b>${esc(m.kr)}</b><br><span class="muted" style="font-size:12px">on ${esc(m.record)}</span></td>
+       <td>${m.duration ? `<span class="fld">${esc(m.measure[0])}</span> − <span class="fld">${esc(m.measure[1])}</span><br><span class="muted" style="font-size:12px">duration per deal</span>` : m.measure.map(f=>`<span class="fld">${esc(f)}</span>`).join(" ")}</td>
+       <td><span class="act">${esc(m.action)}</span><br><span class="muted" style="font-size:12px">${esc(m.why)}</span></td>
+       <td>${m.filter.map(f=>`<span class="fld f2">${esc(f)}</span>`).join(" ")}</td>
+       <td><span class="fld">${esc(m.date)}</span></td><td>${esc(m.grain)}</td></tr>`).join("");
 // 3 drivers chart
 (function(){
   const svg = $("drivers"), W = 900, rowH = 46, top = 28, H = top + D.drivers.length*rowH + 30;
@@ -898,7 +906,7 @@ $("total-text").innerHTML = `Of ${fmt$(D.totals.ai_spend)} in AI spend, two inve
   const F = {
     discover: `${inv.length} AI investments, ${fmt$(sum(inv))} a year. ${dir.length} are direct (${fmt$(sum(dir))}): agents with their own CRM identity. ${ind.length} are indirect (${fmt$(sum(ind))}): tools people use. Two of them, the deal-summary bots, were built in house: ${D.lineage.reduce((a,l)=>a+l.sessions,0)} ChatGPT sessions link to the commits of the two repos that deploy them, about ${fmt$(D.lineage.reduce((a,l)=>a+l.build_cost,0))} of engineering time for the same bot, built twice. Maintenance keeps growing: ${D.tools.tools.filter(t=>t.registered).reduce((a,t)=>a+t.maint_sessions,0)} sessions since launch. A third tool, ${D.tools.unregistered.length?esc(D.tools.unregistered[0].name.toLowerCase())+" in "+esc(D.tools.unregistered[0].team):"none"}, is in no register.`,
     classify: `${Math.round(100*nUn/N)}% of sessions are indirect and leave no record; only ${Math.round(100*(nDirect+nTr)/N)}% can be tied to a deal. Writing and admin are the biggest categories. Analysis and strategy sessions exist, but only in ChatGPT. Tool building and tool maintenance are their own categories. ChatGPT splits into coding (${Math.round(100*C.split.rows[0].sessions/(C.split.rows[0].sessions+C.split.rows[1].sessions))}%: building and maintaining three tools, plus scripts and formulas) and other tasks. Text alone classified ${(C.agreement_text_only*100).toFixed(1)}% of sessions correctly; it mistook bot-building for summarizing. The commit link brings it to ${(C.agreement*100).toFixed(1)}%. Synthetic templates make this easy; real prompts will score lower.`,
-    map: `Four of EMEA’s five key results map to CRM records. Onboarding satisfaction has no record, so its progress can’t be seen in any team.`,
+    map: `Four of EMEA’s five key results map to fields on the opportunity. Close date sets the period for all four; the action differs: bookings sum the amount, renewals count deals, and the cycle turns two dates into a duration per deal and takes the median. Onboarding satisfaction has no field anywhere, so its progress can’t be seen in any team.`,
     learn: `Three drivers move the new-deal cycle: first response (${sgn(D.drivers[0].days)} days per hour slower), a solutions engineer before Proposal (${sgn(D.drivers[1].days)} days) and a prep brief (${sgn(D.drivers[2].days)} days). Extra meetings don’t, and neither do deal-note summaries (${sgn(D.drivers[4].days)} ± ${D.drivers[4].ci} days), the element the summary bots write.`,
     trace: `The AI SDR and meeting prep close the triangle: their sessions are aimed at a driver and their output lands on that driver’s records. The deal-summary bots are aimed squarely at deal notes (D6) and write them, but step 4 found deal notes don’t move the cycle, so the triangle doesn’t close. ChatGPT coding reaches records only through the bots it built; ChatGPT other tasks write none, but ${D.rec_link.check.sessions_linked} of their sessions match ${D.rec_link.check.deals_linked} specific deals by account, timing and text; overall ${100-Math.round(D.trace.find(t=>t.id==="inv_chatgpt_other").aligned*100)}% of them are aimed at nothing. Teams aiming more of their AI spend at drivers moved KR3 more.`,
     momentum: `The AI SDR ramps with each rollout and EMEA’s first response drops from April. Meeting prep is live everywhere but used in few deals outside EMEA and NA East. ChatGPT’s active seats fall all year.`,
