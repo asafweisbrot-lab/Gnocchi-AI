@@ -4,6 +4,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 data = json.loads((ROOT / "data" / "demo" / "demo_data.json").read_text())
+dp = ROOT / "data" / "demo" / "depts.json"
+if dp.exists():
+    data["depts"] = json.loads(dp.read_text())
 tpl = (ROOT / "demo" / "template.html").read_text()
 html = tpl.replace("__DATA__", json.dumps(data, separators=(",", ":")).replace("</", "<\\/"))
 (ROOT / "demo" / "gnocchi_demo.html").write_text(html)

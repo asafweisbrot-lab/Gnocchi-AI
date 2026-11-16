@@ -90,6 +90,20 @@ footer{padding-block:40px 0;color:var(--muted);font-size:14px;display:grid;gap:1
 .fld{display:inline-block;font-family:var(--mono);font-size:12px;padding:3px 8px;border-radius:4px;background:color-mix(in srgb, var(--accent) 16%, var(--surface));color:var(--ink);border:1px solid var(--accent);margin:2px 0;white-space:nowrap}
 .fld.f2{background:var(--chip);border-color:var(--line);color:var(--soft)}
 .act{font-weight:700;font-size:15px;color:var(--accent)}
+/* department tabs */
+[hidden]{display:none !important}
+.dtabs{display:flex;gap:4px;margin-left:12px}
+.dtabs button{font-family:var(--mono);font-size:12px;padding:6px 12px;border-radius:999px;border:1px solid #4A443D;background:transparent;color:#D9D1C5;cursor:pointer;min-height:32px}
+.dtabs button.on{background:#EE9A69;border-color:#EE9A69;color:#1F1C19}
+.dtabs button:focus-visible{outline:2px solid #EE9A69;outline-offset:2px}
+.deptview{max-width:1080px;margin:0 auto;padding-top:28px;display:grid;gap:22px}
+.deptview .synth{display:inline-flex;gap:6px;align-items:center;font-family:var(--mono);font-size:12px;color:var(--warn);background:var(--chip);border-radius:999px;padding:4px 10px;width:max-content}
+.dbar{display:grid;grid-template-columns:240px minmax(0,1fr) 90px;gap:10px;align-items:center;font-size:14px;padding:6px 0;border-bottom:1px solid var(--line)}
+.dbar .track{position:relative;height:16px;background:var(--chip);border-radius:3px}
+.dbar .track i{position:absolute;top:0;bottom:0;border-radius:3px}
+.dbar .track .zero{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--ink)}
+.dfunnel{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:760px){.dtabs{margin-left:0}.dbar{grid-template-columns:minmax(0,1fr)}.dfunnel{grid-template-columns:minmax(0,1fr)}}
 /* link map */
 .streams{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr) minmax(0,1fr);gap:14px}
 .stream{display:grid;gap:10px;align-content:start;border-radius:10px;padding:14px;background:var(--bg)}
@@ -241,12 +255,18 @@ footer{padding-block:8px 0}
 
 <header class="appbar">
   <span class="logo"><i></i>gnocchi</span>
-  <span class="crumb">Reports / AI impact / Sales org · FY2025</span>
+  <span class="crumb" id="crumb">Reports / AI impact / Sales org · FY2025</span>
+  <nav class="dtabs" role="tablist" aria-label="Department">
+    <button type="button" role="tab" data-d="sales" class="on" aria-selected="true">Sales</button>
+    <button type="button" role="tab" data-d="support" aria-selected="false">Support</button>
+    <button type="button" role="tab" data-d="hr" aria-selected="false">HR</button>
+  </nav>
   <span class="sp"></span>
   <span class="st">Demo tenant</span>
   <span class="st ok">● Run complete</span>
 </header>
-<div class="shell">
+<div class="deptview" id="deptview" hidden></div>
+<div class="shell" id="salesview">
 <aside class="side" id="rail" aria-label="Report steps"></aside>
 <main>
 <section class="overview step" id="overview">
@@ -1028,5 +1048,54 @@ $("checktbl").innerHTML = `<tr><th>Planted in the synthetic data</th><th>What wa
     M.reconcile.map(r => `<tr><td>${esc(r.tool)}</td><td class="num">${r.both || "–"}</td><td class="num">${r.td_only || "–"}</td><td class="num">${r.bu_only || "–"}</td><td class="num">${pct(r.target)}</td></tr>`).join("");
   $("f-linkmap").innerHTML = `Top-down found ${n(T.known_links)} links Gnocchi can be sure of, on ${n(T.with_ai)} deals. Run against them, the bottom-up rule picks the right deal ${pct(M.recovered)} of the time; its “only open deal with that account” rule is right ${pct(M.rules[0].right)} of the time, while “first of several” is right only ${pct((M.rules.find(r=>r.rule.includes("first of several"))||{right:0}).right)}, so those matches stay leads. That leaves ${M.bu_trusted} trusted ChatGPT links and ${M.bu_leads} leads.`;
   paint();
+})();
+
+// ---- Department tabs: Support and HR previews (all synthetic)
+(function(){
+  const DP = D.depts || {};
+  const n = v => Number(v).toLocaleString("en-US");
+  const money = v => "$" + Math.round(v/1000) + "K";
+  function page(d){
+    const I = d.impact, L = d.links;
+    const span = Math.max(Math.abs(I.lo), Math.abs(I.hi), Math.abs(I.est)) * 1.4, sx = v => 50 + v / span * 50;
+    const drvMax = Math.max(...d.drivers.map(x => Math.abs(x.v))) * 1.2, dx = v => 50 + v / drvMax * 50;
+    return `
+    <section class="overview step"><span class="synth">● All data on this tab is synthetic: tickets, OKRs, AI logs and costs</span>
+      <span class="eyebrow">AI impact report · ${esc(d.name)} · Jan–Dec 2025</span>
+      <h1>What did each AI investment move?</h1><p class="lead">${esc(d.lead)}</p>
+      <div class="summary">${d.stats.map(([b,t]) => `<div class="stat"><b>${esc(b)}</b><span>${esc(t)}</span></div>`).join("")}</div></section>
+    <section class="card step"><div class="card-head"><span class="num">01</span><h2>Discover: the AI ${esc(d.name.toLowerCase())} runs, direct and indirect</h2><p>Agents that act under their own identity are direct; tools people use are indirect. Built or bought, each is one investment.</p></div>
+      <div class="panel tbl"><table><tr><th>AI investment</th><th>Built / bought</th><th>Type</th><th>What it leaves on records</th><th class="num">Annual cost</th><th>Teams</th></tr>
+      ${d.inventory.map(x => `<tr><td><b>${esc(x.name)}</b></td><td>${esc(x.kind)}</td><td>${esc(x.type)}</td><td>${esc(x.writes)}</td><td class="num">${money(x.cost)}</td><td>${esc(x.teams)}</td></tr>`).join("")}</table></div></section>
+    <section class="card step"><div class="card-head"><span class="num">03</span><h2>Map: the fields that carry each key result’s progress</h2><p>For each key result: what is measured, how it is combined, which rows count, and the date that places each record in a period.</p></div>
+      <div class="panel tbl"><table><tr><th>Key result</th><th>Fields that carry progress</th><th>Action</th><th>Rows that count</th><th>Period set by</th><th>Grain</th></tr>
+      ${d.map.map(m => m.blind ? `<tr><td><b>${esc(m.kr)}</b></td><td colspan="5"><span class="tag blind">Blind spot</span> <span class="muted">${esc(m.blind)}</span></td></tr>` :
+        `<tr><td><b>${esc(m.kr)}</b><br><span class="muted" style="font-size:12px">on ${esc(m.record)}</span></td>
+         <td>${m.duration ? `<span class="fld">${esc(m.fields[0])}</span> − <span class="fld">${esc(m.fields[1])}</span><br><span class="muted" style="font-size:12px">duration per record</span>` : m.fields.map(f => `<span class="fld">${esc(f)}</span>`).join(" ")}</td>
+         <td><span class="act">${esc(m.action)}</span><br><span class="muted" style="font-size:12px">${esc(m.why)}</span></td>
+         <td>${m.rows.map(f => `<span class="fld f2">${esc(f)}</span>`).join(" ")}</td><td><span class="fld">${esc(m.date)}</span></td><td>${esc(m.grain)}</td></tr>`).join("")}</table></div></section>
+    <section class="card step"><div class="card-head"><span class="num">04</span><h2>Learn: what moves ${esc(I.kr.toLowerCase())}</h2><p>From the year’s records, controlling for team and month. Bars show ${esc(I.unit)} added or saved.</p></div>
+      <div class="panel">${d.drivers.map(x => `<div class="dbar"><span><b>${esc(x.driver)}</b> <span class="muted">${esc(x.per)}</span></span><div class="track"><span class="zero" style="left:50%"></span><i style="left:${Math.min(50,dx(x.v))}%;width:${Math.abs(dx(x.v)-50)}%;background:${x.v<0?"var(--good)":"var(--accent)"}"></i></div><span class="num">${sgn(x.v)} ${esc(x.unit)}</span></div>`).join("")}</div></section>
+    <section class="card step"><div class="card-head"><span class="num">5b</span><h2>Link map: top-down, bottom-up, between</h2><p>The same three streams as Sales, on ${esc(d.name.toLowerCase())} records.</p></div>
+      <div class="dfunnel">
+        <div class="stream td"><span class="eyebrow">Top-down</span><div class="stack"><div class="sbox"><b>${n(L.scope)}</b><span>records behind the target</span></div><div class="sbox"><b>${n(L.matter)}</b><span>${esc(L.td_label)}</span></div><div class="sbox hl"><b>${n(L.traced)}</b><span>${esc(L.trace_label)}</span></div></div></div>
+        <div class="stream mid"><span class="eyebrow">Between</span><div class="stack"><div class="sbox"><b>✓</b><span>Known links from top-down set the bar for the bottom-up matcher</span></div><div class="sbox hl"><b>→</b><span>Only the strongest links go to the impact test below</span></div></div></div>
+        <div class="stream bu"><span class="eyebrow">Bottom-up</span><div class="stack"><div class="sbox"><b>AI</b><span>${esc(L.bu_label)}</span></div></div></div>
+      </div></section>
+    <section class="card step"><div class="card-head"><span class="num">07</span><h2>Prove: ${esc(I.tool)} on ${esc(I.kr.toLowerCase())}</h2><p>${esc(I.method)}</p></div>
+      <div class="grid2"><div class="result"><span class="eyebrow">Impact</span><span class="big">${sgn(I.est)} ${esc(I.unit)}</span><p>90% range ${sgn(I.lo)} to ${sgn(I.hi)} ${esc(I.unit)}, ${n(I.n)} records. Planted effect: ${sgn(I.truth)} ${esc(I.unit)}, inside the range.</p></div>
+      <div class="panel"><svg viewBox="0 0 400 90" style="width:100%" role="img" aria-label="Impact estimate with 90% range"><line x1="200" y1="10" x2="200" y2="70" stroke="currentColor" stroke-width="1.5"/><line x1="${sx(I.lo)*4}" y1="40" x2="${sx(I.hi)*4}" y2="40" stroke="var(--good)" stroke-width="6" stroke-linecap="round"/><circle cx="${sx(I.est)*4}" cy="40" r="9" fill="var(--good)"/><line x1="${sx(I.truth)*4}" y1="22" x2="${sx(I.truth)*4}" y2="58" stroke="var(--warn)" stroke-width="2" stroke-dasharray="4 3"/><text x="200" y="86" text-anchor="middle" font-size="11" fill="currentColor">no effect</text><text x="${sx(I.truth)*4}" y="16" text-anchor="middle" font-size="11" fill="currentColor">planted</text></svg></div></div></section>
+    <section class="card step"><div class="card-head"><span class="num">09</span><h2>Decide</h2><p>One call per investment.</p></div>
+      <div class="panel tbl"><table><tr><th>AI investment</th><th>Decision</th><th>Why</th></tr>${d.decisions.map(([a,b,c]) => `<tr><td><b>${esc(a)}</b></td><td><span class="tag l1">${esc(b)}</span></td><td>${esc(c)}</td></tr>`).join("")}</table></div>
+      <p class="muted" style="font-size:13px">A preview: the Sales tab shows every step in full, including the live map, build lineage, momentum and the judge experiment.</p></section>`;
+  }
+  const sales = $("salesview"), dv = $("deptview"), crumb = $("crumb"), salesCrumb = crumb.textContent;
+  document.querySelectorAll(".dtabs button").forEach(b => b.addEventListener("click", () => {
+    const k = b.dataset.d;
+    document.querySelectorAll(".dtabs button").forEach(x => { x.classList.toggle("on", x === b); x.setAttribute("aria-selected", x === b); });
+    if (k === "sales") { sales.hidden = false; dv.hidden = true; crumb.textContent = salesCrumb; }
+    else { dv.innerHTML = page(DP[k]); dv.hidden = false; sales.hidden = true; crumb.textContent = DP[k].crumb; }
+    window.scrollTo(0, 0);
+  }));
 })();
 </script>

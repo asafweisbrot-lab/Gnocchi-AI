@@ -1,0 +1,340 @@
+{
+ "support": {
+  "name": "Support",
+  "crumb": "Reports / AI impact / Support org \u00b7 FY2025",
+  "lead": "Gnocchi read the ticketing system, the support team OKRs and every AI source support runs, and traced each AI tool to the ticket fields that move resolution time.",
+  "stats": [
+   [
+    "4",
+    "AI investments"
+   ],
+   [
+    "4,200",
+    "tickets in 2025"
+   ],
+   [
+    "4",
+    "support teams"
+   ],
+   [
+    "-4.3 h",
+    "resolution time, auto-triage"
+   ]
+  ],
+  "inventory": [
+   {
+    "name": "Auto-triage agent",
+    "kind": "Bought",
+    "type": "Direct \u00b7 agent",
+    "writes": "Queue, priority, first assignee",
+    "cost": 96000,
+    "teams": "Tier 1 EMEA, Tier 1 NA, Tier 2"
+   },
+   {
+    "name": "Reply copilot",
+    "kind": "Bought",
+    "type": "Indirect \u00b7 assists agents",
+    "writes": "Draft reply marked AI-drafted",
+    "cost": 64000,
+    "teams": "All"
+   },
+   {
+    "name": "KB article summarizer",
+    "kind": "Built",
+    "type": "Indirect \u00b7 material",
+    "writes": "Summary attached to KB link",
+    "cost": 18000,
+    "teams": "Tier 2"
+   },
+   {
+    "name": "ChatGPT Enterprise",
+    "kind": "Bought",
+    "type": "Indirect \u00b7 sessions",
+    "writes": "Nothing",
+    "cost": 41000,
+    "teams": "All"
+   }
+  ],
+  "map": [
+   {
+    "kr": "Cut median time to resolution under 24 hours",
+    "fields": [
+     "Resolved at",
+     "Created at"
+    ],
+    "duration": true,
+    "action": "Median",
+    "why": "a duration per ticket, then the typical ticket",
+    "rows": [
+     "Status = Resolved"
+    ],
+    "date": "Resolved at",
+    "grain": "month",
+    "record": "Ticket"
+   },
+   {
+    "kr": "Raise CSAT to 4.5",
+    "fields": [
+     "CSAT score"
+    ],
+    "action": "Average",
+    "why": "the mean survey score",
+    "rows": [
+     "Survey answered"
+    ],
+    "date": "Resolved at",
+    "grain": "month",
+    "record": "Ticket + survey"
+   },
+   {
+    "kr": "Deflect 30% of contacts to self-service",
+    "fields": [
+     "Channel",
+     "Article viewed"
+    ],
+    "action": "Share",
+    "why": "deflected \u00f7 all contacts",
+    "rows": [
+     "Contact created"
+    ],
+    "date": "Created at",
+    "grain": "quarter",
+    "record": "Contact + KB views"
+   },
+   {
+    "kr": "Keep agent attrition under 15%",
+    "blind": "Attrition lives in the HR system, not in ticketing; connect the HRIS to see it"
+   }
+  ],
+  "drivers": [
+   {
+    "driver": "First assignment time",
+    "per": "per hour slower",
+    "v": 0.87,
+    "unit": "h"
+   },
+   {
+    "driver": "KB article linked",
+    "per": "when linked",
+    "v": -2.46,
+    "unit": "h"
+   },
+   {
+    "driver": "Ticket reopened",
+    "per": "when reopened",
+    "v": 9.72,
+    "unit": "h"
+   }
+  ],
+  "links": {
+   "scope": 4200,
+   "matter": 2382,
+   "traced": 1809,
+   "td_label": "tickets where a field that moves resolution was set",
+   "trace_label": "carry an agent write from auto-triage",
+   "bu_label": "ChatGPT and copilot sessions matched to a ticket by customer, product and timing"
+  },
+  "impact": {
+   "tool": "Auto-triage agent",
+   "kr": "Median time to resolution",
+   "est": -4.3,
+   "lo": -5.3,
+   "hi": -3.3,
+   "unit": "hours",
+   "truth": -4.0,
+   "method": "Rolled out to Tier 1 EMEA in March, Tier 1 NA in June, Tier 2 in September, never to Billing; each team compared with itself and with the teams not yet live, controlling for team and month.",
+   "n": 4200
+  },
+  "decisions": [
+   [
+    "Auto-triage agent",
+    "Expand to Billing",
+    "Cuts resolution time where it runs; Billing is the one team without it."
+   ],
+   [
+    "Reply copilot",
+    "Keep, test CSAT",
+    "Used daily; its effect on CSAT isn't separable yet. Run a 6-week holdout."
+   ],
+   [
+    "KB article summarizer",
+    "Right-size",
+    "One team, few sessions; fold into the KB tool at renewal."
+   ],
+   [
+    "ChatGPT Enterprise",
+    "Keep",
+    "Shared across departments; support sessions link to tickets, so its share is counted."
+   ]
+  ]
+ },
+ "hr": {
+  "name": "HR",
+  "crumb": "Reports / AI impact / People team \u00b7 FY2025",
+  "lead": "Gnocchi read the applicant tracking system, the HR team OKRs and every AI source recruiting runs, and traced each AI tool to the requisition fields that move time to hire.",
+  "stats": [
+   [
+    "4",
+    "AI investments"
+   ],
+   [
+    "1,100",
+    "requisitions in 2025"
+   ],
+   [
+    "4",
+    "hiring teams"
+   ],
+   [
+    "-6.0 d",
+    "time to hire, scheduling agent"
+   ]
+  ],
+  "inventory": [
+   {
+    "name": "Interview scheduling agent",
+    "kind": "Bought",
+    "type": "Direct \u00b7 agent",
+    "writes": "Interview events on the candidate",
+    "cost": 54000,
+    "teams": "Engineering, Sales, G&A hiring"
+   },
+   {
+    "name": "Resume screening agent",
+    "kind": "Bought",
+    "type": "Direct \u00b7 agent",
+    "writes": "Candidate stage: screened in / out",
+    "cost": 72000,
+    "teams": "All"
+   },
+   {
+    "name": "Job description writer",
+    "kind": "Built",
+    "type": "Indirect \u00b7 material",
+    "writes": "JD draft attached to the requisition",
+    "cost": 12000,
+    "teams": "G&A hiring"
+   },
+   {
+    "name": "ChatGPT Enterprise",
+    "kind": "Bought",
+    "type": "Indirect \u00b7 sessions",
+    "writes": "Nothing",
+    "cost": 23000,
+    "teams": "All"
+   }
+  ],
+  "map": [
+   {
+    "kr": "Cut median time to hire under 35 days",
+    "fields": [
+     "Offer accepted at",
+     "Requisition opened at"
+    ],
+    "duration": true,
+    "action": "Median",
+    "why": "a duration per hire, then the typical hire",
+    "rows": [
+     "Status = Filled"
+    ],
+    "date": "Offer accepted at",
+    "grain": "month",
+    "record": "Requisition + candidate"
+   },
+   {
+    "kr": "Raise offer acceptance to 85%",
+    "fields": [
+     "Offer status"
+    ],
+    "action": "Share",
+    "why": "accepted \u00f7 offers made",
+    "rows": [
+     "Offer made"
+    ],
+    "date": "Offer made at",
+    "grain": "quarter",
+    "record": "Offer"
+   },
+   {
+    "kr": "Keep first-year attrition under 10%",
+    "fields": [
+     "Termination date",
+     "Hire date"
+    ],
+    "action": "Share",
+    "why": "leavers within a year \u00f7 hires",
+    "rows": [
+     "Hired in the last 12 months"
+    ],
+    "date": "Hire date",
+    "grain": "quarter",
+    "record": "Employee (HRIS)"
+   },
+   {
+    "kr": "Improve the interview experience",
+    "blind": "No system records candidate experience; add a post-interview survey to see it"
+   }
+  ],
+  "drivers": [
+   {
+    "driver": "Days to first screen",
+    "per": "per day slower",
+    "v": 0.87,
+    "unit": "d"
+   },
+   {
+    "driver": "Interview panel within 3 days",
+    "per": "when it happens",
+    "v": -4.6,
+    "unit": "d"
+   },
+   {
+    "driver": "Late hiring-manager feedback",
+    "per": "when late",
+    "v": 4.38,
+    "unit": "d"
+   }
+  ],
+  "links": {
+   "scope": 1100,
+   "matter": 691,
+   "traced": 549,
+   "td_label": "requisitions where a field that moves time to hire was set",
+   "trace_label": "carry interview events written by the scheduling agent",
+   "bu_label": "ChatGPT sessions matched to a requisition by role, team and timing"
+  },
+  "impact": {
+   "tool": "Interview scheduling agent",
+   "kr": "Median time to hire",
+   "est": -6.0,
+   "lo": -8.4,
+   "hi": -3.7,
+   "unit": "days",
+   "truth": -5.0,
+   "method": "Rolled out to Engineering hiring in February, Sales in May, G&A in August, never to Campus; each team compared with itself and with the teams not yet live, controlling for team and month.",
+   "n": 1100
+  },
+  "decisions": [
+   [
+    "Interview scheduling agent",
+    "Expand to Campus",
+    "Shortens time to hire where it runs."
+   ],
+   [
+    "Resume screening agent",
+    "Investigate",
+    "Writes stages on every candidate, but screened-in candidates aren't hired faster; check what it optimizes."
+   ],
+   [
+    "Job description writer",
+    "Retire",
+    "Used by one team a few times a month; ChatGPT covers it."
+   ],
+   [
+    "ChatGPT Enterprise",
+    "Keep",
+    "Shared; recruiting sessions link to requisitions."
+   ]
+  ]
+ }
+}
